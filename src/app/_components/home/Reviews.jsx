@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { Button } from "@/app/_components/BrownButton"
 import { Card, CardContent } from "@/components/ui/card"
 
 const reviews = [

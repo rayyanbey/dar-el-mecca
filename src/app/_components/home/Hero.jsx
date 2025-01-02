@@ -1,14 +1,13 @@
 "use client"
-
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { CurvedCard } from "@/components/ui/curved-card"
+
+import { CurvedCard } from "../CurvedCard"
+import BrownButton from "../BrownButton"
 
 export function Hero() {
   return (
     <section className="relative min-h-[80vh] flex items-center overflow-hidden">
-      {/* Background Image */}
       <Image
         src="/big-bg.svg"
         alt="Hero Background"
@@ -55,9 +54,9 @@ export function Hero() {
               <p className="text-[#987547]">3425 Pilgrims</p>
             </div>
           </div>
-          <Button className="bg-[#987547] hover:bg-[#876436] text-lg px-8">
+          <BrownButton className="bg-[#987547] hover:bg-[#876436] text-lg px-8">
             All Tour details
-          </Button>
+          </BrownButton>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}

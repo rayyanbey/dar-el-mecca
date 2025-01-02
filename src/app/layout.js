@@ -1,15 +1,10 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { TopBar } from "@/components/top-bar";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+import { TopBar } from "./_components/TopBar";
+import { Header } from "./_components/Header";
+import { Footer } from "./_components/Footer";
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
@@ -21,13 +16,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <TopBar/>
-        <Header/>
+      <body className={`${outfit.variable} antialiased`}>
+        <TopBar />
+        <Header />
         {children}
-        <Footer/>
+        <Footer />
       </body>
     </html>
   );

@@ -1,6 +1,11 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Instagram, Youtube, Phone, Mail } from 'lucide-react'
+import Message from "../_icons/Message";
+import Phone from "../_icons/Phone";
+import Whatsapp from "../_icons/Whatsapp";
+import Facebook from "../_icons/Facebook";
+import Instagram from "../_icons/Instagram";
+import Youtube from "../_icons/Youtube";
 
 export function Footer() {
   return (
@@ -68,11 +73,11 @@ export function Footer() {
         <div className="border-t border-white/20 mt-8 pt-8">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
             <a href="mailto:info@darelmecca.com" className="flex items-center gap-2">
-              <Mail className="h-4 w-4" />
+              <Message className="h-4 w-4" />
               Email: info@darelmecca.com
             </a>
             <a href="mailto:darelmecca94@gmail.com" className="flex items-center gap-2">
-              <Mail className="h-4 w-4" />
+              <Message className="h-4 w-4" />
               Email: darelmecca94@gmail.com
             </a>
             <a href="tel:1-919-426-2061" className="flex items-center gap-2">
@@ -84,7 +89,7 @@ export function Footer() {
               Call: 1-919-410-9557
             </a>
             <a href="https://wa.me/19843893054" className="flex items-center gap-2">
-              <Phone className="h-4 w-4" />
+              <Whatsapp className="h-4 w-4" />
               Whatsapp: 1-984-389-3054
             </a>
           </div>
