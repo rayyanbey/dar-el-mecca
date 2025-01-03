@@ -1,52 +1,38 @@
-import Image from 'next/image'
-import { Button } from "@/app/_components/BrownButton"
-
+import ServiceCard from "./ServiceCard";
 const services = [
-  {
-    title: "Umrah Packages",
-    description: "Discover Umrah services tailored for USA and all over the world. We handle visas, accommodations, and transport, ensuring a hassle-free spiritual journey.",
-    image: "/umrah.jpg"
-  },
-  {
-    title: "Hajj Packages",
-    description: "Embark on a tailored Hajj journey with Darelmecca Travel where affordability meets top notch service, ensuring comfort and spiritual fulfilment.",
-    image: "/hajj.jpg"
-  },
-  {
-    title: "Tour Packages",
-    description: "Embark on a Journey of Faith with Darelmecca Travel. Our tours ensure seamless, affordable pilgrimages for a transformative spiritual experience.",
-    image: "/tour.jpg"
-  }
-]
+    {
+        title: "Umrah Packages",
+        description:
+            "Discover Umrah services tailored for USA and all over the world. We handle visas, accommodations, and transport, ensuring a hassle-free spiritual journey.",
+        image: "/images/umrah-service.jpeg",
+    },
+    {
+        title: "Hajj Packages",
+        description:
+            "Embark on a tailored Hajj journey with Darelmecca Travel where affordability meets top notch service, ensuring comfort and spiritual fulfilment.",
+        image: "/images/hajj-service.jpeg",
+    },
+    {
+        title: "Tour Packages",
+        description:
+            "Embark on a Journey of Faith with Darelmecca Travel. Our tours ensure seamless, affordable pilgrimages for a transformative spiritual experience.",
+        image: "/images/tour-service.jpeg",
+    },
+];
 
 export function Services() {
-  return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12">OUR SERVICES</h2>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          We provide 3 types of tours for our clients. We arrange high quality tours with exceptional support.
-        </p>
-        <div className="grid md:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <Image 
-                src={service.image} 
-                alt={service.title} 
-                width={400} 
-                height={300} 
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                <p className="text-gray-600 mb-4">{service.description}</p>
-                <Button variant="outline" className="w-full">View details</Button>
-              </div>
+    return (
+        <section className="w-full flex flex-col justify-center items-center py-6 ">
+            <h2 className="text-[32px] text-center cinzel-title font-[700] ">Our Services</h2>
+            <p className="text-[18px] text-center font-[300] py-3">
+                We provide 3 types of tours for our clients, We arrange high quality tours with exceptional support.
+            </p>
+            <div className="flex justify-center gap-10 py-4">
+            {services.map((service) => (
+               <ServiceCard key={service.title} title={service.title} description={service.description} image={service.image}/>
+            ))}
+                
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
+        </section>
+    );
 }
-
