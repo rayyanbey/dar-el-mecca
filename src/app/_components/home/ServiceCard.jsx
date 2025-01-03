@@ -5,7 +5,7 @@ import Image from "next/image";
 
 function ServiceCard({ title, description, image }) {
     return (
-        <div className="flex flex-col w-[23rem] rounded-2xl bg-[#F9F9F9] border border-[#00000014]">
+        <div className="flex flex-col  w-[18rem] lg:w-[23rem]  rounded-2xl bg-[#F9F9F9] border border-[#00000014]">
             <div className="relative h-[22rem]">
                 <Image
                     className="rounded-t-2xl object-cover"

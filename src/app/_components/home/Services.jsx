@@ -27,11 +27,10 @@ export function Services() {
             <p className="text-[18px] text-center font-[300] py-3">
                 We provide 3 types of tours for our clients, We arrange high quality tours with exceptional support.
             </p>
-            <div className="flex justify-center gap-10 py-4">
+            <div className="flex flex-col lg:flex-row justify-center flex-wrap gap-10 py-4 ">
             {services.map((service) => (
                <ServiceCard key={service.title} title={service.title} description={service.description} image={service.image}/>
             ))}
-                
             </div>
         </section>
     );
