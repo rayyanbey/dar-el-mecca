@@ -3,6 +3,9 @@
 @tailwind utilities;
 @layer base {
   :root {
+    --font-outfit: "Outfit", sans-serif;
+    --font-cinzel: "Cinzel Decorative", serif;
+    --font-kfg: "KFGQPCUthmanicScriptHAFS", sans-serif;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -65,5 +68,17 @@
   }
 }
 body {
-  font-family: var(--font-outfit), sans-serif; /* Apply the Outfit font */
+  font-family: var(--font-outfit), sans-serif;
+}
+.cinzel-title {
+  font-family: var(--font-cinzel);
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'KFGQPCUthmanicScriptHAFSRegular'; /* Name to use in CSS */
+  src: url('/fonts/KFGQPC Uthmanic Script HAFS Regular.otf') format('opentype'); /* Path to the font file */
+font-weight: normal;
+}
+.KFG-title{
+  font-family: 'KFGQPCUthmanicScriptHAFSRegular', sans-serif;
 }

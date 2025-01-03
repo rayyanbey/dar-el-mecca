@@ -1,4 +1,4 @@
-import { Outfit } from "next/font/google";
+import { Cinzel, Cinzel_Decorative, Outfit } from "next/font/google";
 import "./globals.css";
 import { TopBar } from "./_components/TopBar";
 import { Header } from "./_components/Header";
@@ -6,6 +6,12 @@ import { Footer } from "./_components/Footer";
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
+});
+
+const cinzel = Cinzel_Decorative({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  weight: "700",
 });
 
 export const metadata = {
