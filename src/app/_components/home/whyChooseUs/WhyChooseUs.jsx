@@ -34,7 +34,7 @@ export function WhyChooseUs() {
                 <h3 className="font-[700]  text-[32px] cinzel-title">
                     We Are The Best Partner For Your Hajj and Umrah Journey
                 </h3>
-                <div className="flex flex-wrap ">
+                <div className=" w-full flex flex-wrap ">
                     {facilities.map((facility) => (
                         <FacilityCard
                             key={facility.title}
