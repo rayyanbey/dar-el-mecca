@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from "next/image";
-import AllTourDetailButton from "../AllTourDetailButton";
+import AllTourDetailButton from "./AllTourDetailButton";
 
 export default function Section1() {
   return (

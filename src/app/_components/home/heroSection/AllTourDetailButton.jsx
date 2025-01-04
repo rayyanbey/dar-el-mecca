@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import TransparentButton from '../TransparentButton'
+import TransparentButton from '../../TransparentButton'
 
 export default function AllTourDetailButton() {
     const handleButtonClick = () => {

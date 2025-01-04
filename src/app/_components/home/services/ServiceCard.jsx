@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import TransparentButton from "../TransparentButton";
 import Image from "next/image";
+import TransparentButton from "../../TransparentButton";
 
 function ServiceCard({ title, description, image }) {
     return (
