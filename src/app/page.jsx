@@ -1,3 +1,4 @@
+import BottomBar from "./_components/BottomBar";
 import { Hero } from "./_components/home/heroSection/Hero";
 import { Services } from "./_components/home/services/Services";
 import Stats from "./_components/home/Stats";
