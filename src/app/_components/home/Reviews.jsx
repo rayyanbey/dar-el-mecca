@@ -3,7 +3,6 @@ import Star from "../../_icons/Star";
 import Arrow from "../../_icons/Arrow";
 import BrownStars5 from "../../_icons/BrownStars5";
 import {Swiper, SwiperSlide} from "swiper/react";
-import {EffectCoverflow} from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import {useEffect, useRef, useState} from "react";
