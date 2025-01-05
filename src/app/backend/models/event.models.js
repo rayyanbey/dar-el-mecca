@@ -101,6 +101,10 @@ const eventSchema = new mongoose.Schema({
     flightDetails:{
         type: flightSchema,
         required: true
+    },
+    tagline:{
+        type:String,
+        required:true
     }
 },{timeStamp: true});
 
