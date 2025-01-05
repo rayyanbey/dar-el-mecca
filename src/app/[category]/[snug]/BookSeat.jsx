@@ -4,9 +4,9 @@ import TransparentButton from "../../_components/TransparentButton";
 
 function BookSeat() {
     return (
-        <section className="bg-tertiary px-6 lg:px-20 py-10 lg:py-20 flex flex-col lg:gap-6 lg:flex-row items-center">
+        <section className="bg-tertiary px-6  lg:px-20 py-10 lg:py-20 flex flex-col lg:gap-6 lg:flex-row items-center">
             {/* Form Section */}
-            <div className="w-full lg:w-[60%] space-y-6">
+            <div className="w-full lg:w-[65%]  space-y-6">
                 <h2 className="cinzel-title text-[32px] font-[700]">Book Your Seat</h2>
                 <form className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* First Name */}
@@ -154,8 +154,8 @@ function BookSeat() {
                 </form>
             </div>
             {/* Image Section */}
-            <div className="flex w-full lg:w-[40%] h-[120vh] lg:h-[100vh] justify-center items-center mt-10 lg:mt-0">
-                <div className="relative bg-secondary w-[85%] h-full lg:h-full rounded-t-full">
+            <div className="flex justify-center lg:justify-end w-full lg:w-[40%]   h-[120vh] lg:h-[90vh]  mt-10 lg:mt-0 ">
+                <div className="relative bg-secondary w-[95%]  h-full lg:h-full rounded-t-full">
                     <img
                         className="rounded-t-full absolute left-2 -top-2 w-[97.2%] lg:w-[98%] h-[100%] object-cover"
                         src={"/images/hero-main.jpeg"}
