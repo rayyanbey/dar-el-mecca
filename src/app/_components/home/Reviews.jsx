@@ -119,43 +119,50 @@ export function Reviews() {
     );
 }
 
-function ReviewCard({name, role, image, content, backgroundColor}) {
-    const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 640);
-
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        setIsLargeScreen(window.innerWidth >= 640);
-        const handleResize = () => {
-          setIsLargeScreen(window.innerWidth >= 640);
-        };
-        
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-      }
-    }, []);
-    return (
-        <div
-            className={`cursor-grab flex w-[300px] md:w-[50vw] ${
-                backgroundColor === "#A8854E1A" && "bg-[#A8854E1A]"
-            } gap-2 lg:gap-8 p-4 m-4 lg:px-6 lg:py-8 border-2 border-[#00000014]`}
-        >
-            <div className="w-1/4 flex flex-col gap-4 items-center p-4 bg-secondary rounded-t-full">
-                <img src={image} className="w-34 h-34 border-2 border-white rounded-full" alt="" />
-                <div className="flex bg-[#FFFFFF33] rounded-full p-1 lg:p-2">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                        <Star color="#fff" width={isLargeScreen ? 21 : 10} height={21} key={i} />
-                    ))}
+function ReviewCard({ name, role, image, content, backgroundColor }) {
+        const [isLargeScreen, setIsLargeScreen] = useState(false); // Initialize with a default value
+    
+        useEffect(() => {
+            if (typeof window !== "undefined") {
+                const updateScreenSize = () => {
+                    setIsLargeScreen(window.innerWidth >= 640);
+                };
+    
+                // Set initial value
+                updateScreenSize();
+    
+                // Add resize event listener
+                window.addEventListener("resize", updateScreenSize);
+    
+                // Cleanup event listener on unmount
+                return () => window.removeEventListener("resize", updateScreenSize);
+            }
+        }, []);
+    
+        return (
+            <div
+                className={`cursor-grab flex w-[300px] md:w-[50vw] ${
+                    backgroundColor === "#A8854E1A" && "bg-[#A8854E1A]"
+                } gap-2 lg:gap-8 p-4 m-4 lg:px-6 lg:py-8 border-2 border-[#00000014]`}
+            >
+                <div className="w-1/4 flex flex-col gap-4 items-center p-4 bg-secondary rounded-t-full">
+                    <img src={image} className="w-34 h-34 border-2 border-white rounded-full" alt={name} />
+                    <div className="flex bg-[#FFFFFF33] rounded-full p-1 lg:p-2">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                            <Star color="#fff" width={isLargeScreen ? 21 : 10} height={21} key={i} />
+                        ))}
+                    </div>
+                </div>
+                <div className="w-3/4 flex flex-col justify-center gap-6">
+                    <div className="flex flex-col gap-2">
+                        <h6 className="text-[14px] lg:text-[20px] cinzel-title font-[700]">{name}</h6>
+                        <p className="text-[10px] lg:text-[14px] font-[400]">{role}</p>
+                    </div>
+                    <p className="text-[10px] lg:text-[18px] font-[400] opacity-80 text-wrap">{content}</p>
                 </div>
             </div>
-            <div className="w-3/4 flex flex-col justify-center gap-6">
-                <div className="flex flex-col gap-2">
-                    <h6 className="text-[14px] lg:text-[20px] cinzel-title font-[700]">{name}</h6>
-                    <p className="text-[10px] lg:text-[14px] font-[400]">{role}</p>
-                </div>
-                <p className="text-[10px] lg:text-[18px] font-[400] opacity-80 text-wrap">{content}</p>
-            </div>
-        </div>
-    );
+        );
 }
+    
 
 export default Reviews;
