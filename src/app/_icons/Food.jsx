@@ -4,7 +4,7 @@ function Food() {
     return (
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 20C0 8.95431 8.95431 0 20 0C31.0457 0 40 8.95431 40 20V40H0V20Z" fill="#A8854E" />
-            <g clip-path="url(#clip0_31_41)">
+            <g clipPath="url(#clip0_31_41)">
                 <path
                     d="M23.0625 31.5C22.8206 31.5 22.625 31.3044 22.625 31.0625V10.9375C22.625 10.6956 22.8206 10.5 23.0625 10.5C23.3044 10.5 23.5 10.6956 23.5 10.9375V31.0625C23.5 31.3044 23.3044 31.5 23.0625 31.5Z"
                     fill="white"
