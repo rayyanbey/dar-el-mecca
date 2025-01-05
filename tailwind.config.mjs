@@ -28,6 +28,10 @@ export default {
 					DEFAULT: 'rgba(148, 113, 57, 1)', // Secondary color
 					foreground: 'rgba(255, 255, 255, 1)', // Assuming white text on secondary
 				},
+				tertiary: {
+					DEFAULT: 'rgba(168, 133, 78, 0.1)', // Tertiary color
+					foreground: 'rgba(255, 255, 255, 1)', // Assuming white text on tertiary
+				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
