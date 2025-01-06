@@ -131,7 +131,6 @@ export function Header() {
                 Hajj and Umrah Guides
               </Link>
 
-              {/* Contact Button */}
               <BrownButton text="Contact Us" onClick={() => setIsNavOpen(false)} />
             </div>
           </div>
@@ -250,7 +249,9 @@ export function Header() {
             Hajj and Umrah Guides
           </Link>
         </div>
+        <Link href="/contact">
         <BrownButton text="Contact Us" onClick={() => {}} />
+        </Link>
       </nav>
     </div>
   );
