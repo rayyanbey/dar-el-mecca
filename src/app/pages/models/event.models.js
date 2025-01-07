@@ -64,6 +64,11 @@ const eventDetailsSchema = new mongoose.Schema({
 
 //main event schema
 const eventSchema = new mongoose.Schema({
+    title:{
+        type: String,
+        required: true,
+        unique: true
+    },
     month:{
         type: String,
         required: true
