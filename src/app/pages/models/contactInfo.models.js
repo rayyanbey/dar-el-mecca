@@ -3,15 +3,15 @@ import sequelize from '../config/dbConfig';
 
 const ContactInformation = sequelize.define('ContactInformation', {
     phoneNumbers: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.JSON,
         allowNull: false
     },
     email: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.JSON,
         allowNull: false
     },
     faxNumbers: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.JSON,
         allowNull: false
     }
 }, {
