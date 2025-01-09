@@ -115,7 +115,7 @@ const eventSchema = new mongoose.Schema({
             validator: function(value) {
                 return value.length > 2; // Ensure at least 3 images are provided
             },
-            message: "At least one image is required"
+            message: "At least three images is required"
         }
     },
     description: {
