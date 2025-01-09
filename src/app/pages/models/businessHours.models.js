@@ -3,6 +3,7 @@ import sequelize from '../config/dbConfig';
 
 const BusinessHours = sequelize.define('BusinessHours', {
     monday: {
+        type: DataTypes.JSON,
         open: {
             type: DataTypes.BOOLEAN,
             allowNull: false
@@ -23,6 +24,7 @@ const BusinessHours = sequelize.define('BusinessHours', {
         }
     },
     tuesday: {
+        type: DataTypes.JSON,
         open: {
             type: DataTypes.BOOLEAN,
             allowNull: false
@@ -43,6 +45,7 @@ const BusinessHours = sequelize.define('BusinessHours', {
         }
     },
     wednesday: {
+        type: DataTypes.JSON,
         open: {
             type: DataTypes.BOOLEAN,
             allowNull: false
@@ -63,6 +66,7 @@ const BusinessHours = sequelize.define('BusinessHours', {
         }
     },
     thursday: {
+        type: DataTypes.JSON,
         open: {
             type: DataTypes.BOOLEAN,
             allowNull: false
@@ -83,6 +87,7 @@ const BusinessHours = sequelize.define('BusinessHours', {
         }
     },
     friday: {
+        type: DataTypes.JSON,
         open: {
             type: DataTypes.BOOLEAN,
             allowNull: false
@@ -103,6 +108,7 @@ const BusinessHours = sequelize.define('BusinessHours', {
         }
     },
     saturday: {
+        type: DataTypes.JSON,
         open: {
             type: DataTypes.BOOLEAN,
             allowNull: false
@@ -123,6 +129,7 @@ const BusinessHours = sequelize.define('BusinessHours', {
         }
     },
     sunday: {
+        type: DataTypes.JSON,
         open: {
             type: DataTypes.BOOLEAN,
             allowNull: false

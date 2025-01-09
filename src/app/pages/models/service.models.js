@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../config/db'; // Import your Sequelize instance
+import sequelize from '../config/dbConfig';
 
 const Service = sequelize.define('Service', {
     name: {
