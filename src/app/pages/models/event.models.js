@@ -1,170 +1,177 @@
-import mongoose from "mongoose";
-
-// Partial flight schema with validations
-const flightSchema = new mongoose.Schema({
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/dbConfig';
+const Flight = sequelize.define('Flight', {
     departureCity: {
-        type: String,
-        required: true,
-        minlength: 2, // Minimum length for city name
-        maxlength: 100 // Maximum length for city name
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [2, 100]
+        }
     },
     destinationCity: {
-        type: String,
-        required: true,
-        minlength: 2,
-        maxlength: 100
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [2, 100]
+        }
     },
     departureDate: {
-        type: Date,
-        required: true,
+        type: DataTypes.DATE,
+        allowNull: false,
         validate: {
-            validator: function(value) {
-                return value >= new Date(); // Ensure departure date is not in the past
-            },
-            message: "Departure date must be in the future"
+            isAfter: new Date().toISOString().split('T')[0]
         }
     },
     returnDate: {
-        type: Date,
-        required: true,
+        type: DataTypes.DATE,
+        allowNull: false,
         validate: {
-            validator: function(value) {
-                return this.departureDate <= value; // Ensure return date is after departure
-            },
-            message: "Return date must be after the departure date"
+            isValidDate(value) {
+                if (value <= this.departureDate) {
+                    throw new Error("Return date must be after the departure date");
+                }
+            }
         }
     }
 }, { timestamps: true });
 
-// Partial hotel schema with validations
-const hotelSchema = new mongoose.Schema({
+// Hotel model
+const Hotel = sequelize.define('Hotel', {
     name: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 100
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [3, 100]
+        }
     },
     location: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 100
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [3, 100]
+        }
     },
     description: {
-        type: String, // Changed to String (as description should not be a Date)
-        required: true,
-        minlength: 10,
-        maxlength: 1000
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [10, 1000]
+        }
     },
     images: {
-        type: [String],
-        required: true,
+        type: DataTypes.JSON, // Storing images as a JSON array
+        allowNull: false,
         validate: {
-            validator: function(value) {
-                return value.length > 0; // Ensure at least one image is provided
-            },
-            message: "At least one image is required"
+            notEmpty(value) {
+                if (!Array.isArray(value) || value.length === 0) {
+                    throw new Error("At least one image is required");
+                }
+            }
         }
     }
 }, { timestamps: true });
 
-// Partial event details schema with validations
-const eventDetailsSchema = new mongoose.Schema({
+// EventDetails model
+const EventDetails = sequelize.define('EventDetails', {
     inclusion: {
-        type: Object,
-        required: true
+        type: DataTypes.JSON,
+        allowNull: false
     },
     exclusion: {
-        type: Object,
-        required: true
-    },
-    hotels: {
-        type: [hotelSchema],
-        required: true,
-        validate: {
-            validator: function(value) {
-                return value.length > 0; // Ensure at least one hotel is included
-            },
-            message: "At least one hotel is required"
-        }
+        type: DataTypes.JSON,
+        allowNull: false
     },
     transportation: {
-        type: Object,
-        required: true
+        type: DataTypes.JSON,
+        allowNull: false
     }
 }, { timestamps: true });
 
-// Main event schema with validations
-const eventSchema = new mongoose.Schema({
+// Event model
+const Event = sequelize.define('Event', {
     title: {
-        type: String,
-        required: true,
+        type: DataTypes.STRING,
+        allowNull: false,
         unique: true,
-        minlength: 5,
-        maxlength: 150
+        validate: {
+            len: [5, 150]
+        }
     },
     month: {
-        type: String,
-        required: true,
-        match: /^(January|February|March|April|May|June|July|August|September|October|November|December)$/ // Strict month validation
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            isIn: [['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']]
+        }
     },
     images: {
-        type: [String],
-        required: true,
+        type: DataTypes.JSON,
+        allowNull: false,
         validate: {
-            validator: function(value) {
-                return value.length > 2; // Ensure at least 3 images are provided
-            },
-            message: "At least three images is required"
+            notEmpty(value) {
+                if (!Array.isArray(value) || value.length < 3) {
+                    throw new Error("At least three images are required");
+                }
+            }
         }
     },
     description: {
-        type: String,
-        required: true,
-        minlength: 20,
-        maxlength: 2000
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [20, 2000]
+        }
     },
     type: {
-        type: String,
-        enum: ['H', 'U', 'T'],
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            isIn: [['H', 'U', 'T']]
+        }
     },
     duration: {
-        type: Number,
-        required: true,
-        min: 1, // Minimum duration is 1 day
-        max: 365 // Maximum duration is 1 year
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            min: 1,
+            max: 365
+        }
     },
     pricing: {
-        type: Object,
-        required: true,
+        type: DataTypes.JSON,
+        allowNull: false,
         validate: {
-            validator: function(value) {
-                return value && typeof value === 'object' && Object.keys(value).length > 0;
-            },
-            message: "Pricing must be a non-empty object"
+            isValidPricing(value) {
+                if (!value || typeof value !== 'object' || Object.keys(value).length === 0) {
+                    throw new Error("Pricing must be a non-empty object");
+                }
+            }
         }
     },
     visa: {
-        type: String,
-        enum: ['Y', 'N', 'Fee'],
-        required: true
-    },
-    eventDetails: {
-        type: eventDetailsSchema,
-        required: true
-    },
-    flightDetails: {
-        type: flightSchema,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            isIn: [['Y', 'N', 'Fee']]
+        }
     },
     tagline: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 200
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [5, 200]
+        }
     }
 }, { timestamps: true });
 
-const Event = mongoose.model('Event', eventSchema);
-export default Event;
+// Associations
+EventDetails.hasMany(Hotel, { as: 'hotels', foreignKey: 'eventDetailsId' });
+Hotel.belongsTo(EventDetails, { foreignKey: 'eventDetailsId' });
+
+Event.hasOne(EventDetails, { as: 'eventDetails', foreignKey: 'eventId' });
+EventDetails.belongsTo(Event, { foreignKey: 'eventId' });
+
+Event.hasOne(Flight, { as: 'flightDetails', foreignKey: 'eventId' });
+Flight.belongsTo(Event, { foreignKey: 'eventId' });
+
+export default Event

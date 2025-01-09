@@ -1,175 +1,29 @@
-import mongoose from "mongoose";
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/dbConfig';
+import BusinessHours from './businessHours.models';
+import ContactInformation from './contactInfo.models';
 
-//business hours
-const businessHoursSchema = new mongoose.Schema({
-    monday:{
-        open:{
-            type:Boolean,
-            required:true
-        },
-        openingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        },
-        closingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        }
+// Define Company model
+const Company = sequelize.define('Company', {
+    address: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    tuesday:{
-        open:{
-            type:Boolean,
-            required:true
-        },
-        openingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        },
-        closingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        }
+    documentAddress: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    wednesday:{
-        open:{
-            type:Boolean,
-            required:true
-        },
-        openingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        },
-        closingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        }
-    },
-    thursday:{
-        open:{
-            type:Boolean,
-            required:true
-        },
-        openingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        },
-        closingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        }
-    },
-    friday:{
-        open:{
-            type:Boolean,
-            required:true
-        },
-        openingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        },
-        closingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        }
-    },
-    saturday:{
-        open:{
-            type:Boolean,
-            required:true
-        },
-        openingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        },
-        closingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        }
-    },
-    sunday:{
-        open:{
-            type:Boolean,
-            required:true
-        },
-        openingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        },
-        closingTime:{
-            type:String,
-            required:function(){
-                return this.open;
-            }
-        }
+    whatsapp: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
-},{timestamps:true});
+}, {
+    timestamps: true,
+    tableName: 'companies'
+});
 
-//contact information
-const contactInformationSchema = new mongoose.Schema({
-    phoneNumbers:{
-        type:[String],
-        required:true
-    },
-    email:{
-        type:[String],
-        required:true
-    },
-    faxNumbers:{
-        type:[String],
-        required:true
-    }
-})
+// Define relationships
+Company.hasOne(ContactInformation, { foreignKey: 'companyId', as: 'contactInformation' });
+Company.hasOne(BusinessHours, { foreignKey: 'companyId', as: 'businessHours' });
 
-
-const companySchema = new mongoose.Schema({
-    address:{
-        type:String,
-        required:true
-    },
-    documentAddress:{
-        type:String,
-        required:true
-    },
-    whatsapp:{
-        type:String,
-        required:true
-    },
-    contactInformation:{
-        type:contactInformationSchema,
-        required:true
-    },
-    businessHours:{
-        type:businessHoursSchema,
-        required:true
-    }
-},{timestamps:true});
-
-
-const Company = mongoose.model('Company',companySchema);
 export default Company;

@@ -1,28 +1,17 @@
-import mongoose from 'mongoose';
+import { Sequelize } from 'sequelize';
 
-const DB_URI = 'mongodb://127.0.0.1:27017/Al-Mecca';
+// Import environment variables or configuration
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'mysql',
+    dialectOptions: {
+        ssl: {
+            require: false,
+            rejectUnauthorized: false, // Adjust as needed for your SSL setup
+        },
+    },
+    logging: false, 
+});
 
-let isConnected; // Track the connection status
-
-const connectDB = async () => {
-    if (isConnected) {
-        console.log('MongoDB is already connected');
-        return;
-    }
-
-    try {
-        const db = await mongoose.connect(DB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true, // Enable unique indexes
-        });
-
-        isConnected = db.connections[0].readyState === 1; // Connection is successful
-        console.log('MongoDB connected successfully');
-    } catch (error) {
-        console.error('MongoDB connection failed:', error.message);
-        throw error;
-    }
-};
-
-export default connectDB;
+export default sequelize;

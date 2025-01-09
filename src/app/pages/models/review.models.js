@@ -1,23 +1,25 @@
-import mongoose from "mongoose";
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/dbConfig';
 
-const ReviewSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
+const Review = sequelize.define('Review', {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    review:{
-        type:String,
-        required:true
+    review: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    profession:{
-        type:Number,
-        required:true
+    profession: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     },
-    image:{
-        type: String
+    image: {
+        type: DataTypes.STRING,
+        allowNull: true // image is optional
     }
-},{timestamps: true});
+}, {
+    timestamps: true
+});
 
-
-const Review = mongoose.model('Review',ReviewSchema);
-export default Review
+export default Review;

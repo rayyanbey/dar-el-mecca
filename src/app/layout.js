@@ -1,4 +1,5 @@
 import { Cinzel, Cinzel_Decorative, Outfit } from "next/font/google";
+import initializeDatabase from "./pages/utils/dbInit";
 import "./globals.css";
 import { TopBar } from "./_components/TopBar";
 import { Header } from "./_components/Header";
@@ -20,6 +21,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  initializeDatabase()
   return (
     <html lang="en">
       <body className={`${outfit.variable} antialiased`}>

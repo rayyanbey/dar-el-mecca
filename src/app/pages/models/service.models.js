@@ -1,19 +1,21 @@
-import mongoose from "mongoose";
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db'; // Import your Sequelize instance
 
-const ServiceSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
+const Service = sequelize.define('Service', {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    description:{
-        type:String,
-        required:true
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    image:{
-        type:String,
-        required:true
+    image: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
-},{timestamps: true});
+}, {
+    timestamps: true
+});
 
-const Service = mongoose.model('Service',ServiceSchema);
 export default Service;
