@@ -115,7 +115,7 @@ const Event = sequelize.define('Event', {
             }
         }
     },
-    description: {
+    bigDescription: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -156,6 +156,27 @@ const Event = sequelize.define('Event', {
         }
     },
     tagline: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [5, 200]
+        }
+    },
+    titleToDisplay:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [5, 200]
+        }
+    },
+    miniDescription:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [5, 200]
+        }
+    },
+    bigDescriptionTitle:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
