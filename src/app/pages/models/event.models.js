@@ -97,13 +97,6 @@ const Event = sequelize.define('Event', {
             len: [5, 150]
         }
     },
-    month: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            isIn: [['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']]
-        }
-    },
     images: {
         type: DataTypes.JSON,
         allowNull: false,
