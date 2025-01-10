@@ -2,7 +2,7 @@ import React from "react";
 import BrownButton from "../../_components/BrownButton";
 import TransparentButton from "../../_components/TransparentButton";
 
-function BookSeat() {
+function BookSeat({image="./test.jpg"}) {
     return (
         <section className="bg-tertiary px-6  lg:px-20 py-10 lg:py-20 flex flex-col lg:gap-6 lg:flex-row items-center">
             {/* Form Section */}
@@ -158,7 +158,7 @@ function BookSeat() {
                 <div className="relative bg-secondary w-[95%]  h-full lg:h-full rounded-t-full">
                     <img
                         className="rounded-t-full absolute left-2 -top-2 w-[97.2%] lg:w-[98%] h-[100%] object-cover"
-                        src={"/images/hero-main.jpeg"}
+                        src={image}
                         alt="Hero Main"
                     />
                 </div>

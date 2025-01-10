@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import TransparentButton from "../../_components/TransparentButton";
 import BrownButton from "../../_components/BrownButton";
 
-function PackageDetail() {
+function PackageDetail({eventDetails}) {
     const [active, setActive] = useState("Inclusions");
     const content = {
         Inclusions: [

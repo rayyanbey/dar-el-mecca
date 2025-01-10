@@ -13,7 +13,7 @@ const initializeDatabase = async () => {
         await sequelize.sync({ alter: true }); // Synchronize models
         console.log('Database synchronized.');
     } catch (error) {
-        console.error('Failed to initialize database:', error);
+        console.error('Failed to initialize database:');
     }
 };
 

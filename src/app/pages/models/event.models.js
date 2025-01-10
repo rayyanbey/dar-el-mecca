@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/dbConfig';
-const Flight = sequelize.define('Flight', {
+export const Flight = sequelize.define('Flight', {
     departureCity: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -36,7 +36,7 @@ const Flight = sequelize.define('Flight', {
 }, { timestamps: true });
 
 // Hotel model
-const Hotel = sequelize.define('Hotel', {
+export const Hotel = sequelize.define('Hotel', {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -72,7 +72,7 @@ const Hotel = sequelize.define('Hotel', {
 }, { timestamps: true });
 
 // EventDetails model
-const EventDetails = sequelize.define('EventDetails', {
+export const EventDetails = sequelize.define('EventDetails', {
     inclusion: {
         type: DataTypes.JSON,
         allowNull: false
@@ -95,13 +95,6 @@ const Event = sequelize.define('Event', {
         unique: true,
         validate: {
             len: [5, 150]
-        }
-    },
-    month: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            isIn: [['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']]
         }
     },
     images: {
