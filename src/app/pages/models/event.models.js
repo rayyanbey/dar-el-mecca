@@ -116,7 +116,7 @@ const Event = sequelize.define('Event', {
         }
     },
     bigDescription: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
         validate: {
             len: [20, 2000]
@@ -159,28 +159,28 @@ const Event = sequelize.define('Event', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            len: [5, 200]
+            len: [5, 2000]
         }
     },
     titleToDisplay:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            len: [5, 200]
+            len: [5, 2000]
         }
     },
     miniDescription:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            len: [5, 200]
+            len: [5, 2000]
         }
     },
     bigDescriptionTitle:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            len: [5, 200]
+            len: [5, 2000]
         }
     }
 }, { timestamps: true });
