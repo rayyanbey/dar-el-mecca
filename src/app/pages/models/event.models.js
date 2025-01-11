@@ -83,9 +83,9 @@ export const EventDetails = sequelize.define('EventDetails', {
     },
     transportation: {
         type: DataTypes.JSON,
-        allowNull: false
+        allowNull: true
     }
-}, { timestamps: true });
+}, { timestamps: false });
 
 // Event model
 const Event = sequelize.define('Event', {

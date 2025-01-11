@@ -1,10 +1,29 @@
 "use client";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import TransparentButton from "../../_components/TransparentButton";
 import BrownButton from "../../_components/BrownButton";
 
 function PackageDetail({eventDetails}) {
     const [active, setActive] = useState("Inclusions");
+    const [buttons, setButtons] = useState([]);
+    useEffect(()=>{
+        const newButtons = [];
+    
+        if (eventDetails.inclusion && eventDetails.inclusion.length > 0) {
+            newButtons.push("Inclusions");
+        }
+        if (eventDetails.exclusion && eventDetails.exclusion.length > 0) {
+            newButtons.push("Exclusions");
+        }
+        if (eventDetails.transportation && eventDetails.transportation.length > 0) {
+            newButtons.push("Transportation");
+        }
+        if (eventDetails.hotels) {
+            newButtons.push("Hotels");
+        }
+        setButtons(newButtons);
+    },[])
+    
     const content = {
         Inclusions: [
             "04 Nights Accommodation in Medina",
@@ -36,14 +55,14 @@ function PackageDetail({eventDetails}) {
             </div>
             <div className="flex flex-col w-[86%] rounded-lg bg-tertiary gap-8 p-2 lg:p-10">
                 <div className="flex  gap-4 lg:flex-row mx-auto lg:space-x-10 flex-wrap ">
-                    {["Inclusions", "Exclusions", "Hotel", "Transportation"].map((item, index) => (
+                    {buttons.map((item, index) => (
                         <React.Fragment key={item}>
                             {active === item ? (
                                 <BrownButton onClick={() => setActive(item)} text={item} active />
                             ) : (
                                 <TransparentButton onClick={() => setActive(item)} text={item} />
                             )}
-                            {index < 3 ? (
+                            {index < buttons.length - 1 ? (
                                 <div className="w-[1px] h-[35px] hidden my-auto bg-[#00000014] lg:flex justify-center items-center"></div>
                             ) : null}
                         </React.Fragment>
