@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Event, { EventDetails, Flight, Hotel } from "../models/event.models";
+import {Event, EventDetails, Flight, Hotel } from "../models/event.models";
 import sequelize from "../config/dbConfig";
 
 //create event
@@ -79,8 +79,62 @@ const createEvent = async (req, res) => {
 }
 
 //delete event
-const deleteEvent = async (req, res) => {
+const deleteEvent = async (req, id) => {
+  try {
+    const event = await Event.findByPk(id);
+    if(!event){
+        return NextResponse.json({
+            status:404,
+            message:"Event Not Found",
+            data:event
+        })
+    }
+    //begin transaction 
 
+    await sequelize.transaction(async(transaction)=>{
+        await Hotel.destroy({
+            where:{
+                eventDetailsId:{
+                    [sequelize.Op.in]:sequelize.literal(`(SELECT id FROM "EventDetails" WHERE "eventId" = ${id})`)
+                }
+            },
+            transaction,
+        })
+
+        await EventDetails.destroy({
+            where:{
+                eventId:id
+            },
+            transaction
+        })
+
+        await Flight.destroy({
+            where:{
+                eventId:id
+            },
+            transaction
+        })
+
+        await Event.destroy({
+            where:{
+                id:id
+            },
+            transaction
+        })
+
+        return NextResponse.json({
+            status:200,
+            message:"Event Deleted Successfully",
+            data:null
+        })
+    })
+  } catch (error) {
+    return NextResponse.json({
+        status:500,
+        message:"Internal Server Error",
+        data:null
+    })
+  }
 }
 
 //update event
@@ -191,5 +245,6 @@ export const getAllEvents = async (category) => {
 export {
     getSpecificEvent,
     getAllTitles,
-    createEvent
+    createEvent,
+    deleteEvent
 }
