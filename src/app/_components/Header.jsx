@@ -7,50 +7,46 @@ import {useEffect, useState} from "react";
 import {usePathname} from "next/navigation";
 import Menu from "../_icons/Menu";
 import Cross from "../_icons/Cross";
-
 export function Header() {
     const pathname = usePathname();
     const [umrahPackages, setUmrahPackages] = useState([]);
-
     const [tourPackages, setTourPackages] = useState([]);
     useEffect(() => {
-      async function getAllTitles() {
-          try {
-              const res = await fetch("http://localhost:3000/pages/apis/events/allEventsTitles");
-              if (!res.ok) throw new Error("Failed to fetch data");
-              const { data } = await res.json(); // Destructure `data` from the response
-              console.log("Fetched data:", data);
-  
-              // Map Umrah Packages
-              setUmrahPackages(
-                  data
-                      .filter((obj) => obj.type === "U")
-                      .flatMap((obj) =>
-                          obj.events.map((event) => ({
-                              name: event.title,
-                              link: `/${obj.type}-packages/${event.title.split(" ").join("-")}`
-                          }))
-                      )
-              );
-  
-              // Map Tour Packages
-              setTourPackages(
-                  data
-                      .filter((obj) => obj.type === "T")
-                      .flatMap((obj) =>
-                          obj.events.map((event) => ({
-                              name: event.title,
-                              link: `/${obj.type}-packages/${event.title.split(" ").join("-")}`
-                          }))
-                      )
-              );
-          } catch (err) {
-              console.error("Error fetching data:", err);
-          }
-      }
-  
-      getAllTitles();
-  }, []);
+        async function getAllTitles() {
+            try {
+                const res = await fetch("http://localhost:3000/pages/apis/events/allEventsTitles");
+                if (!res.ok) throw new Error("Failed to fetch data");
+                const {data} = await res.json();
+                setUmrahPackages(
+                    data
+                    .filter((obj) => obj.type === "U")
+                    .flatMap((obj) =>
+                        obj.events.map((event) => ({
+                            name: event.title,
+                            link: `/${obj.type}-packages/${event.title.split(" ").join("-")}`,
+                        }))
+                    )
+                    .concat([{name: "All Umrah Packages", link: "/U-packages/all"}])
+                );
+
+                setTourPackages(
+                    data
+                    .filter((obj) => obj.type === "T")
+                    .flatMap((obj) =>
+                        obj.events.map((event) => ({
+                            name: event.title,
+                            link: `/${obj.type}-packages/${event.title.split(" ").join("-")}`,
+                        }))
+                    )
+                    .concat([{name: "All Tour Packages", link: "/T-packages/all"}])
+                );
+            } catch (err) {
+                console.error("Error fetching data:", err);
+            }
+        }
+
+        getAllTitles();
+    }, []);
     const [umrahDropDown, setUmrahDropDown] = useState(false);
     const [tourDropDown, setTourDropDown] = useState(false);
     const [isNavOpen, setIsNavOpen] = useState(false);

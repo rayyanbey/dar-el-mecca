@@ -121,6 +121,25 @@ const getSpecificEvent = async (category, snug) => {
         });
     }
 };
+export const getAllEvents = async (category) => {
+    try {
+        const events = await Event.findAll({where: {type: category}});
+        return NextResponse.json({
+            status: "success",
+            message: "All Events Successfully Fetched",
+            data: events,
+        });
+    } catch (error) {
+        return NextResponse.json({
+            status: "error",
+            message: "Error fetching data",
+            data: [],
+        });
+    }
+};
+
+
+
 
 export {
     getSpecificEvent,

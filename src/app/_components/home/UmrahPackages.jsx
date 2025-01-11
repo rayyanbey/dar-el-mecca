@@ -42,9 +42,9 @@ export function UmrahPackages() {
             </p> 
 
             <div className="flex flex-wrap gap-6 px-2 lg:px-0 justify-center items-center">
+                {/* <PackageCard />
                 <PackageCard />
-                <PackageCard />
-                <PackageCard />
+                <PackageCard /> */}
             </div>
         </section>
     );
