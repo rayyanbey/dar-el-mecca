@@ -1,45 +1,92 @@
 import { NextResponse } from "next/server";
 import Event, { EventDetails, Flight, Hotel } from "../models/event.models";
+import sequelize from "../config/dbConfig";
 
 //create event
 const createEvent = async (req, res) => {
-    //title month description type duration pricing visa eventDetails flightDetails tagline
-    try {
-        //getting files from multer
-        const filePaths = req.files.map((file) => file.path)
 
-        //uplaod these images on third party storage and get url from there and save in db
-        const arrayOfUrls = new Array();
+    //files from multer
+    const filePaths = req.files.map((file)=>file.path)
+    //uplaod to third party
+    const arrayOfUrls = new Array();
+    //------
 
-        //creating an event
-        const event = new Event.create({
-            title: req.body.title,
-            month: req.body.month,
-            description: req.body.description,
-            type: req.body.type,
-            duration: req.body.duration,
-            pricing: req.body.pricing,
-            visa: req.body.visa,
-            eventDetails: req.body.eventDetails,
-            flightDetails: req.body.flightDetails,
-            tagline: req.body.tagline,
-            images: arrayOfUrls
+    const eventDetails = req.body.eventDetails? JSON.parse(eventDetails):null;
+    const flightDetails = req.body.flightDetails? JSON.parse(flightDetails):null;
+    const hotels = req.body.hotels? JSON.parse(hotels):null;
+
+    if(!eventDetails){
+        return NextResponse.json({
+            status:400,
+            message:"Event Details Missing",
+            data:eventDetails
         })
-
-        if (event) {
-            res.status(201).json({ status: 201, message: "Event created", data: event });
-        }
-        else {
-            res.status(500).json({ status: 400, message: "Internal server error" });
-        }
-    } catch (error) {
-        res.status(400).json({ status: 400, message: error.message });
     }
+    if(!flightDetails){
+        return NextResponse.json({
+            status:400,
+            message:"Flight Details Missing",
+            data:flightDetails
+        })
+    }
+    if(!hotels){
+        return NextResponse.json({
+            status:400,
+            message:"Hotel Details Missing",
+            data:hotels
+        })
+    }
+
+    const result = await sequelize.transaction(async (transaction)=>{
+        const event = await Event.create({
+            title: req.body.title,
+            images: arrayOfUrls,
+            bigDescription: req.body.bigDescription,
+            type: req.body.type,
+            duration:req.body.duration,
+            pricing:req.body.pricing,
+            visa:req.body.visa,
+            tagline:req.body.tagline,
+            titleToDisplay:req.body.titleToDisplay,
+            miniDescription:req.body.miniDescription,
+            bigDescriptionTitle:req.body.bigDescriptionTitle
+        },{transaction})
+
+        const eventPackageDetail = await EventDetails.create({
+            ...eventDetails,
+            eventId:event.id
+        },{transaction})
+
+        const flight = await Flight.create({
+            ...flightDetails,
+            eventId:event.id
+
+        },{transaction})
+
+        const hotel = await Hotel.create({
+            ...hotels,
+            eventDetailsId:eventPackageDetail.id
+
+        },{transaction})
+    })
+
+    return NextResponse.json({
+        status:200,
+        message:"Event Created Successfully",
+        data:result
+    })
+    
 }
 
 //delete event
+const deleteEvent = async (req, res) => {
+
+}
 
 //update event
+const updateEvent = async (req, res) => {
+
+}
 
 //get event titles
 const getAllTitles = async (req, res) => {
