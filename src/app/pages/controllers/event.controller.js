@@ -138,7 +138,46 @@ const deleteEvent = async (req, id) => {
 }
 
 const updateEvent = async (req, id) => {
+    try {
+        // Extract event from the request body
+        const { event } = req.body;
 
+        if (!event) {
+            return {
+                status: 400,
+                message: "Event is required.",
+            };
+        }
+
+        // Start a transaction
+        const result = await sequelize.transaction(async (transaction) => {
+            // Find the existing Event by eventId
+            const existingEvent = await Event.findOne({
+                where: { eventId: id },
+                transaction,
+            });
+
+            if (!existingEvent) {
+                throw new Error(`Event for Event with ID ${id} not found.`);
+            }
+
+            // Update the Event
+            await existingEvent.update(event, { transaction });
+
+            return existingEvent;
+        });
+
+        return {
+            status: 200,
+            message: "Event is updated successfully.",
+            data: result,
+        };
+    } catch (error) {
+        return {
+            status: 400,
+            message: error.message,
+        };
+    }
 }
 const updateEventDetails = async (req, id) => {
     try {
