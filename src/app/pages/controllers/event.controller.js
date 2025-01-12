@@ -137,9 +137,133 @@ const deleteEvent = async (req, id) => {
   }
 }
 
-//update event
-const updateEvent = async (req, res) => {
+const updateEvent = async (req, id) => {
 
+}
+const updateEventDetails = async (req, id) => {
+    try {
+        // Extract eventDetails from the request body
+        const { eventDetails } = req.body;
+
+        if (!eventDetails) {
+            return {
+                status: 400,
+                message: "EventDetails are required.",
+            };
+        }
+
+        // Start a transaction
+        const result = await sequelize.transaction(async (transaction) => {
+            // Find the existing EventDetails by eventId
+            const existingEventDetails = await EventDetails.findOne({
+                where: { eventId: id },
+                transaction,
+            });
+
+            if (!existingEventDetails) {
+                throw new Error(`EventDetails for Event with ID ${id} not found.`);
+            }
+
+            // Update the EventDetails
+            await existingEventDetails.update(eventDetails, { transaction });
+
+            return existingEventDetails;
+        });
+
+        return {
+            status: 200,
+            message: "EventDetails updated successfully.",
+            data: result,
+        };
+    } catch (error) {
+        return {
+            status: 400,
+            message: error.message,
+        };
+    }
+};
+
+const updateHotelDetails = async (req, id) => {
+    try {
+        // Extract eventDetails from the request body
+        const { hotelDetails } = req.body;
+
+        if (!hotelDetails) {
+            return {
+                status: 400,
+                message: "Hotel Details are required.",
+            };
+        }
+
+        // Start a transaction
+        const result = await sequelize.transaction(async (transaction) => {
+            // Find the existing EventDetails by eventId
+            const existingHotelDetails = await Hotel.findOne({
+                where: { eventDetailsid: id },
+                transaction,
+            });
+
+            if (!existingHotelDetails) {
+                throw new Error(`Hotel Details for Event with ID ${id} not found.`);
+            }
+
+            // Update the EventDetails
+            await existingHotelDetails.update(hotelDetails, { transaction });
+
+            return existingHotelDetails;
+        });
+
+        return {
+            status: 200,
+            message: "Hotel Details updated successfully.",
+            data: result,
+        };
+    } catch (error) {
+        return {
+            status: 400,
+            message: error.message,
+        };
+    }
+
+}
+
+const updateFlightDetails = async (req, id) => {
+    const {flightDetails} = req.body;
+
+    if(!flightDetails){
+        return NextResponse.json({
+            status:400,
+            message:"Flight Details Missing",
+            data:flightDetails
+        })
+    }
+
+    const result = await sequelize.transaction(async (transaction)=>{
+        const flight = await Flight.findOne({
+            where:{
+                eventId:id
+            },
+            transaction
+        })
+
+        if(!flight){
+            return NextResponse.json({
+                status:404,
+                message:"Flight Details Not Found",
+                data:flight
+            })
+        }
+
+        await flight.update(flightDetails,{transaction})
+
+        return flight
+    })
+
+    return NextResponse.json({
+        status:200,
+        message:"Flight Details Updated Successfully",
+        data:result
+    })
 }
 
 //get event titles
@@ -246,5 +370,9 @@ export {
     getSpecificEvent,
     getAllTitles,
     createEvent,
-    deleteEvent
+    deleteEvent,
+    updateEvent,
+    updateEventDetails,
+    updateHotelDetails,
+    updateFlightDetails,
 }
