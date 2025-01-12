@@ -77,7 +77,6 @@ const createEvent = async (req, res) => {
     })
     
 }
-
 //delete event
 const deleteEvent = async (req, id) => {
   try {
@@ -136,7 +135,6 @@ const deleteEvent = async (req, id) => {
     })
   }
 }
-
 const updateEvent = async (req, id) => {
     try {
         // Extract event from the request body
