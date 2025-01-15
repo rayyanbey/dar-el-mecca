@@ -95,7 +95,7 @@ const Event = sequelize.define('Event', {
         unique: true,
         validate: {
             len: [5, 150]
-        }
+        },
     },
     images: {  //background images etc
         type: DataTypes.JSON,
@@ -142,6 +142,7 @@ const Event = sequelize.define('Event', {
             notEmpty(value){
                 if(!Array.isArray(value) || value.length === 0){
                     throw new Error("At least one poster is required");
+                }
             }
         },
         set(value){
@@ -192,7 +193,7 @@ const Event = sequelize.define('Event', {
             len:[5,1000]
         }
     }
-}}, { timestamps: true });
+}, { timestamps: true });
 
 
 // Associations
@@ -205,4 +206,9 @@ EventDetails.belongsTo(Event, { foreignKey: 'eventId' });
 Event.hasOne(Flight, { as: 'flightDetails', foreignKey: 'eventId' });
 Flight.belongsTo(Event, { foreignKey: 'eventId' });
 
-export default Event
+export {
+    Event,
+    Flight,
+    Hotel,
+    EventDetails
+}
