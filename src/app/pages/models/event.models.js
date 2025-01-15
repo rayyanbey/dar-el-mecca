@@ -89,7 +89,7 @@ export const EventDetails = sequelize.define('EventDetails', {
 
 // Event model
 const Event = sequelize.define('Event', {
-    title: {
+    title: {  //Navigation title
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -97,7 +97,7 @@ const Event = sequelize.define('Event', {
             len: [5, 150]
         }
     },
-    images: {
+    images: {  //background images etc
         type: DataTypes.JSON,
         allowNull: false,
         validate: {
@@ -108,21 +108,51 @@ const Event = sequelize.define('Event', {
             }
         }
     },
-    bigDescription: {
+    description: { //the only description which is custom on the page
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
             len: [20, 2000]
         }
     },
-    type: {
+    type: {  //category of the event
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             isIn: [['H', 'U', 'T']]
         }
     },
-    duration: {
+    countryName: { 
+        type: DataTypes.STRING,
+        allowNull: true, // Conditional requirement just for tour package
+        validate: {
+            len: [2, 100]
+        },
+        set(value) {
+            if (this.type === 'T' && (!value || value.trim() === '')) {
+                throw new Error("Country name is required for type 'T'");
+            }
+            this.setDataValue('countryName', value);
+        }
+    },
+    posters:{
+        type: DataTypes.JSON, //condition just for hajj package
+        allowNull:true,
+        validate:{
+            notEmpty(value){
+                if(!Array.isArray(value) || value.length === 0){
+                    throw new Error("At least one poster is required");
+            }
+        },
+        set(value){
+            if(this.type === 'H' && (!value || value.trim() === '')){
+                throw new Error("Posters are required for type 'H'");
+            }
+            this.setDataValue('posters', value);
+        }
+
+    },
+    duration: { //duration of the event i.e nights
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -130,7 +160,7 @@ const Event = sequelize.define('Event', {
             max: 365
         }
     },
-    pricing: {
+    pricing: { //pricing of the event
         type: DataTypes.JSON,
         allowNull: false,
         validate: {
@@ -141,42 +171,29 @@ const Event = sequelize.define('Event', {
             }
         }
     },
-    visa: {
+    visa: { //visa required or not or just fee
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             isIn: [['Y', 'N', 'Fee']]
         }
     },
-    tagline: {
+    descriptionTitle: { //title of the description
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [5, 2000]
         }
     },
-    titleToDisplay:{
+    importantNote:{  //important notes for customers
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            len: [5, 2000]
-        }
-    },
-    miniDescription:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            len: [5, 2000]
-        }
-    },
-    bigDescriptionTitle:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            len: [5, 2000]
+        allowNull:true,
+        validate:{
+            len:[5,1000]
         }
     }
-}, { timestamps: true });
+}}, { timestamps: true });
+
 
 // Associations
 EventDetails.hasMany(Hotel, { as: 'hotels', foreignKey: 'eventDetailsId' });
