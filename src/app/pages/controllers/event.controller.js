@@ -41,15 +41,12 @@ const createEvent = async (req, res) => {
         const event = await Event.create({
             title: req.body.title,
             images: arrayOfUrls,
-            bigDescription: req.body.bigDescription,
+            description: req.body.description,
             type: req.body.type,
             duration:req.body.duration,
             pricing:req.body.pricing,
             visa:req.body.visa,
-            tagline:req.body.tagline,
-            titleToDisplay:req.body.titleToDisplay,
-            miniDescription:req.body.miniDescription,
-            bigDescriptionTitle:req.body.bigDescriptionTitle
+            descriptionTitle:req.body.bigDescriptionTitle
         },{transaction})
 
         const eventPackageDetail = await EventDetails.create({
