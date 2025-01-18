@@ -1,136 +1,137 @@
 import { NextResponse } from "next/server";
-import {Event, EventDetails, Flight, Hotel } from "../models/event.models";
+import { Event, EventDetails, Flight, Hotel } from "../models/event.models";
 import sequelize from "../config/dbConfig";
+import Categories from "../../_enums/packagesCategories";
 
 //create event
 const createEvent = async (req, res) => {
 
     //files from multer
-    const filePaths = req.files.map((file)=>file.path)
+    const filePaths = req.files.map((file) => file.path)
     //uplaod to third party
     const arrayOfUrls = new Array();
     //------
 
-    const eventDetails = req.body.eventDetails? JSON.parse(eventDetails):null;
-    const flightDetails = req.body.flightDetails? JSON.parse(flightDetails):null;
-    const hotels = req.body.hotels? JSON.parse(hotels):null;
+    const eventDetails = req.body.eventDetails ? JSON.parse(eventDetails) : null;
+    const flightDetails = req.body.flightDetails ? JSON.parse(flightDetails) : null;
+    const hotels = req.body.hotels ? JSON.parse(hotels) : null;
 
-    if(!eventDetails){
+    if (!eventDetails) {
         return NextResponse.json({
-            status:400,
-            message:"Event Details Missing",
-            data:eventDetails
+            status: 400,
+            message: "Event Details Missing",
+            data: eventDetails
         })
     }
-    if(!flightDetails){
+    if (!flightDetails) {
         return NextResponse.json({
-            status:400,
-            message:"Flight Details Missing",
-            data:flightDetails
+            status: 400,
+            message: "Flight Details Missing",
+            data: flightDetails
         })
     }
-    if(!hotels){
+    if (!hotels) {
         return NextResponse.json({
-            status:400,
-            message:"Hotel Details Missing",
-            data:hotels
+            status: 400,
+            message: "Hotel Details Missing",
+            data: hotels
         })
     }
 
-    const result = await sequelize.transaction(async (transaction)=>{
+    const result = await sequelize.transaction(async (transaction) => {
         const event = await Event.create({
             title: req.body.title,
             images: arrayOfUrls,
             description: req.body.description,
             type: req.body.type,
-            duration:req.body.duration,
-            pricing:req.body.pricing,
-            visa:req.body.visa,
-            descriptionTitle:req.body.bigDescriptionTitle
-        },{transaction})
+            duration: req.body.duration,
+            pricing: req.body.pricing,
+            visa: req.body.visa,
+            descriptionTitle: req.body.bigDescriptionTitle
+        }, { transaction })
 
         const eventPackageDetail = await EventDetails.create({
             ...eventDetails,
-            eventId:event.id
-        },{transaction})
+            eventId: event.id
+        }, { transaction })
 
         const flight = await Flight.create({
             ...flightDetails,
-            eventId:event.id
+            eventId: event.id
 
-        },{transaction})
+        }, { transaction })
 
         const hotel = await Hotel.create({
             ...hotels,
-            eventDetailsId:eventPackageDetail.id
+            eventDetailsId: eventPackageDetail.id
 
-        },{transaction})
+        }, { transaction })
     })
 
     return NextResponse.json({
-        status:200,
-        message:"Event Created Successfully",
-        data:result
+        status: 200,
+        message: "Event Created Successfully",
+        data: result
     })
-    
+
 }
 //delete event
 const deleteEvent = async (req, id) => {
-  try {
-    const event = await Event.findByPk(id);
-    if(!event){
+    try {
+        const event = await Event.findByPk(id);
+        if (!event) {
+            return NextResponse.json({
+                status: 404,
+                message: "Event Not Found",
+                data: event
+            })
+        }
+        //begin transaction 
+
+        await sequelize.transaction(async (transaction) => {
+            await Hotel.destroy({
+                where: {
+                    eventDetailsId: {
+                        [sequelize.Op.in]: sequelize.literal(`(SELECT id FROM "EventDetails" WHERE "eventId" = ${id})`)
+                    }
+                },
+                transaction,
+            })
+
+            await EventDetails.destroy({
+                where: {
+                    eventId: id
+                },
+                transaction
+            })
+
+            await Flight.destroy({
+                where: {
+                    eventId: id
+                },
+                transaction
+            })
+
+            await Event.destroy({
+                where: {
+                    id: id
+                },
+                transaction
+            })
+
+            return NextResponse.json({
+                status: 200,
+                message: "Event Deleted Successfully",
+                data: null
+            })
+        })
+    } catch (error) {
         return NextResponse.json({
-            status:404,
-            message:"Event Not Found",
-            data:event
+            status: 500,
+            message: "Internal Server Error",
+            data: null
         })
     }
-    //begin transaction 
-
-    await sequelize.transaction(async(transaction)=>{
-        await Hotel.destroy({
-            where:{
-                eventDetailsId:{
-                    [sequelize.Op.in]:sequelize.literal(`(SELECT id FROM "EventDetails" WHERE "eventId" = ${id})`)
-                }
-            },
-            transaction,
-        })
-
-        await EventDetails.destroy({
-            where:{
-                eventId:id
-            },
-            transaction
-        })
-
-        await Flight.destroy({
-            where:{
-                eventId:id
-            },
-            transaction
-        })
-
-        await Event.destroy({
-            where:{
-                id:id
-            },
-            transaction
-        })
-
-        return NextResponse.json({
-            status:200,
-            message:"Event Deleted Successfully",
-            data:null
-        })
-    })
-  } catch (error) {
-    return NextResponse.json({
-        status:500,
-        message:"Internal Server Error",
-        data:null
-    })
-  }
 }
 const updateEvent = async (req, id) => {
     try {
@@ -262,41 +263,41 @@ const updateHotelDetails = async (req, id) => {
 }
 
 const updateFlightDetails = async (req, id) => {
-    const {flightDetails} = req.body;
+    const { flightDetails } = req.body;
 
-    if(!flightDetails){
+    if (!flightDetails) {
         return NextResponse.json({
-            status:400,
-            message:"Flight Details Missing",
-            data:flightDetails
+            status: 400,
+            message: "Flight Details Missing",
+            data: flightDetails
         })
     }
 
-    const result = await sequelize.transaction(async (transaction)=>{
+    const result = await sequelize.transaction(async (transaction) => {
         const flight = await Flight.findOne({
-            where:{
-                eventId:id
+            where: {
+                eventId: id
             },
             transaction
         })
 
-        if(!flight){
+        if (!flight) {
             return NextResponse.json({
-                status:404,
-                message:"Flight Details Not Found",
-                data:flight
+                status: 404,
+                message: "Flight Details Not Found",
+                data: flight
             })
         }
 
-        await flight.update(flightDetails,{transaction})
+        await flight.update(flightDetails, { transaction })
 
         return flight
     })
 
     return NextResponse.json({
-        status:200,
-        message:"Flight Details Updated Successfully",
-        data:result
+        status: 200,
+        message: "Flight Details Updated Successfully",
+        data: result
     })
 }
 
@@ -355,7 +356,7 @@ const getSpecificEvent = async (category, snug) => {
                     as: "flightDetails", // Correct alias
                 },
             ],
-        });        
+        });
 
         if (!result) {
             return NextResponse.json({
@@ -382,11 +383,28 @@ const getSpecificEvent = async (category, snug) => {
 };
 export const getAllEvents = async (category) => {
     try {
-        const events = await Event.findAll({where: {type: category}});
+        const events = await Event.findAll({ where: { type: category } });
+        if (category == 'U') {
+            const categorizedEvents = events.reduce((acc, event) => {
+                const month = event.month;
+                if (!acc[month]) {
+                    acc[month] = [];
+                }
+                acc[month].push(event);
+                return acc;
+            }, {});
+            return NextResponse.json({
+                status: "success",
+                message: "All Events Successfully Fetched",
+                data: categorizedEvents,
+            })
+        }
+        const categ = (category[0] === Categories.HAJJ) ? "Hajj" : "Tour";
+        const categorizedEvents = { [categ]: events };
         return NextResponse.json({
             status: "success",
             message: "All Events Successfully Fetched",
-            data: events,
+            data: categorizedEvents,
         });
     } catch (error) {
         return NextResponse.json({
@@ -396,9 +414,6 @@ export const getAllEvents = async (category) => {
         });
     }
 };
-
-
-
 
 export {
     getSpecificEvent,

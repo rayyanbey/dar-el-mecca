@@ -26,7 +26,6 @@ async function page({params}) {
                 tagline={data.tagline}
                 miniDescription={data.miniDescription}
             />
-
             <Description
                 title={data.title}
                 bigDescriptionTitle={data.bigDescriptionTitle}
@@ -39,7 +38,6 @@ async function page({params}) {
             />
             <div className="w-full h-[1px] bg-[#00000014]"></div>
             <PackageDetail eventDetails={data.eventDetails} />
-
             <BookSeat image={data.images[2]} />
         </div>
     );
