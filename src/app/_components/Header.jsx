@@ -22,8 +22,8 @@ export function Header() {
                     .filter((obj) => obj.type === "U")
                     .flatMap((obj) =>
                         obj.events.map((event) => ({
-                            name: event.title,
-                            link: `/${obj.type}-packages/${event.title.split(" ").join("-")}`,
+                            name: event.month+" Umrah Packages",
+                            link: `/${obj.type}-packages/${event.month}/all`,
                         }))
                     )
                     .concat([{name: "All Umrah Packages", link: "/U-packages/all"}])
@@ -220,7 +220,7 @@ export function Header() {
                     </p>
 
                     <Link
-                        href="/hajj-packages"
+                        href="/H-packages/all"
                         className="hover:text-secondary hover:underline hover:underline-offset-[5px]"
                     >
                         Hajj Packages (Coming Soon)

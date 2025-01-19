@@ -3,8 +3,8 @@ import Hero from "./Hero";
 import Description from "./Description";
 import PackageDetail from "./PackageDetail";
 import BookSeat from "./BookSeat";
-import AllPackages from "./AllPackages";
 import {redirect} from "next/navigation";
+import Categories from "../../_enums/packagesCategories";
 
 async function page({params}) {
     console.log(params.category, params.snug);
@@ -21,10 +21,34 @@ async function page({params}) {
     return (
         <div>
             <Hero
-                image={data.images[0]}
-                titleToDisplay={data.titleToDisplay}
-                tagline={data.tagline}
-                miniDescription={data.miniDescription}
+                image={data.images?.[0]}
+                category={category[0]}
+                preTitle={`${
+                    category[0] == Categories.TOUR
+                        ? `${data.countryName} ${data.duration} Nights `
+                        : category[0] == Categories.UMRAH
+                        ? `${data.duration} Nights ${data.month} `
+                        : ""
+                }`}
+                middleTitle={`${
+                    category[0] == Categories.TOUR
+                        ? "Tour Package "
+                        : category[0] == Categories.HAJJ
+                        ? "Hajj Package "
+                        : "Umrah Package "
+                }`}
+                tagline={
+                    category[0] == "H" || category[0] == "U"
+                        ? "لَبَّيْكَ اللَّهُمَّ لَبَّيْك"
+                        : `EXPLORE ${data.countryName}`
+                }
+                miniDescription={`${
+                    category[0] == Categories.TOUR
+                        ? "Tour Package"
+                        : category[0] == Categories.HAJJ
+                        ? "Hajj Package"
+                        : "Umrah Package"
+                }`}
             />
             <Description
                 title={data.title}

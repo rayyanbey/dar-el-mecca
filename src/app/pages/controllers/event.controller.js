@@ -304,14 +304,14 @@ const updateFlightDetails = async (req, id) => {
 //get event titles
 const getAllTitles = async (req, res) => {
     try {
-        const events = await Event.findAll({ attributes: ["id", "title", "type"] });
+        const events = await Event.findAll({ attributes: ["id", "title", "type",'month'] });
 
         const groupedEvents = events.reduce((acc, event) => {
-            const { id, title, type } = event;
+            const { id, title, type ,month} = event;
             if (!acc[type]) {
                 acc[type] = { type, events: [] };
             }
-            acc[type].events.push({ id, title });
+            acc[type].events.push({ id, title,month });
             return acc;
         }, {});
 
@@ -327,18 +327,11 @@ const getAllTitles = async (req, res) => {
     }
 }
 
-const getSpecificEvent = async (category, snug) => {
-    const filteredCategory = category[0];
-    const filteredSnug = snug.split("-").join(" ");
-
+const getSpecificEvent = async (snug) => {
     try {
-        console.log(category, snug);
-
-        // Fetch data with Sequelize join
         const result = await Event.findOne({
             where: {
-                type: filteredCategory,
-                title: filteredSnug,
+                id:snug
             },
             include: [
                 {
@@ -372,8 +365,6 @@ const getSpecificEvent = async (category, snug) => {
             data: result,
         });
     } catch (error) {
-        console.error("Error fetching event data:", error);
-
         return NextResponse.json({
             status: "error",
             message: "Error fetching data",
@@ -381,6 +372,7 @@ const getSpecificEvent = async (category, snug) => {
         });
     }
 };
+
 export const getAllEvents = async (category) => {
     try {
         const events = await Event.findAll({ where: { type: category } });
@@ -414,7 +406,23 @@ export const getAllEvents = async (category) => {
         });
     }
 };
-
+const getAllEventsOfSpecificMonth = async (month) => {
+    try {
+        const events = await Event.findAll({ where: { month: month } });
+        const categorizedEvents = { [month]: events };
+        return NextResponse.json({
+            status: "success",
+            message: "All Events Successfully Fetched",
+            data: categorizedEvents,
+        });
+    } catch (error) {
+        return NextResponse.json({
+            status: "error",
+            message: "Error fetching data",
+            data: [],
+        });
+    }
+};
 export {
     getSpecificEvent,
     getAllTitles,
@@ -424,4 +432,5 @@ export {
     updateEventDetails,
     updateHotelDetails,
     updateFlightDetails,
+    getAllEventsOfSpecificMonth,
 }

@@ -2,7 +2,7 @@ import React from "react";
 import PackageCard from "../../_components/PackageCard";
 import Categories from "../../_enums/packagesCategories";
 
-function AllPackages({ data, category, snug }) {
+function AllPackages({ data, category }) {
     return (
         <section className="w-full flex flex-col justify-center items-center px-2 lg:px-0 py-6 lg:py-16 gap-8">
             {Object.entries(data).map(([key, packages]) => (
@@ -24,6 +24,7 @@ function AllPackages({ data, category, snug }) {
                                 duration={subItem.duration}
                                 pricing={subItem.pricing}
                                 type={subItem.type}
+                                id={subItem.id}
                             />
                         ))}
                     </div>

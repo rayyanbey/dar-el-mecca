@@ -7,7 +7,7 @@ import Visa from "../_icons/Visa";
 import BrownButton from "./BrownButton";
 import { redirect } from "next/navigation";
 
-function PackageCard({ title, duration, pricing,type }) {
+function PackageCard({ title, duration, pricing,type, id }) {
     const lowestPrice = pricing 
         ? Math.min(...Object.values(pricing)) 
         : 0; 
@@ -55,7 +55,7 @@ function PackageCard({ title, duration, pricing,type }) {
                     <p className="font-[300] opacity-80  text-[14px]">Starts From</p>
                     <p className="font-[700] cinzel-title text-[#6F634E]  text-[23.3px]">${lowestPrice}</p>
                 </div>
-                <BrownButton text="Book Now" onClick={() => redirect(`/${type}-package/${title?.split(" ").join("-")}`) } />
+                <BrownButton text="Book Now" onClick={() => redirect(`/${type}-package/${id}`) } />
             </div>
         </div>
     );
