@@ -2,8 +2,9 @@
 import React from "react";
 import Image from "next/image";
 import TransparentButton from "./TransparentButton";
+import { redirect } from "next/navigation";
 
-function ServiceCard({ title, description, image }) {
+function ServiceCard({ title, description, image, type }) {
     return (
         <div className="flex flex-col  w-[18rem] lg:w-[23rem]  rounded-2xl bg-[#F9F9F9] border border-[#00000014]">
             <div className="relative h-[22rem]">
@@ -23,7 +24,7 @@ function ServiceCard({ title, description, image }) {
                     {description}
                 </p>
                 <div className="w-full flex justify-center mt-4">
-                    <TransparentButton text="View Details" onClick={() => {}} />
+                    <TransparentButton text="View Details" onClick={() => {redirect(`/${type}-packages/all`)}} />
                 </div>
             </div>
         </div>
