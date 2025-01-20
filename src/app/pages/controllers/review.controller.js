@@ -2,10 +2,20 @@ import { NextResponse } from "next/server";
 import Review from "../models/review.models";
 import { json } from "sequelize";
 
+
+
+
+
+//   `https://localhost:3000/pages/apis/reviews/getReviews`
+//  `https://localhost:3000/pages/apis/reviews/updateReview`
+// `https://localhost:3000/pages/apis/reviews/deleteReview`
+//  `https://localhost:3000/pages/apis/reviews/createReview`
 //get all reviews
 const getReviews = async(req,res)=>{
     try{
-        const reviews = await Review.findAll();
+        const reviews = await Review.findAll({
+            attributes: ['id','name','review','profession','image','rating']
+        })
         if(reviews.length === 0){
             return NextResponse,json({
                 status: 404,
@@ -33,6 +43,7 @@ const updateReview = async(req,res)=>{
    const name = req.body.name;
     const review = req.body.review;
     const profession = req.body.profession;
+    const id = req.body.id;
    try {
     await Review.update({
         name: name,
@@ -40,9 +51,7 @@ const updateReview = async(req,res)=>{
         profession: profession
     },{
         where:{
-            name: name,
-            review: review,
-            profession: profession
+            id: id
         }
     })
 
@@ -61,15 +70,11 @@ const updateReview = async(req,res)=>{
 
 
 const deleteReview = async(req,res)=>{
-  const name = req.body.name;
-    const review = req.body.review;
-    const profession = req.body.profession;
+    const id = req.body.id;
     try {
         await Review.destroy({
             where:{
-                name: name,
-                review: review,
-                profession: profession
+                id:id
             }
         })
         return NextResponse.json({
@@ -86,8 +91,45 @@ const deleteReview = async(req,res)=>{
     }
 }
 
+const createReview = async(req,res)=>{
+    const name = req.body.name;
+    const review = req.body.review;
+    const profession = req.body.profession;
+
+    //get image from multer
+    const image = req.file;
+    if(!image){
+        return NextResponse.json({
+            status: 400,
+            message: "Please upload an image"
+        })
+    }
+    //gettting url from third party storage
+    //------
+    const imageUrl = "https://www.example.com/"+image.filename;
+
+    try {
+        await Review.create({
+            name: name,
+            review: review,
+            profession: profession,
+            image: imageUrl
+        })
+        return NextResponse.json({
+            status: 200,
+            message: "Review created successfully"
+        })
+    } catch (error) {
+        return NextResponse.json({
+            status: 500,
+            message: "An error occured while creating review",
+            error: error
+        })
+    }
+}
 export{
     getReviews,
     updateReview,
-    deleteReview
+    deleteReview,
+    createReview
 }

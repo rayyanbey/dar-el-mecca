@@ -17,6 +17,10 @@ const Review = sequelize.define('Review', {
     image: {
         type: DataTypes.STRING,
         allowNull: true // image is optional
+    },
+    rating:{
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     timestamps: true
