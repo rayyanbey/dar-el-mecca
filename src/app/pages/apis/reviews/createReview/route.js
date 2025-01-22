@@ -1,16 +1,15 @@
 import { NextResponse } from "next/server";
 import { createReview } from "../../../controllers/review.controller";
-import { upload } from "../../../middlewares/multer.middleware";
-export const POST = async (req, res) => {
 
-    upload.single('image')(req, res, async (err) => {
-        if (err) {
-            return NextResponse.json({
-                status: 500,
-                message: "An error occured while uploading image",
-                error: err
-            })
-        }
-        return await createReview(req, res);
-    })
+export async function POST(req) {
+    try {
+        const response = await createReview(req);
+        return NextResponse.json(response);
+    } catch (error) {
+        return NextResponse.json({
+            status: 500,
+            message: "Error while creating review",
+            error: error.message
+        });
+    }
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Review from "../models/review.models";
 import { json } from "sequelize";
-import { uploadImageToThirdParty } from "../utils/cloudinary";
+import { uploadToCloudinary } from "../utils/cloudinary";
 
 
 //APIS
@@ -91,44 +91,38 @@ const deleteReview = async(req,res)=>{
 }
 
 const createReview = async(req,res)=>{
-    const name = req.body.name;
-    const review = req.body.review;
-    const profession = req.body.profession;
-
-    //get image from multer
-    const image = req.file;
-    if(!image){
-        return NextResponse.json({
-            status: 400,
-            message: "Please upload an image"
-        })
-    }
-    //gettting url from third party storage
-    const imageURL = uploadImageToThirdParty(image);
-
-    if(!imageURL){
-        return NextResponse.json({
-            status: 500,
-            message: "An error occured while uploading image"
-        })
-    }
     try {
+        const formData = await req.formData();
+        
+        const name = formData.get('name');
+        const review = formData.get('review');
+        const profession = formData.get('profession');
+        const rating = formData.get('rating');
+        const image = formData.get('image');
+
+        let imageURL = null;
+        if (image) {
+           imageURL = await uploadToCloudinary(image);
+        }
+
         await Review.create({
-            name: name,
-            review: review,
-            profession: profession,
+            name,
+            review,
+            profession,
+            rating,
             image: imageURL
-        })
-        return NextResponse.json({
+        });
+
+        return {
             status: 200,
             message: "Review created successfully"
-        })
+        };
     } catch (error) {
-        return NextResponse.json({
+        return {
             status: 500,
-            message: "An error occured while creating review",
-            error: error
-        })
+            message: "An error occurred while creating review",
+            error: error.message
+        };
     }
 }
 export{

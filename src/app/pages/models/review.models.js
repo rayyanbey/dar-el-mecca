@@ -11,7 +11,7 @@ const Review = sequelize.define('Review', {
         allowNull: false
     },
     profession: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     image: {
