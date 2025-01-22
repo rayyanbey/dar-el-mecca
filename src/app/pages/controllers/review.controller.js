@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import Review from "../models/review.models";
 import { json } from "sequelize";
+import { uploadImageToThirdParty } from "../utils/cloudinary";
 
 
-
-
-
+//APIS
 //   `https://localhost:3000/pages/apis/reviews/getReviews`
 //  `https://localhost:3000/pages/apis/reviews/updateReview`
 // `https://localhost:3000/pages/apis/reviews/deleteReview`
@@ -105,15 +104,20 @@ const createReview = async(req,res)=>{
         })
     }
     //gettting url from third party storage
-    //------
-    const imageUrl = "https://www.example.com/"+image.filename;
+    const imageURL = uploadImageToThirdParty(image);
 
+    if(!imageURL){
+        return NextResponse.json({
+            status: 500,
+            message: "An error occured while uploading image"
+        })
+    }
     try {
         await Review.create({
             name: name,
             review: review,
             profession: profession,
-            image: imageUrl
+            image: imageURL
         })
         return NextResponse.json({
             status: 200,
