@@ -33,26 +33,58 @@ const getBusinessHours = async (req, res) => {
    }
 }
 
-const updateBusinessHours = async (req, res) => {
-    const days = req.body.days;
-    const openingTime = req.body.openingTime;
-    const closingTime = req.body.closingTime;
+const updateBusinessHours = async (req) => {
+    const { days } = await req.json(); // Expecting a JSON body with one or multiple days
 
     try {
-        await BusinessHours.update({
-            days: days,
-            openingTime: openingTime,
-            closingTime: closingTime
+        // Ensure that the 'days' field exists and is an object
+        if (!days || typeof days !== 'object' || Object.keys(days).length === 0) {
+            return NextResponse.json({
+                status: 400,
+                message: "Invalid input. Please provide valid business hours data.",
+            });
+        }
+
+        // Prepare the update object for Sequelize
+        let updateData = {};
+        for (const day in days) {
+            if (days.hasOwnProperty(day)) {
+                updateData[day] = {
+                    open: days[day].open ?? false, // Default to false if not provided
+                    openingTime: days[day].openingTime || null,
+                    closingTime: days[day].closingTime || null,
+                };
+            }
+        }
+
+        // Perform update on the first row (you might need to change 'where' condition for specific row updates)
+        const updatedRows = await BusinessHours.update(
+            updateData,
+            {
+                where: {}, // Update condition, e.g., { id: someId } if required
+            }
+        );
+
+        if (updatedRows[0] === 0) {
+            return NextResponse.json({
+                status: 404,
+                message: "No records updated. Business hours not found.",
+            });
+        }
+
+        return NextResponse.json({
+            status: 200,
+            message: "Business hours updated successfully.",
         });
+
     } catch (error) {
         return NextResponse.json({
             status: 500,
-            message: "An error occured while updating business hours",
-            error: error
-        })
+            message: "An error occurred while updating business hours",
+            error: error.message,
+        });
     }
-}
-
+};
 //getting contact information
 const getContactInformation = async (req, res) => {
     try {
