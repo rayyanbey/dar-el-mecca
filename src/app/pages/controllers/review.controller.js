@@ -68,8 +68,11 @@ const updateReview = async(req,res)=>{
 }
 
 
-const deleteReview = async(req,res)=>{
-    const id = req.body.id;
+const deleteReview = async(req)=>{
+
+    const body = await req.json()
+    const id = body.id
+    console.log(id)
     try {
         await Review.destroy({
             where:{
