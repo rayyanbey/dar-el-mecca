@@ -1,5 +1,5 @@
 // next.config.js
-
+//checking cors issue
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     async headers() {
@@ -17,6 +17,5 @@ const nextConfig = {
         ]
     }
 }
-
 export default nextConfig;
  
