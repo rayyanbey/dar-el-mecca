@@ -22,11 +22,7 @@ const getReviews = async(req,res)=>{
             })
         }
 
-        return NextResponse.json({
-            status: 200,
-            message: "Reviews fetched successfully",
-            data: reviews
-        })
+        return reviews
     }
     catch(error){
         return NextResponse.json({
@@ -128,16 +124,17 @@ const createReview = async(req,res)=>{
             image: imageURL
         });
 
-        return {
+        return NextResponse.json({
+
             status: 200,
             message: "Review created successfully"
-        };
+        });
     } catch (error) {
-        return {
+        return NextResponse.json({
             status: 500,
             message: "An error occurred while creating review",
             error: error.message
-        };
+        });
     }
 }
 export{
