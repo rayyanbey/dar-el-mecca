@@ -1,5 +1,4 @@
 import { createEvent } from "../../../controllers/event.controller"
-import { upload } from "../../../middlewares/multer.middleware";
 export const POST = async (req, res) => {
     upload.single('file')(req, res, async (err) => {
         if (err) {
