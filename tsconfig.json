@@ -29,7 +29,7 @@
     "src/**/*",
     "src/**/*.ts",
     "src/**/*.tsx"
-  ],
+, "middleware.js"  ],
   "exclude": [
     "node_modules"
   ]
