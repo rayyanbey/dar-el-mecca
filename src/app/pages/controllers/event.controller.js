@@ -3,6 +3,11 @@ import { Event, EventDetails, Flight, Hotel } from "../models/event.models";
 import sequelize from "../config/dbConfig";
 import Categories from "../../_enums/packagesCategories";
 
+
+// http://localhost:3000/api/events/createEvent
+// http://localhost:3000/api/events/deleteEventById
+// http://localhost:3000/api/events/updateEventDetails
+
 //create event
 const createEvent = async (req, res) => {
 
