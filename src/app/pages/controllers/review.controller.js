@@ -13,7 +13,7 @@ import { uploadToCloudinary } from "../utils/cloudinary";
 const getReviews = async(req,res)=>{
     try{
         const reviews = await Review.findAll({
-            attributes: ['id','name','review','profession','image','rating']
+            attributes: ['id','name','review','profession','image','rating',]
         })
         if(reviews.length === 0){
             return NextResponse,json({
