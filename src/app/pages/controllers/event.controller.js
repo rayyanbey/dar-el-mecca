@@ -378,7 +378,7 @@ const getSpecificEvent = async (snug) => {
     }
 };
 
-export const getAllEvents = async (category) => {
+const getAllEvents = async (category) => {
     try {
         const events = await Event.findAll({ where: { type: category } });
         if (category == 'U') {
@@ -438,4 +438,5 @@ export {
     updateHotelDetails,
     updateFlightDetails,
     getAllEventsOfSpecificMonth,
+    getAllEvents
 }

@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/dbConfig';
- const Flight = sequelize.define('Flight', {
+
+
+const Flight = sequelize.define('Flight', {
     departureCity: {
         type: DataTypes.STRING,
         allowNull: false,
