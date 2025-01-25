@@ -14,7 +14,7 @@ export function Header() {
     useEffect(() => {
         async function getAllTitles() {
             try {
-                const res = await fetch("http://localhost:3000/pages/apis/events/allEventsTitles");
+                const res = await fetch(`${process.env.HOST_NAME}/pages/apis/events/allEventsTitles`);
                 if (!res.ok) throw new Error("Failed to fetch data");
                 const {data} = await res.json();
                 setUmrahPackages(
