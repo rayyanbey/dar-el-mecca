@@ -3,7 +3,6 @@ import BookSeat from "../[snug]/BookSeat";
 import AllPackages from "../[snug]/AllPackages";
 import Hero from "../[snug]/Hero";
 import Categories from "../../_enums/packagesCategories";
-
 async function page({params}) {
     
     await params;
@@ -14,7 +13,7 @@ async function page({params}) {
         redirect("/error");
     }
 
-    
+
     const data = resData.data;
     console.log(data);
     const firstKey = Object.keys(data)[0];
