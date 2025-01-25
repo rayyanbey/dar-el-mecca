@@ -8,7 +8,7 @@ async function page({ params }) {
   const category = String(params.category);
   const snug = String(params.snug);
   const res = await fetch(
-    `http://localhost:3000/pages/apis/events/U-packages/${snug}/all`
+    `${process.env.HOST_NAME}/pages/apis/events/U-packages/${snug}/all`
   );
   const resData = await res.json();
   if (resData.status === "error") {
