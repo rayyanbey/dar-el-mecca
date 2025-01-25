@@ -37,11 +37,7 @@ const getReviews = async(req,res)=>{
 const updateReview = async(req,res)=>{
 
     const body = await req.json()
-   const name = body.name;
-    const review = body.review;
-    const profession = body.profession;
-    const rating = body.rating;
-    const id = body.id;
+    const {name,review,profession,rating,id} = body;
 
     if(!id){
         return NextResponse.json({
@@ -49,13 +45,13 @@ const updateReview = async(req,res)=>{
             message: "Review ID is required"
         })
     }
-
+    console.log(name,profession,review,rating)
    try {
     await Review.update({
-        name: name,
-        review: review,
-        profession: profession,
-        rating: rating
+        name,
+        review,
+        profession,
+        rating
     },{
         where:{
             id: id
