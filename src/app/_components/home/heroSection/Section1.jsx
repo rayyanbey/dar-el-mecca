@@ -62,7 +62,7 @@ export default function Section1() {
                             src={"/images/hero-main.jpeg"}
                             alt="Hero Main"
                         />
-                        <div className='animate-plane'>
+                        <div className='animatse-plane'>
                             <Plane/>
                         </div>
                     </div>
