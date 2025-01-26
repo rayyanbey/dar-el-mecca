@@ -7,7 +7,7 @@ import SendMessage from './SendMessage'
 function page() {
   return (
     <section>
-      <HeroContactFAQAboutForm title={"Contact Us"} description={"Lorem ipsum dolor sit amet. Et exercitationem veniam hic odio magni et earum officiis hic nostrum quam est fuga repudiandae. Est harum consequatur in reiciendis fugiat eum adipisci temporibus ab magni saepe."}/>
+      <HeroContactFAQAboutForm title={"Contact Us"} description={"We’re here to assist you with every step of your spiritual journey. Reach out to us for inquiries, bookings, or personalized assistance. Our dedicated team is ready to provide you with the best Hajj and Umrah services."}/>
       <ContactDetails/>
       <LocationDetail/>
       <SendMessage/>

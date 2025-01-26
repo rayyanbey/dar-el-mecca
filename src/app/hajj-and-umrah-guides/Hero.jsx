@@ -12,9 +12,7 @@ function Hero() {
                 Hajj and Umrah <span className="text-secondary">Guide</span>
                 </h2>
                 <p className="w-[75%] text-[18px] font-[300] text-center">
-                    Lorem ipsum dolor sit amet. Et exercitationem veniam hic odio magni et earum officiis hic nostrum
-                    quam est fuga repudiandae. Est harum consequatur in reiciendis fugiat eum adipisci temporibus ab
-                    magni saepe.
+                Performing Hajj and Umrah in accordance with the true teachings of Islam is a sacred duty. Discover comprehensive guidance on these pilgrimages through the lens of the Quran and Sunnah. Visit our Resources section to learn more.
                 </p>
                 <div className="w-full flex justify-center">
                     <TransparentButton text="View All Resources" />

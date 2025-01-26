@@ -1,9 +1,11 @@
 import { Cinzel, Cinzel_Decorative, Outfit } from "next/font/google";
 import initializeDatabase from "./pages/utils/dbInit";
+import { registerGSAP } from "../utils/gsap";
 import "./globals.css";
 import { TopBar } from "./_components/TopBar";
 import { Header } from "./_components/Header";
 import { Footer } from "./_components/Footer";
+import WAme from "./_components/WAme";
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
@@ -21,6 +23,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  registerGSAP()
   initializeDatabase()
   return (
     <html lang="en">
@@ -29,6 +32,7 @@ export default function RootLayout({ children }) {
         <Header />
         {children}
         <Footer />
+        <WAme/>
       </body>
     </html>
   );

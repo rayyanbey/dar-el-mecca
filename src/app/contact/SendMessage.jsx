@@ -78,7 +78,7 @@ function SendMessage() {
                         <p className=" text-[#787878]">or</p>
                         <div className="flex flex-col lg:flex-row gap-4">
                             <TransparentButton text={"Call Us"} />
-                            <TransparentButton text={"Contact on Whatsapp"} />
+                            <TransparentButton text={"Contact on Whatsapp"}  />
                         </div>
                     </div>
                 </form>
