@@ -3,8 +3,6 @@ import ContactInformation from "../models/contactInfo.models";
 import Company from "../models/company.models";
 import { NextResponse } from "next/server";
 
-
-
 // `https://localhost:3000/api/company/getBusinessHours`
 // `https://localhost:3000/api/company/getContactInfo`
 // `https://localhost:3000/api/company/getAddress`
@@ -12,162 +10,174 @@ import { NextResponse } from "next/server";
 // `https://localhost:3000/api/company/updateContactInfo`
 // `https://localhost:3000/api/company/updateAddress`
 
-
-//getting business hours 
+//getting business hours
 
 const getBusinessHours = async (req, res) => {
-   try {
+  try {
     const result = await BusinessHours.findAll();
 
     return NextResponse.json({
-        status: 200,
-        message: "Business hours fetched successfully",
-        data: result
-    })
-   } catch (error) {
-     return NextResponse.json({
-         status: 500,
-         message: "An error occured while fetching business hours",
-         error: error
-     })
-   }
-}
+      status: 200,
+      message: "Business hours fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      status: 500,
+      message: "An error occured while fetching business hours",
+      error: error,
+    });
+  }
+};
 
 const updateBusinessHours = async (req) => {
-    const { days } = await req.json(); // Expecting a JSON body with one or multiple days
 
-    try {
-        // Ensure that the 'days' field exists and is an object
-        if (!days || typeof days !== 'object' || Object.keys(days).length === 0) {
-            return NextResponse.json({
-                status: 400,
-                message: "Invalid input. Please provide valid business hours data.",
-            });
-        }
+  try {
+    const existingData = await BusinessHours.findOne();
+    const { days } = await req.json();
 
-        // Prepare the update object for Sequelize
-        let updateData = {};
-        for (const day in days) {
-            if (days.hasOwnProperty(day)) {
-                updateData[day] = {
-                    open: days[day].open ?? false, // Default to false if not provided
-                    openingTime: days[day].openingTime || null,
-                    closingTime: days[day].closingTime || null,
-                };
-            }
-        }
+    // Merge incoming changes with existing data
+    const mergedData = { 
+      ...existingData.dataValues,
+      ...days 
+    };
 
-        // Perform update on the first row (you might need to change 'where' condition for specific row updates)
-        const updatedRows = await BusinessHours.update(
-            updateData,
-            {
-                where: {}, // Update condition, e.g., { id: someId } if required
-            }
-        );
+    const [affectedCount] = await BusinessHours.update(
+      mergedData,
+      { where: { id: existingData.id } }
+    );
 
-        if (updatedRows[0] === 0) {
-            return NextResponse.json({
-                status: 404,
-                message: "No records updated. Business hours not found.",
-            });
-        }
-
-        return NextResponse.json({
-            status: 200,
-            message: "Business hours updated successfully.",
-        });
-
-    } catch (error) {
-        return NextResponse.json({
-            status: 500,
-            message: "An error occurred while updating business hours",
-            error: error.message,
-        });
-    }
+    return NextResponse.json({
+      status: 200,
+      message: "Business hours updated successfully.",
+    });
+  } catch (error) {
+    return NextResponse.json({
+      status: 500,
+      message: "An error occurred while updating business hours",
+      error: error.message,
+    });
+  }
 };
 //getting contact information
 const getContactInformation = async (req, res) => {
-    try {
-        const result = await ContactInformation.findAll();
-    
-        return NextResponse.json({
-            status: 200,
-            message: "Contact Information fetched successfully",
-            data: result
-        })
-       } catch (error) {
-         return NextResponse.json({
-             status: 500,
-             message: "An error occured while fetching contact information",
-             error: error
-         })
-       }
-}
+  try {
+    const result = await ContactInformation.findAll();
+
+    return NextResponse.json({
+      status: 200,
+      message: "Contact Information fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      status: 500,
+      message: "An error occured while fetching contact information",
+      error: error,
+    });
+  }
+};
 
 const updateContactInformation = async (req, res) => {
-    const phoneNumbers = req.body.phoneNumbers;
-    const email = req.body.email;
-    const faxNumbers = req.body.faxNumbers;
+  try {
+    const existingData = await ContactInformation.findOne();
+    const {
+      phoneNumbers = existingData.phoneNumbers,
+      email = existingData.email,
+      faxNumbers = existingData.faxNumbers,
+    } = await req.json();
 
-    try {
-        await ContactInformation.update({
-            phoneNumbers: phoneNumbers,
-            email: email,
-            faxNumbers: faxNumbers
-        });
-    } catch (error) {
-        return NextResponse.json({
-            status: 500,
-            message: "An error occured while updating contact information",
-            error: error
-        })
-    }
-}
+    await ContactInformation.update(
+      {
+        phoneNumbers,
+        email,
+        faxNumbers,
+      },
+      { where: { id: existingData.id } }
+    );
+
+    return new NextResponse(
+      JSON.stringify({
+        status: 200,
+        message: "Contact info updated",
+        data: { phoneNumbers, email, faxNumbers },
+      })
+    );
+  } catch (error) {
+    return NextResponse.json({
+      status: 500,
+      message: "An error occured while updating contact information",
+      error: error,
+    });
+  }
+};
 
 //getting address whatsapp and document address
 const getAddress = async (req, res) => {
-    try {
-        const result = await Company.findAll();
-    
-        return NextResponse.json({
-            status: 200,
-            message: "Address fetched successfully",
-            data: result
-        })
-       } catch (error) {
-         return NextResponse.json({
-             status: 500,
-             message: "An error occured while fetching address",
-             error: error
-         })
-       }
-}
+  try {
+    const result = await Company.findAll();
 
-const updateAddress = async (req, res) => {
-    const address = req.body.address;
-    const documentAddress = req.body.documentAddress;
-    const whatsapp = req.body.whatsapp;
+    return NextResponse.json({
+      status: 200,
+      message: "Address fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      status: 500,
+      message: "An error occured while fetching address",
+      error: error,
+    });
+  }
+};
 
-    try {
-        await Company.update({
-            address: address,
-            documentAddress: documentAddress,
-            whatsapp: whatsapp
-        });
-    } catch (error) {
-        return NextResponse.json({
-            status: 500,
-            message: "An error occured while updating address",
-            error: error
-        })
-    }
-}
+const updateAddress = async (req) => {
+  try {
+    const { address, documentAddress, whatsapp } = await req.json();
 
+    const existingData = await Company.findOne();
+    // Update first company entry (or add where clause for specific company)
+   await Company.update(
+      { address, documentAddress, whatsapp },
+      { where: { id: existingData.id} } // Add proper where condition for your use case
+    );
+
+    // if (affectedCount === 0) {
+    //   return new NextResponse(
+    //     JSON.stringify({
+    //       status: 404,
+    //       message: "Company record not found",
+    //       data:existingData
+    //     }),
+    //     { status: 404 }
+    //   );
+    // }
+
+    return new NextResponse(
+      JSON.stringify({
+        status: 200,
+        message: "Address updated successfully",
+        data: { address, documentAddress, whatsapp },
+      }),
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Update error:", error);
+    return new NextResponse(
+      JSON.stringify({
+        status: 500,
+        message: "Internal server error",
+        error: error.message,
+      }),
+      { status: 500 }
+    );
+  }
+};
 export {
-    getBusinessHours,
-    getContactInformation,
-    getAddress,
-    updateBusinessHours,
-    updateContactInformation,
-    updateAddress
-}
+  getBusinessHours,
+  getContactInformation,
+  getAddress,
+  updateBusinessHours,
+  updateContactInformation,
+  updateAddress,
+};

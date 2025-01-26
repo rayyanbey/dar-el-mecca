@@ -2,7 +2,7 @@ import { updateContactInformation } from "../../../controllers/company.controlle
 
 export const PUT = async (req, res) => {
     try{
-        return await updateContactInfo(req, res);
+        return await updateContactInformation(req, res);
     }catch(error){
         return NextResponse.json({
             status: 500,
