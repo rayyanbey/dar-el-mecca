@@ -17,7 +17,7 @@ async function page({params}) {
         redirect("/error");
     }
     const data = resData.data;
-    console.log(data);
+    console.log("hehe",data);
     return (
         <div>
             <Hero

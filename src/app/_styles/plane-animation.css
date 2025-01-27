@@ -1,14 +1,25 @@
-.animate-plane {
-    position: absolute;
-    bottom: 100px;
-    -webkit-animation: movePlane 6s linear infinite ;
-    animation: movePlane 6s linear infinite;
+.animate-box {
+   
+    animation: moveBox 6s linear infinite;
 }
-@-webkit-keyframes movePlane{
+@keyframes moveBox{
     0%{
-        transform: rotate(0deg)translate(0px,200px)rotate(90deg);
+        transform: rotate(30deg);
     }
     100%{
-        transform: rotate(20deg)translate(-365px,-100px)rotate(0deg);
+        transform: rotate(200deg);
+    }
+}
+
+.animate-plane{
+    animation: movePlane 6.2s linear infinite;
+}
+@keyframes movePlane {
+    0%{
+        transform: rotate(0deg);
+    }
+    
+    100%{
+        transform: rotate(-20deg);
     }
 }
