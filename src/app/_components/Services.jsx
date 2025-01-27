@@ -38,7 +38,7 @@ export function Services() {
                         title={service.title}
                         description={service.description}
                         image={service.image}
-                        type={service.type}
+                        link={`/${service.type}-packages/all`}
                     />
                 ))}
             </div>

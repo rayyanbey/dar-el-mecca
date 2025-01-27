@@ -4,7 +4,7 @@ import Image from "next/image";
 import TransparentButton from "./TransparentButton";
 import { redirect } from "next/navigation";
 
-function ServiceCard({ title, description, image, type }) {
+function ServiceCard({ title, description, image, link }) {
     return (
         <div className="flex flex-col  w-[18rem] lg:w-[23rem]  rounded-2xl bg-[#F9F9F9] border border-[#00000014]">
             <div className="relative h-[22rem]">
@@ -24,7 +24,7 @@ function ServiceCard({ title, description, image, type }) {
                     {description}
                 </p>
                 <div className="w-full flex justify-center mt-4">
-                    <TransparentButton text="View Details" onClick={() => {redirect(`/${type}-packages/all`)}} />
+                    <TransparentButton text="View Details" onClick={() => {redirect(link)}} />
                 </div>
             </div>
         </div>
