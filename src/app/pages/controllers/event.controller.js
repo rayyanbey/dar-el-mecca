@@ -177,7 +177,8 @@ const updateEvent = async (req, id) => {
             data: result,
         });
     } catch (error) {
-        return {
+        return { 
+            
             status: 400,
             message: error.message,
         };
