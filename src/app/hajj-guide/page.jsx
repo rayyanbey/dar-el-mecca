@@ -1,11 +1,23 @@
 import React from 'react'
+import HeroOfGuides from '../_components/HeroOfGuides'
+import HajjMethods from './HajjMethods'
+import HajjSteps from './HajjSteps'
 
 function page() {
-  return (
-    <section>
-        
-    </section>
-  )
+    return (
+        <section>
+            <HeroOfGuides
+                image={'./images/hajj-method-1.jpeg'}
+                preTitle={''}
+                middleTitle={'Hajj'}
+                postTitle={'Guide'}
+                miniDescription={'The Hajj is a yearly Islamic pilgrimage to Mecca in Saudi Arabia that is a requirement for Muslims who can afford and are physically able to make the journey. It is one of the Five Pillars of Islam, along with prayer, almsgiving, fasting, and the profession of faith.'}
+            />
+            <HajjMethods/>
+            <HajjSteps/>
+
+        </section>
+    )
 }
 
 export default page
