@@ -177,11 +177,11 @@ const updateEvent = async (req, id) => {
             data: result,
         });
     } catch (error) {
-        return { 
+        return NextResponse.json({ 
             
             status: 400,
             message: error.message,
-        };
+        });
     }
 }
 const updateEventDetails = async (req, id) => {
@@ -220,10 +220,10 @@ const updateEventDetails = async (req, id) => {
             data: result,
         });
     } catch (error) {
-        return {
+        return NextResponse.json({
             status: 400,
             message: error.message,
-        };
+        });
     }
 };
 
@@ -263,10 +263,10 @@ const updateHotelDetails = async (req, id) => {
             data: result,
         });
     } catch (error) {
-        return {
+        return NextResponse.json({
             status: 400,
             message: error.message,
-        };
+        });
     }
 
 }
