@@ -4,9 +4,12 @@ import sequelize from "../config/dbConfig";
 import Categories from "../../_enums/packagesCategories";
 
 
-// http://localhost:3000/api/events/createEvent
-// http://localhost:3000/api/events/deleteEventById
-// http://localhost:3000/api/events/updateEventDetails
+// http://localhost:3000/pages/apis/events/createEvent
+// http://localhost:3000/pages/apis/events/deleteEventById
+// http://localhost:3000/pages/apis/events/updateEventDetails
+// http://localhost:3000/pages/apis/events/updateHotelDetails
+// http://localhost:3000/pages/apis/events/updateFlightDetails
+// http://localhost:3000/pages/apis/events/updateEvent
 
 //create event
 const createEvent = async (req, res) => {
