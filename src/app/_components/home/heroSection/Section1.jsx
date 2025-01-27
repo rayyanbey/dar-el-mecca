@@ -1,10 +1,12 @@
 import React from 'react'
 import Image from "next/image";
 import AllTourDetailButton from "./AllTourDetailButton";
+import { Plane } from '../../../_icons/Plane';
+import '../../../_styles/plane-animation.css'
 
 export default function Section1() {
-  return (
-    <section
+    return (
+        <section
             style={{
                 backgroundImage: "url('/images/hero-bg.png')",
                 backgroundSize: "cover",
@@ -60,9 +62,12 @@ export default function Section1() {
                             src={"/images/hero-main.jpeg"}
                             alt="Hero Main"
                         />
+                        <div className='animatse-plane'>
+                            <Plane/>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-  )
+    )
 }

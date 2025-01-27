@@ -6,32 +6,36 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import {useEffect, useRef, useState} from "react";
+import { getReviewsAPI } from "../../apis/reviews.api";
+import { redirect } from "next/dist/server/api-utils";
 
-const reviews = [
-    {
-        name: "MAHMOUD RANKOUSSI",
-        role: "CEO",
-        image: "./test.jpg",
-        content:
-            "AlhamdulilAllah Fantastic experience. GREAT services. Friendly. Easy to work with. Trusted. May Allah give you Baraka in your business.",
-    },
-    {
-        name: "AMINA EL MANSOURI",
-        role: "CEO",
-        image: "./test.jpg",
-        content:
-            "It was a very successful trip and those in charge were very helpful. We cannot thank them enough for their success in all their affairs.",
-    },
-    {
-        name: "YASMIN AHMED",
-        role: "Pilgrim",
-        image: "./test.jpg",
-        content:
-            "An unforgettable spiritual journey. The team's attention to detail and support throughout made it truly special. Highly recommended!",
-    },
-];
+// const reviews = [
+//     {
+//         name: "MAHMOUD RANKOUSSI",
+//         role: "CEO",
+//         image: "./test.jpg",
+//         content:
+//             "AlhamdulilAllah Fantastic experience. GREAT services. Friendly. Easy to work with. Trusted. May Allah give you Baraka in your business.",
+//     },
+//     {
+//         name: "AMINA EL MANSOURI",
+//         role: "CEO",
+//         image: "./test.jpg",
+//         content:
+//             "It was a very successful trip and those in charge were very helpful. We cannot thank them enough for their success in all their affairs.",
+//     },
+//     {
+//         name: "YASMIN AHMED",
+//         role: "Pilgrim",
+//         image: "./test.jpg",
+//         content:
+//             "An unforgettable spiritual journey. The team's attention to detail and support throughout made it truly special. Highly recommended!",
+//     },
+// ];
+
 
 export function Reviews() {
+    const [reviews,setReviews]=useState([]); 
     const swiperRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0); // Store the active slide index
 
@@ -46,6 +50,18 @@ export function Reviews() {
     const handleSlideChange = (swiper) => {
         setActiveIndex(swiper.activeIndex);
     };
+
+    const getReviews=async()=>{
+        const res=await getReviewsAPI();
+        if(res.message=="error"){
+            redirect('/error');
+        }
+        setReviews(res);
+    }
+
+    useEffect(()=>{
+        getReviews();
+    },[]);
 
     return (
         <section className="w-full flex flex-col gap-8 py-16 bg-white">
@@ -81,7 +97,7 @@ export function Reviews() {
                     onSlideChange={handleSlideChange} // Track slide change event
                     ref={swiperRef}
                 >
-                    {reviews.map((review, i) => (
+                    { reviews.map((review, i) => (
                         <SwiperSlide
                             key={i}
                             style={{
@@ -91,9 +107,10 @@ export function Reviews() {
                             <ReviewCard
                                 backgroundColor={activeIndex === i ? "#A8854E1A" : "transparent"}
                                 name={review.name}
-                                role={review.role}
+                                role={review.profession}
                                 image={review.image}
-                                content={review.content}
+                                content={review.review}
+                                stars={review.rating}
                             />
                         </SwiperSlide>
                     ))}
@@ -118,7 +135,7 @@ export function Reviews() {
     );
 }
 
-function ReviewCard({ name, role, image, content, backgroundColor }) {
+function ReviewCard({ name, role, image, content, backgroundColor,stars }) {
         const [isLargeScreen, setIsLargeScreen] = useState(false); // Initialize with a default value
     
         useEffect(() => {
@@ -144,10 +161,10 @@ function ReviewCard({ name, role, image, content, backgroundColor }) {
                     backgroundColor === "#A8854E1A" && "bg-[#A8854E1A]"
                 } gap-2 lg:gap-8 p-4 m-4 lg:px-6 lg:py-8 border-2 border-[#00000014]`}
             >
-                <div className="w-1/4 flex flex-col gap-4 items-center p-4 bg-secondary rounded-t-full">
-                    <img src={image} className="w-34 h-34 border-2 border-white rounded-full" alt={name} />
-                    <div className="flex bg-[#FFFFFF33] rounded-full p-1 lg:p-2">
-                        {[1, 2, 3, 4, 5].map((i) => (
+                <div className="w-[28%] flex flex-col gap-4 items-center p-4 bg-secondary rounded-t-full">
+                    <img src={image} className="object-cover rounded-full w-20 h-20"/>
+                    <div className="flex bg-[#FFFFFF33] rounded-full p-1 lg:p-2 m-2">
+                        {Array.from({ length: stars }).map((i) => (
                             <Star color="#fff" width={isLargeScreen ? 21 : 10} height={21} key={i} />
                         ))}
                     </div>

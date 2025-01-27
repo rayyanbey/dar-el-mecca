@@ -7,13 +7,13 @@ export async function GET(request) {
     //await cors(request);
     const reviews = await getReviews();
     return NextResponse.json({
-      status: 200,
-      message: 'Success',
+      status: 'sucess',
+      message: 'Data fetched Sucessfully',
       data: reviews,
     });
   } catch (error) {
     return NextResponse.json({
-      status: 500,
+      status: 'error',
       message: 'Error retrieving reviews',
       error: error.message,
     }, { status: 500 });
