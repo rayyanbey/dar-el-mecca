@@ -171,11 +171,11 @@ const updateEvent = async (req, id) => {
             return existingEvent;
         });
 
-        return {
+        return NextResponse.json({
             status: 200,
             message: "Event is updated successfully.",
             data: result,
-        };
+        });
     } catch (error) {
         return {
             status: 400,
@@ -213,11 +213,11 @@ const updateEventDetails = async (req, id) => {
             return existingEventDetails;
         });
 
-        return {
+        return NextResponse.json({
             status: 200,
             message: "EventDetails updated successfully.",
             data: result,
-        };
+        });
     } catch (error) {
         return {
             status: 400,
@@ -256,11 +256,11 @@ const updateHotelDetails = async (req, id) => {
             return existingHotelDetails;
         });
 
-        return {
+        return NextResponse.json({
             status: 200,
             message: "Hotel Details updated successfully.",
             data: result,
-        };
+        });
     } catch (error) {
         return {
             status: 400,
