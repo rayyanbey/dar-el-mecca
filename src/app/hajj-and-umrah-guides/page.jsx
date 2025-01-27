@@ -21,7 +21,7 @@ const services = [
         description:
             "You can read about our detailed guide of Hajj and Umrah Essentials. It includes all the essentials to perform Umrah and Hajj.",
         image: "/test2.jpeg",
-        link:'hajj-and-umrah-essentials',
+        link:'hajj-umrah-essentials',
     },
 ];
 
