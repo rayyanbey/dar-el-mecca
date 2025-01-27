@@ -211,7 +211,7 @@ const updateEventDetails = async (req, id) => {
             // Update the EventDetails
             await existingEventDetails.update(eventDetails, { transaction });
 
-            //return existingEventDetails;
+            return existingEventDetails;
         });
 
         return NextResponse.json({
