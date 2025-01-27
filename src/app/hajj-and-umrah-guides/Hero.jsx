@@ -3,7 +3,7 @@ import TransparentButton from "../_components/TransparentButton";
 
 function Hero() {
     return (
-        <div className="relative w-full h-[165vh] lg:h-[90vh]">
+        <div className="relative w-full h-[135vh] lg:h-[90vh]">
             <img src="../test2.jpeg" alt="" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-white bg-opacity-[88%]"></div>
             <div className="absolute inset-0 flex flex-col w-full items-center justify-center gap-6">

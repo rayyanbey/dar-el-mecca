@@ -8,32 +8,6 @@ import "swiper/css/effect-coverflow";
 import {useEffect, useRef, useState} from "react";
 import { getReviewsAPI } from "../../apis/reviews.api";
 import { redirect } from "next/dist/server/api-utils";
-
-// const reviews = [
-//     {
-//         name: "MAHMOUD RANKOUSSI",
-//         role: "CEO",
-//         image: "./test.jpg",
-//         content:
-//             "AlhamdulilAllah Fantastic experience. GREAT services. Friendly. Easy to work with. Trusted. May Allah give you Baraka in your business.",
-//     },
-//     {
-//         name: "AMINA EL MANSOURI",
-//         role: "CEO",
-//         image: "./test.jpg",
-//         content:
-//             "It was a very successful trip and those in charge were very helpful. We cannot thank them enough for their success in all their affairs.",
-//     },
-//     {
-//         name: "YASMIN AHMED",
-//         role: "Pilgrim",
-//         image: "./test.jpg",
-//         content:
-//             "An unforgettable spiritual journey. The team's attention to detail and support throughout made it truly special. Highly recommended!",
-//     },
-// ];
-
-
 export function Reviews() {
     const [reviews,setReviews]=useState([]); 
     const swiperRef = useRef(null);

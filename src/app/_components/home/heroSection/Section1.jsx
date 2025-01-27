@@ -63,7 +63,7 @@ export default function Section1() {
               src={"/images/hero-main.jpeg"}
               alt="Hero Main"
             />
-            <div className="bg- w-full h-1/2 relative animate-box top-12">
+            <div className="bg-red- w-full h-1/2 relative animate-box top-12">
               <div className="absolute bottom-0 animate-plane">
                 <Plane />
               </div>

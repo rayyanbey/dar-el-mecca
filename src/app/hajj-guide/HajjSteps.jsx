@@ -11,8 +11,6 @@ function HajjSteps() {
             </h2>
             <div className="flex flex-col gap-6">
                 {hajjSteps.map((item, index) => {
-                    // Determine if any description contains "\n"
-                    
                     return (
                         <div
                         key={index}

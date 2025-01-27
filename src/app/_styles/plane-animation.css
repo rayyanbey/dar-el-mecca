@@ -4,19 +4,22 @@
 }
 @keyframes moveBox{
     0%{
-        transform: rotate(30deg);
+        transform: rotate(30deg) scale(0.9);
+    }
+    20%{
+        transform:rotate(60deg) scale(1.1);
     }
     100%{
-        transform: rotate(200deg);
+        transform: rotate(200deg)scale(1);
     }
 }
 
 .animate-plane{
-    animation: movePlane 6.2s linear infinite;
+    animation: movePlane 6s linear infinite;
 }
 @keyframes movePlane {
     0%{
-        transform: rotate(0deg);
+        transform: rotate(-60deg);
     }
     
     100%{
