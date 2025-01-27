@@ -38,9 +38,7 @@ export function Header() {
             .flatMap((obj) =>
               obj.events.map((event) => ({
                 name: event.title,
-                link: `/${obj.type}-packages/${event.title
-                  .split(" ")
-                  .join("-")}`,
+                link: `/${obj.type}-packages/${event.id}`,
               }))
             )
             .concat([{ name: "All Tour Packages", link: "/T-packages/all" }])
