@@ -13,76 +13,139 @@ import Categories from "../../_enums/packagesCategories";
 
 //create event
 const createEvent = async (req, res) => {
+    try {
+        const formData = await req.formData();
 
-    //files from multer
-    const filePaths = req.files.map((file) => file.path)
-    //uplaod to third party
-    const arrayOfUrls = new Array();
-    //------
+        // Extract basic fields
+        const title = formData.get('title');
+        const description = formData.get('description');
+        const type = formData.get('type');
+        const duration = parseInt(formData.get('duration'));
+        const pricing = JSON.parse(formData.get('pricing'));
+        const visa = formData.get('visa');
+        const descriptionTitle = formData.get('bigDescriptionTitle');
+        const countryName = formData.get('countryName');
+        const importantNote = formData.get('importantNote');
+        const month = formData.get('month');
 
-    const eventDetails = req.body.eventDetails ? JSON.parse(eventDetails) : null;
-    const flightDetails = req.body.flightDetails ? JSON.parse(flightDetails) : null;
-    const hotels = req.body.hotels ? JSON.parse(hotels) : null;
+        // Parse JSON fields
+        const eventDetails = JSON.parse(formData.get('eventDetails'));
+        const flightDetails = JSON.parse(formData.get('flightDetails'));
+        const hotelsData = JSON.parse(formData.get('hotels'));
 
-    if (!eventDetails) {
+        // Validate required fields
+        if (!title || !description || !type || !duration || !pricing || !visa || !descriptionTitle || !month) {
+            return NextResponse.json(
+                { message: "Missing required fields" },
+                { status: 400 }
+            );
+        }
+
+        // Handle event images (minimum 3)
+        const eventImages = formData.getAll('images');
+        if (eventImages.length < 3) {
+            return NextResponse.json(
+                { message: "At least three event images required" },
+                { status: 400 }
+            );
+        }
+        const eventImageUrls = await Promise.all(eventImages.map(uploadToCloudinary));
+
+        // Handle posters for Hajj events
+        let posterUrls = [];
+        if (type === 'H') {
+            const posterFiles = formData.getAll('posters');
+            if (posterFiles.length === 0) {
+                return NextResponse.json(
+                    { message: "Posters are required for Hajj events" },
+                    { status: 400 }
+                );
+            }
+            posterUrls = await Promise.all(posterFiles.map(uploadToCloudinary));
+        }
+
+        // Validate country for tour packages
+        if (type === 'T' && !countryName) {
+            return NextResponse.json(
+                { message: "Country name is required for tour packages" },
+                { status: 400 }
+            );
+        }
+
+        // Process hotel images
+        const processedHotels = await Promise.all(hotelsData.map(async (hotel, index) => {
+            const hotelImages = formData.getAll(`hotelImages[${index}]`);
+            if (hotelImages.length === 0) {
+                throw new Error(`Hotel ${index + 1} has no images`);
+            }
+            const uploadedUrls = await Promise.all(hotelImages.map(uploadToCloudinary));
+            return {
+                ...hotel,
+                images: uploadedUrls
+            };
+        }));
+
+        // Validate flight dates
+        const departureDate = new Date(flightDetails.departureDate);
+        const returnDate = new Date(flightDetails.returnDate);
+        if (returnDate <= departureDate) {
+            return NextResponse.json(
+                { message: "Return date must be after departure date" },
+                { status: 400 }
+            );
+        }
+
+        // Create records in transaction
+        const result = await sequelize.transaction(async (transaction) => {
+            const event = await Event.create({
+                title,
+                images: eventImageUrls,
+                description,
+                type,
+                duration,
+                pricing,
+                visa,
+                descriptionTitle,
+                countryName: type === 'T' ? countryName : null,
+                posters: type === 'H' ? posterUrls : null,
+                importantNote,
+                month
+            }, { transaction });
+
+            const eventPackageDetail = await EventDetails.create({
+                ...eventDetails,
+                eventId: event.id
+            }, { transaction });
+
+            await Flight.create({
+                ...flightDetails,
+                departureDate,
+                returnDate,
+                eventId: event.id
+            }, { transaction });
+
+            await Promise.all(processedHotels.map(hotel => 
+                Hotel.create({
+                    ...hotel,
+                    eventDetailsId: eventPackageDetail.id
+                }, { transaction })
+            ));
+
+            return event;
+        });
+
         return NextResponse.json({
-            status: 400,
-            message: "Event Details Missing",
-            data: eventDetails
-        })
-    }
-    if (!flightDetails) {
+            message: "Event Created Successfully",
+            data: result
+        }, { status: 200 });
+
+    } catch (error) {
         return NextResponse.json({
-            status: 400,
-            message: "Flight Details Missing",
-            data: flightDetails
-        })
+            message: "An error occurred while creating event",
+            error: error.message
+        }, { status: 500 });
     }
-    if (!hotels) {
-        return NextResponse.json({
-            status: 400,
-            message: "Hotel Details Missing",
-            data: hotels
-        })
-    }
-
-    const result = await sequelize.transaction(async (transaction) => {
-        const event = await Event.create({
-            title: req.body.title,
-            images: arrayOfUrls,
-            description: req.body.description,
-            type: req.body.type,
-            duration: req.body.duration,
-            pricing: req.body.pricing,
-            visa: req.body.visa,
-            descriptionTitle: req.body.bigDescriptionTitle
-        }, { transaction })
-
-        const eventPackageDetail = await EventDetails.create({
-            ...eventDetails,
-            eventId: event.id
-        }, { transaction })
-
-        const flight = await Flight.create({
-            ...flightDetails,
-            eventId: event.id
-
-        }, { transaction })
-
-        const hotel = await Hotel.create({
-            ...hotels,
-            eventDetailsId: eventPackageDetail.id
-
-        }, { transaction })
-    })
-
-    return NextResponse.json({
-        status: 200,
-        message: "Event Created Successfully",
-        data: result
-    })
-
-}
+};
 //delete event
 const deleteEvent = async (req, id) => {
     try {
