@@ -5,7 +5,7 @@ import Phone from "../_icons/Phone";
 import Whatsapp from "../_icons/Whatsapp";
 import Facebook from "../_icons/Facebook";
 import Instagram from "../_icons/Instagram";
-import Youtube from "../_icons/Youtube";
+import Globe from "../_icons/Globe";
 
 export function Footer() {
     return (
@@ -20,14 +20,14 @@ export function Footer() {
                         className="object-contain"
                     />
                     <div className="flex justify-center gap-4">
-                        <Link href="/" className="hover:opacity-80">
+                        <Link href="https://www.facebook.com/DarElMecca" className="hover:opacity-80">
                             <Facebook />
                         </Link>
-                        <Link href="/" className="hover:opacity-80">
+                        <Link href="https://www.instagram.com/darelmecca" className="hover:opacity-80">
                             <Instagram />
                         </Link>
-                        <Link href="/" className="hover:opacity-80">
-                            <Youtube />
+                        <Link href="https://darelmecca.com/" className="hover:opacity-80">
+                            <Globe />
                         </Link>
                     </div>
                     <p className="text-center">Follow Us</p>
