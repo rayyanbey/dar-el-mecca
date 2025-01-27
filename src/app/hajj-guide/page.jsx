@@ -2,6 +2,7 @@ import React from 'react'
 import HeroOfGuides from '../_components/HeroOfGuides'
 import HajjMethods from './HajjMethods'
 import HajjSteps from './HajjSteps'
+import Message from './Message'
 
 function page() {
     return (
@@ -15,6 +16,7 @@ function page() {
             />
             <HajjMethods/>
             <HajjSteps/>
+            <Message/>
 
         </section>
     )
