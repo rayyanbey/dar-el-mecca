@@ -3,6 +3,10 @@ import HeroContactFAQAboutForm from "../_components/HeroContactFAQAboutForm";
 import { Services } from "../_components/Services";
 import Description from "./Description";
 
+export const metadata = {
+    title: "About Us"
+};
+
 function page() {
     return (
         <section>
@@ -12,8 +16,8 @@ function page() {
                     "Lorem ipsum dolor sit amet. Et exercitationem veniam hic odio magni et earum officiis hic nostrum quam est fuga repudiandae. Est harum consequatur in reiciendis fugiat eum adipisci temporibus ab magni saepe."
                 }
             />
-            <Description/>
-            <Services/>
+            <Description />
+            <Services />
         </section>
     );
 }

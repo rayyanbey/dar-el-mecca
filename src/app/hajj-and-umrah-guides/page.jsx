@@ -2,6 +2,10 @@ import React from "react";
 import Hero from "./Hero";
 import ServiceCard from "../_components/ServiceCard";
 import hajjAndUmrahguides from "../_data/guides";
+export const metadata = {
+    title: "Hajj and Umrah Guides"
+};
+
 function page() {
     return (
         <section>

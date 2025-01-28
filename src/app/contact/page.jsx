@@ -4,6 +4,10 @@ import ContactDetails from './ContactDetails'
 import LocationDetail from './LocationDetail'
 import SendMessage from './SendMessage'
 
+export const metadata = {
+  title: "Contact Us"
+};
+
 function page() {
   return (
     <section>

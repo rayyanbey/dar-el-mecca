@@ -5,7 +5,24 @@ import PackageDetail from "./PackageDetail";
 import BookSeat from "./BookSeat";
 import { redirect } from "next/navigation";
 import Categories from "../../_enums/packagesCategories";
-import Image from "next/image";
+
+export async function generateMetadata({ params }) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/pages/apis/events/${String(params.category)}/${String(params.snug)}`);
+    const resData = await res.json();
+    const data = resData.data;
+    return {
+        title: data.title,
+        Description: data.bigDescription,
+        openGraph: {
+            images: [
+                {
+                    url: data.images?.[0]
+                }
+            ]
+        }
+    }
+}
+
 
 async function page({ params }) {
     await params;
