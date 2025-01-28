@@ -85,16 +85,6 @@ const createEvent = async (req, res) => {
             };
         }));
 
-        // Validate flight dates
-        const departureDate = new Date(flightDetails.departureDate);
-        const returnDate = new Date(flightDetails.returnDate);
-        if (returnDate <= departureDate) {
-            return NextResponse.json(
-                { message: "Return date must be after departure date" },
-                { status: 400 }
-            );
-        }
-
         // Create records in transaction
         const result = await sequelize.transaction(async (transaction) => {
             const event = await Event.create({
@@ -119,8 +109,6 @@ const createEvent = async (req, res) => {
 
             await Flight.create({
                 ...flightDetails,
-                departureDate,
-                returnDate,
                 eventId: event.id
             }, { transaction });
 
