@@ -3,7 +3,7 @@ import TransparentButton from "../_components/TransparentButton";
 
 function HeroOfGuides({ image, preTitle, middleTitle, postTitle, miniDescription }) {
     return (
-        <div className="relative w-full h-[105vh] lg:h-[90vh]">
+        <div className="relative w-full h-[140vh] lg:h-[90vh]">
             <img src={image} alt="" className="w-full h-full object-cover opacity-20" />
             <div className="absolute inset-0 bg-[#f4e4ca] opacity-40"></div>
             <div className="absolute inset-0 flex flex-col w-full items-center justify-center gap-6">
@@ -12,7 +12,7 @@ function HeroOfGuides({ image, preTitle, middleTitle, postTitle, miniDescription
                 >
                     لَبَّيْكَ اللَّهُمَّ لَبَّيْك
                 </p>
-                <h2 className="w-full lg:w-[50%] text-[52px] font-[700] cinzel-title text-center leading-snug">
+                <h2 className="w-full lg:w-[50%] text-[40px] lg:text-[52px] font-[700] cinzel-title text-center leading-snug">
                     {preTitle}
                     <span className="text-secondary">{middleTitle}</span>
                     {postTitle}
