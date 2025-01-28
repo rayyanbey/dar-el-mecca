@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Event, EventDetails, Flight, Hotel } from "../models/event.models";
 import sequelize from "../config/dbConfig";
 import Categories from "../../_enums/packagesCategories";
+import { uploadToCloudinary } from "../utils/cloudinary";
 
 
 // http://localhost:3000/pages/apis/events/createEvent
@@ -52,16 +53,16 @@ const createEvent = async (req, res) => {
         const eventImageUrls = await Promise.all(eventImages.map(uploadToCloudinary));
 
         // Handle posters for Hajj events
-        let posterUrls = [];
+        let posterUrl = "";
         if (type === 'H') {
-            const posterFiles = formData.getAll('posters');
-            if (posterFiles.length === 0) {
+            const posterFile = formData.get('poster');
+            if (posterFile.length === 0) {
                 return NextResponse.json(
-                    { message: "Posters are required for Hajj events" },
+                    { message: "Poster is required for Hajj events" },
                     { status: 400 }
                 );
             }
-            posterUrls = await Promise.all(posterFiles.map(uploadToCloudinary));
+            posterUrl = await Promise.all(uploadToCloudinary(posterFile));
         }
 
         // Validate country for tour packages
@@ -97,7 +98,7 @@ const createEvent = async (req, res) => {
                 visa,
                 descriptionTitle,
                 countryName: type === 'T' ? countryName : null,
-                posters: type === 'H' ? posterUrls : null,
+                poster: type === 'H' ? posterUrl : null,
                 importantNote,
                 month
             }, { transaction });
@@ -360,7 +361,6 @@ const updateFlightDetails = async (req, id) => {
         data: result
     })
 }
-
 //get event titles
 const getAllTitles = async (req, res) => {
     try {
