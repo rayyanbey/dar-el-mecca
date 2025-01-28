@@ -19,11 +19,6 @@ const createEvent = async (request) => {
     try {
         const formData = await request.formData();
 
-        // Debugging: Log all form data keys and values
-        for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
-
         // Extract basic fields
         const title = formData.get('title');
         const description = formData.get('description');
@@ -37,32 +32,17 @@ const createEvent = async (request) => {
         const month = formData.get('month');
         const poster = formData.get('poster');
 
-        // Debugging: Log extracted fields
-        console.log({
-            title,
-            description,
-            type,
-            duration,
-            pricing,
-            visa,
-            descriptionTitle,
-            countryName,
-            importantNote,
-            month,
-            poster
-        });
+
 
         // Parse JSON fields
         const eventDetails = JSON.parse(formData.get('eventDetails'));
         const flightDetails = JSON.parse(formData.get('flightDetails'));
         const hotelsData = JSON.parse(formData.get('hotels'));
 
-        // Debugging: Log parsed JSON fields
-        console.log({
-            eventDetails,
-            flightDetails,
-            hotelsData
-        });
+
+        console.log(formData)
+
+        
 
         // Validate required fields
         if (!title || !description || !type || !duration || !pricing || !visa || !descriptionTitle || !month) {
@@ -74,7 +54,7 @@ const createEvent = async (request) => {
         // Handle event images (minimum 3)
         const eventImages = formData.getAll('images');
         console.log(eventImages)
-        if (eventImages.length <= 3) {
+        if (eventImages.length < 3) {
             return NextResponse.json(
                 { message: "At least three event images required" },
                 { status: 400 }
@@ -105,6 +85,7 @@ const createEvent = async (request) => {
                 images: uploadedUrls
             };
         }));
+        
 
         // Create records in transaction
         const result = await sequelize.transaction(async (transaction) => {
@@ -128,10 +109,11 @@ const createEvent = async (request) => {
                 eventId: event.id
             }, { transaction });
 
-            await Flight.create({
-                ...flightDetails,
-                eventId: event.id
-            }, { transaction });
+            
+             await Flight.bulkCreate(flightDetails.map(flight => ({
+                    ...flight,
+                    eventId: event.id
+             })), { transaction });
 
             await Promise.all(processedHotels.map(hotel => 
                 Hotel.create({
