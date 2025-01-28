@@ -39,9 +39,9 @@ const Flight = sequelize.define('Flight', {
             len: [3, 100]
         }
     },
-    location: {
+    locationDescription: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
             len: [3, 100]
         }
@@ -53,6 +53,10 @@ const Flight = sequelize.define('Flight', {
             len: [10, 1000]
         }
     },
+    accomodationDescription:{
+        type:DataTypes.STRING,
+        allowNull:true
+    },
     images: {
         type: DataTypes.JSON, // Storing images as a JSON array
         allowNull: false,
@@ -63,6 +67,10 @@ const Flight = sequelize.define('Flight', {
                 }
             }
         }
+    },
+    city:{
+        type:DataTypes.STRING,
+        allowNull:false,
     }
 }, { timestamps: true });
 
