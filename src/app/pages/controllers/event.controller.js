@@ -11,11 +11,18 @@ import { uploadToCloudinary } from "../utils/cloudinary";
 // http://localhost:3000/pages/apis/events/updateHotelDetails
 // http://localhost:3000/pages/apis/events/updateFlightDetails
 // http://localhost:3000/pages/apis/events/updateEvent
+// http://localhost:3000/pages/apis/events/allEventsTitles
+
 
 //create event
-const createEvent = async (req, res) => {
+const createEvent = async (request) => {
     try {
-        const formData = await req.formData();
+        const formData = await request.formData();
+
+        // Debugging: Log all form data keys and values
+        for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
 
         // Extract basic fields
         const title = formData.get('title');
@@ -24,27 +31,50 @@ const createEvent = async (req, res) => {
         const duration = parseInt(formData.get('duration'));
         const pricing = JSON.parse(formData.get('pricing'));
         const visa = formData.get('visa');
-        const descriptionTitle = formData.get('bigDescriptionTitle');
+        const descriptionTitle = formData.get('descriptionTitle');
         const countryName = formData.get('countryName');
         const importantNote = formData.get('importantNote');
         const month = formData.get('month');
+        const poster = formData.get('poster');
+
+        // Debugging: Log extracted fields
+        console.log({
+            title,
+            description,
+            type,
+            duration,
+            pricing,
+            visa,
+            descriptionTitle,
+            countryName,
+            importantNote,
+            month,
+            poster
+        });
 
         // Parse JSON fields
         const eventDetails = JSON.parse(formData.get('eventDetails'));
         const flightDetails = JSON.parse(formData.get('flightDetails'));
         const hotelsData = JSON.parse(formData.get('hotels'));
 
+        // Debugging: Log parsed JSON fields
+        console.log({
+            eventDetails,
+            flightDetails,
+            hotelsData
+        });
+
         // Validate required fields
         if (!title || !description || !type || !duration || !pricing || !visa || !descriptionTitle || !month) {
-            return NextResponse.json(
-                { message: "Missing required fields" },
-                { status: 400 }
-            );
+            return NextResponse.json({
+                message: "All fields are required",
+                status: 400
+            });
         }
-
         // Handle event images (minimum 3)
         const eventImages = formData.getAll('images');
-        if (eventImages.length < 3) {
+        console.log(eventImages)
+        if (eventImages.length <= 3) {
             return NextResponse.json(
                 { message: "At least three event images required" },
                 { status: 400 }
@@ -52,18 +82,8 @@ const createEvent = async (req, res) => {
         }
         const eventImageUrls = await Promise.all(eventImages.map(uploadToCloudinary));
 
-        // Handle posters for Hajj events
-        let posterUrl = "";
-        if (type === 'H') {
-            const posterFile = formData.get('poster');
-            if (posterFile.length === 0) {
-                return NextResponse.json(
-                    { message: "Poster is required for Hajj events" },
-                    { status: 400 }
-                );
-            }
-            posterUrl = await Promise.all(uploadToCloudinary(posterFile));
-        }
+        let posterUrl = " ";
+        posterUrl = await uploadToCloudinary(poster);
 
         // Validate country for tour packages
         if (type === 'T' && !countryName) {
@@ -75,7 +95,7 @@ const createEvent = async (req, res) => {
 
         // Process hotel images
         const processedHotels = await Promise.all(hotelsData.map(async (hotel, index) => {
-            const hotelImages = formData.getAll(`hotelImages[${index}]`);
+            const hotelImages = formData.getAll(`hotelimages[${index}]`);
             if (hotelImages.length === 0) {
                 throw new Error(`Hotel ${index + 1} has no images`);
             }
@@ -98,7 +118,7 @@ const createEvent = async (req, res) => {
                 visa,
                 descriptionTitle,
                 countryName: type === 'T' ? countryName : null,
-                poster: type === 'H' ? posterUrl : null,
+                poster: posterUrl,
                 importantNote,
                 month
             }, { transaction });
@@ -129,6 +149,7 @@ const createEvent = async (req, res) => {
         }, { status: 200 });
 
     } catch (error) {
+        console.error("Error in createEvent:", error);
         return NextResponse.json({
             message: "An error occurred while creating event",
             error: error.message
