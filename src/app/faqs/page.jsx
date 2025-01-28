@@ -1,6 +1,9 @@
 import React from "react";
 import HeroContactFAQAboutForm from "../_components/HeroContactFAQAboutForm";
 import FAQ from "./FAQ";
+export const metadata = {
+    title: "FAQ"
+};
 
 function page() {
     return (
