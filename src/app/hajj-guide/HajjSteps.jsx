@@ -2,8 +2,6 @@ import React from 'react';
 import hajjSteps from '../_data/hajj-steps-data';
 
 function HajjSteps() {
-    console.log(hajjSteps);
-
     return (
         <section className="flex flex-col p-6 lg:p-20">
             <h2 className="text-[24px] text-center my-10 cinzel-title font-[700]">

@@ -82,6 +82,8 @@ function PackageDetail({eventDetails}) {
                         ))}
                     </ul>
                 </div>
+
+                
             </div>
         </section>
     );

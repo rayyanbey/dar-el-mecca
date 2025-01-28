@@ -1,6 +1,5 @@
 import { Cinzel, Cinzel_Decorative, Outfit } from "next/font/google";
 import initializeDatabase from "./pages/utils/dbInit";
-import { registerGSAP } from "../utils/gsap";
 import "./globals.css";
 import { TopBar } from "./_components/TopBar";
 import { Header } from "./_components/Header";
@@ -23,7 +22,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  registerGSAP()
+
   initializeDatabase()
   return (
     <html lang="en">

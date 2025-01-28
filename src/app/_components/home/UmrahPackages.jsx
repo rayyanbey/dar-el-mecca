@@ -44,7 +44,6 @@ export async function UmrahPackages() {
        redirect("/error");
      }
      const data = resData.data;
-     console.log(data);
     return (
         <section className="w-full flex flex-col justify-center items-center px-2 lg:px-0 py-6 lg:py-16 ">
             <h2 className="text-[32px] text-center cinzel-title font-[700]">Choose Your Umrah Packages 2024 & 2025</h2>

@@ -6,21 +6,19 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import {useEffect, useRef, useState} from "react";
-import { getReviewsAPI } from "../../apis/reviews.api";
+import { getReviewsAPI } from "../../_apis/reviews.api";
 import { redirect } from "next/dist/server/api-utils";
 export function Reviews() {
     const [reviews,setReviews]=useState([]); 
     const swiperRef = useRef(null);
-    const [activeIndex, setActiveIndex] = useState(0); // Store the active slide index
-
+    const [activeIndex, setActiveIndex] = useState(0);
     const nextReview = () => {
-        if (swiperRef.current) swiperRef.current.swiper.slideNext(); // Use swiper.swiper to access slide methods
+        if (swiperRef.current) swiperRef.current.swiper.slideNext();
     };
 
     const prevReview = () => {
-        if (swiperRef.current) swiperRef.current.swiper.slidePrev(); // Use swiper.swiper to access slide methods
+        if (swiperRef.current) swiperRef.current.swiper.slidePrev();
     };
-
     const handleSlideChange = (swiper) => {
         setActiveIndex(swiper.activeIndex);
     };

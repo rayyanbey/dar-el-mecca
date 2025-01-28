@@ -3,11 +3,11 @@ import Hero from "./Hero";
 import Description from "./Description";
 import PackageDetail from "./PackageDetail";
 import BookSeat from "./BookSeat";
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation";
 import Categories from "../../_enums/packagesCategories";
+import Image from "next/image";
 
-async function page({params}) {
-    console.log(params.category, params.snug);
+async function page({ params }) {
     await params;
     const snug = String(params.snug);
     const category = String(params.category);
@@ -17,38 +17,35 @@ async function page({params}) {
         redirect("/error");
     }
     const data = resData.data;
-    console.log("hehe",data);
+    console.log(data);
     return (
         <div>
             <Hero
                 image={data.images?.[0]}
                 category={category[0]}
-                preTitle={`${
-                    category[0] == Categories.TOUR
-                        ? `${data.countryName} ${data.duration} Nights `
-                        : category[0] == Categories.UMRAH
+                preTitle={`${category[0] == Categories.TOUR
+                    ? `${data.countryName} ${data.duration} Nights `
+                    : category[0] == Categories.UMRAH
                         ? `${data.duration} Nights ${data.month} `
                         : ""
-                }`}
-                middleTitle={`${
-                    category[0] == Categories.TOUR
-                        ? "Tour Package "
-                        : category[0] == Categories.HAJJ
+                    }`}
+                middleTitle={`${category[0] == Categories.TOUR
+                    ? "Tour Package "
+                    : category[0] == Categories.HAJJ
                         ? "Hajj Package "
                         : "Umrah Package "
-                }`}
+                    }`}
                 tagline={
                     category[0] == "H" || category[0] == "U"
                         ? "لَبَّيْكَ اللَّهُمَّ لَبَّيْك"
                         : `EXPLORE ${data.countryName}`
                 }
-                miniDescription={`${
-                    category[0] == Categories.TOUR
-                        ? "Tour Package"
-                        : category[0] == Categories.HAJJ
+                miniDescription={`${category[0] == Categories.TOUR
+                    ? "Tour Package"
+                    : category[0] == Categories.HAJJ
                         ? "Hajj Package"
                         : "Umrah Package"
-                }`}
+                    }`}
             />
             <Description
                 title={data.title}
@@ -60,6 +57,11 @@ async function page({params}) {
                 visa={data.visa}
                 hotels={data.eventDetails.hotels}
             />
+            {data.poster &&
+                <div className="flex justify-center">
+                    <img className="" src={data.poster} />
+                </div>
+            }
             <div className="w-full h-[1px] bg-[#00000014]"></div>
             <PackageDetail eventDetails={data.eventDetails} />
             <BookSeat image={data.images[2]} />
