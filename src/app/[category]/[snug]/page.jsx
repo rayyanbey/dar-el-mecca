@@ -7,7 +7,6 @@ import {redirect} from "next/navigation";
 import Categories from "../../_enums/packagesCategories";
 
 async function page({params}) {
-    console.log(params.category, params.snug);
     await params;
     const snug = String(params.snug);
     const category = String(params.category);
@@ -17,7 +16,6 @@ async function page({params}) {
         redirect("/error");
     }
     const data = resData.data;
-    console.log("hehe",data);
     return (
         <div>
             <Hero

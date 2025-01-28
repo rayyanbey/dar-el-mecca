@@ -12,10 +12,7 @@ async function page({params}) {
     if (resData.status === "error") {
         redirect("/error");
     }
-
-
     const data = resData.data;
-    console.log(data);
     const firstKey = Object.keys(data)[0];
     return (
         <>

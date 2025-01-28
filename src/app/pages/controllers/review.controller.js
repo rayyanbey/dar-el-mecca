@@ -45,7 +45,6 @@ const updateReview = async(req,res)=>{
             message: "Review ID is required"
         })
     }
-    console.log(name,profession,review,rating)
    try {
     await Review.update({
         name,
@@ -76,7 +75,6 @@ const deleteReview = async(req)=>{
 
     const body = await req.json()
     const id = body.id
-    console.log(id)
     try {
         await Review.destroy({
             where:{
