@@ -17,23 +17,16 @@ const Flight = sequelize.define('Flight', {
             len: [2, 100]
         }
     },
-    departureDate: {
+    date: {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
             isAfter: new Date().toISOString().split('T')[0]
         }
     },
-    returnDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        validate: {
-            isValidDate(value) {
-                if (value <= this.departureDate) {
-                    throw new Error("Return date must be after the departure date");
-                }
-            }
-        }
+    type:{
+        type:DataTypes.ENUM('Departure','Return'),
+        allowNull:false
     }
 }, { timestamps: true });
 
@@ -212,7 +205,7 @@ Hotel.belongsTo(EventDetails, { foreignKey: 'eventDetailsId' });
 Event.hasOne(EventDetails, { as: 'eventDetails', foreignKey: 'eventId' });
 EventDetails.belongsTo(Event, { foreignKey: 'eventId' });
 
-Event.hasOne(Flight, { as: 'flightDetails', foreignKey: 'eventId' });
+Event.hasMany(Flight, { as: 'flightDetails', foreignKey: 'eventId' });
 Flight.belongsTo(Event, { foreignKey: 'eventId' });
 
 export {
