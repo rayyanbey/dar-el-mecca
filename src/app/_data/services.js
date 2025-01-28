@@ -1,4 +1,4 @@
-export default  services = [
+const  services = [
     {
         type: "U",
         title: "Umrah Packages",
@@ -21,3 +21,4 @@ export default  services = [
         image: "/images/tour-service.jpeg",
     },
 ];
+export default services;

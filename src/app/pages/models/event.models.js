@@ -130,23 +130,9 @@ const Event = sequelize.define('Event', {
             this.setDataValue('countryName', value);
         }
     },
-    posters:{
-        type: DataTypes.JSON, //condition just for hajj package
+    poster:{
+        type: DataTypes.STRING,
         allowNull:true,
-        validate:{
-            notEmpty(value){
-                if(!Array.isArray(value) || value.length === 0){
-                    throw new Error("At least one poster is required");
-                }
-            }
-        },
-        set(value){
-            if(this.type === 'H' && (!value || value.trim() === '')){
-                throw new Error("Posters are required for type 'H'");
-            }
-            this.setDataValue('posters', value);
-        }
-
     },
     duration: { //duration of the event i.e nights
         type: DataTypes.INTEGER,
