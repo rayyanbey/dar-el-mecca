@@ -1,4 +1,3 @@
-import BottomBar from "./_components/BottomBar";
 import { Hero } from "./_components/home/heroSection/Hero";
 import { Reviews } from "./_components/home/Reviews";
 import Stats from "./_components/home/Stats";

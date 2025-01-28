@@ -5,6 +5,40 @@ import PackageDetail from "./PackageDetail";
 import BookSeat from "./BookSeat";
 import { redirect } from "next/navigation";
 import Categories from "../../_enums/packagesCategories";
+export async function generateStaticParams({ params }) {
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_HOST_NAME}/pages/apis/events/U-packages/${String(params.snug)}/all`
+        );
+        if (!res.ok) {
+            console.error(`Failed to fetch data: ${res.statusText}`);
+            return []; 
+        }
+        const contentType = res.headers.get("Content-Type");
+        if (!contentType || !contentType.includes("application/json")) {
+            console.error("Expected JSON, but got:", contentType);
+            return [];
+        }
+        const resData = await res.json();
+        if (resData.status === "error") {
+            console.error("API returned an error:", resData);
+            return [];
+        }
+        const data = resData.data;
+        return Object.entries(data).map(([key, packages]) =>
+            packages.map(subItem => ({
+                params: {
+                    id: subItem.id,
+                }
+            }))
+        ).flat().slice(0, 10);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        return [];
+    }
+}
+
+
 
 export async function generateMetadata({ params }) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/pages/apis/events/${String(params.category)}/${String(params.snug)}`);
