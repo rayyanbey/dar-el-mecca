@@ -143,9 +143,11 @@ const createEvent = async (request) => {
     }
 };
 //delete event
-const deleteEvent = async (req, id) => {
+const deleteEvent = async (req, snug) => {
+
+   console.log("snug",snug)
     try {
-        const event = await Event.findByPk(id);
+        const event = await Event.findByPk(snug);
         if (!event) {
             return NextResponse.json({
                 status: 404,
