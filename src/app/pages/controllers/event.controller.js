@@ -36,8 +36,12 @@ const createEvent = async (request) => {
 
         // Parse JSON fields
         const eventDetails = JSON.parse(formData.get('eventDetails'));
-        const flightDetails = JSON.parse(formData.get('flightDetails'));
         const hotelsData = JSON.parse(formData.get('hotels'));
+
+        const flightDetails = JSON.parse(formData.get('flightDetails')).map(flight => ({
+            ...flight,
+            date: new Date(flight.date) // Convert string to Date object
+        }));
 
 
         console.log(formData)
