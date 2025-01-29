@@ -100,13 +100,14 @@ async function page({ params }) {
             />
             <Description
                 title={data.title}
-                bigDescriptionTitle={data.bigDescriptionTitle}
-                bigDescription={data.bigDescription}
+                descriptionTitle={data.descriptionTitle}
+                description={data.description}
                 duration={data.duration}
                 image={data.images[1]}
                 pricing={data.pricing}
                 visa={data.visa}
                 hotels={data.eventDetails.hotels}
+                flights={data.flightDetails}
             />
             {data.poster &&
                 <div className="flex justify-center">
