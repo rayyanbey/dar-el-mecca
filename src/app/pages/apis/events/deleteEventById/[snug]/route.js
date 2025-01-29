@@ -3,16 +3,15 @@ import { deleteEvent } from "../../../../controllers/event.controller";
 export const DELETE = async (req, { params }) => {
     // Ensure params exists and has the snug property
     const {snug} = await params
-    if (!snug) {
-        return new Response(JSON.stringify({
-            status: 400,
-            message: "Bad Request: Missing snug parameter"
-        }), { status: 400 });
-    }
-
     try {
-        const result = await deleteEvent(snug);
-        return new Response(JSON.stringify(result), { status: 200 });
+       const bool =  await deleteEvent(snug);
+
+       if(bool){
+        return new Response(JSON.stringify({
+            status: 200,
+            message: "Event deleted successfully"
+        }), { status: 200 });
+       }
     } catch (error) {
         return new Response(JSON.stringify({
             status: 500,

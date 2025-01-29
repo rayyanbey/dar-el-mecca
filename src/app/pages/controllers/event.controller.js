@@ -3,6 +3,7 @@ import { Event, EventDetails, Flight, Hotel } from "../models/event.models";
 import sequelize from "../config/dbConfig";
 import Categories from "../../_enums/packagesCategories";
 import { uploadToCloudinary } from "../utils/cloudinary";
+import { Sequelize } from "sequelize";
 
 
 // http://localhost:3000/pages/apis/events/createEvent
@@ -142,68 +143,55 @@ const createEvent = async (request) => {
 };
 //delete event
 const deleteEvent = async (snug) => {
+    console.log("snug", snug);
 
-   console.log("snug",snug)
+    const transaction = await sequelize.transaction();
     try {
-        const event = await Event.findByPk(snug);
+        console.log("Entering to find event");
+        const event = await Event.findByPk(snug, { transaction });
+
         if (!event) {
+            await transaction.rollback();  // Rollback if event not found
             return NextResponse.json({
                 status: 404,
                 message: "Event Not Found",
-                data: event
-            })
-        }
-        //begin transaction 
-
-       const transaction =  await sequelize.transaction(async (transaction) => {
-            await Hotel.destroy({
-                where: {
-                    eventDetailsId: {
-                        [sequelize.Op.in]: sequelize.literal(`(SELECT id FROM "EventDetails" WHERE "eventId" = ${snug})`)
-                    }
-                },
-                transaction,
-            })
-
-            await EventDetails.destroy({
-                where: {
-                    eventId: snug
-                },
-                transaction
-            })
-
-            await Flight.destroy({
-                where: {
-                    eventId: snug
-                },
-                transaction
-            })
-
-            await Event.destroy({
-                where: {
-                    id: snug
-                },
-                transaction
-            })
-            
-            await transaction.commit()
-            
-            return NextResponse.json({
-                status: 200,
-                message: "Event Deleted Successfully",
                 data: null
-            })
+            });
+        }
 
-        })
+        console.log("Event Found, starting transaction");
+
+        // First, delete dependent records in EventDetails
+        await Hotel.destroy({
+            where: {
+                eventDetailsId: {
+                    [Sequelize.Op.in]: sequelize.literal(`(SELECT id FROM "EventDetails" WHERE "eventId" = ${snug})`)
+                }
+            }
+        }, { transaction });
+
+        await EventDetails.destroy({ where: { eventId: snug } }, { transaction });
+        await Flight.destroy({ where: { eventId: snug } }, { transaction });
+
+        // Finally, delete the Event
+        await Event.destroy({ where: { id: snug } }, { transaction });
+
+        // Commit transaction
+        await transaction.commit();
+
+        console.log("Transaction completed successfully");
+        return true;
+
     } catch (error) {
+        await transaction.rollback();
+        console.error("Transaction failed, rolled back", error);
         return NextResponse.json({
-            
             status: 500,
             message: "Internal Server Error",
-            data: null
-        })
+            error: error.message
+        });
     }
-}
+};
 const updateEvent = async (req, id) => {
     try {
         // Extract event from the request body
