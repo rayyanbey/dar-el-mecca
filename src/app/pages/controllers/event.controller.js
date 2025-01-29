@@ -12,8 +12,6 @@ import { uploadToCloudinary } from "../utils/cloudinary";
 // http://localhost:3000/pages/apis/events/updateFlightDetails
 // http://localhost:3000/pages/apis/events/updateEvent
 // http://localhost:3000/pages/apis/events/allEventsTitles
-
-
 //create event
 const createEvent = async (request) => {
     try {
