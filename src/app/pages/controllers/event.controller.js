@@ -143,9 +143,11 @@ const createEvent = async (request) => {
     }
 };
 //delete event
-const deleteEvent = async (req, id) => {
+const deleteEvent = async (snug) => {
+
+   console.log("snug",snug)
     try {
-        const event = await Event.findByPk(id);
+        const event = await Event.findByPk(snug);
         if (!event) {
             return NextResponse.json({
                 status: 404,
@@ -155,11 +157,11 @@ const deleteEvent = async (req, id) => {
         }
         //begin transaction 
 
-        await sequelize.transaction(async (transaction) => {
+       const transaction =  await sequelize.transaction(async (transaction) => {
             await Hotel.destroy({
                 where: {
                     eventDetailsId: {
-                        [sequelize.Op.in]: sequelize.literal(`(SELECT id FROM "EventDetails" WHERE "eventId" = ${id})`)
+                        [sequelize.Op.in]: sequelize.literal(`(SELECT id FROM "EventDetails" WHERE "eventId" = ${snug})`)
                     }
                 },
                 transaction,
@@ -167,33 +169,37 @@ const deleteEvent = async (req, id) => {
 
             await EventDetails.destroy({
                 where: {
-                    eventId: id
+                    eventId: snug
                 },
                 transaction
             })
 
             await Flight.destroy({
                 where: {
-                    eventId: id
+                    eventId: snug
                 },
                 transaction
             })
 
             await Event.destroy({
                 where: {
-                    id: id
+                    id: snug
                 },
                 transaction
             })
-
+            
+            await transaction.commit()
+            
             return NextResponse.json({
                 status: 200,
                 message: "Event Deleted Successfully",
                 data: null
             })
+
         })
     } catch (error) {
         return NextResponse.json({
+            
             status: 500,
             message: "Internal Server Error",
             data: null

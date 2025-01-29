@@ -3,9 +3,7 @@ import ContactInformation from "../models/contactInfo.models";
 import Company from "../models/company.models";
 import { NextResponse } from "next/server";
 
-// `https://localhost:3000/api/company/getBusinessHours`
-// `https://localhost:3000/api/company/getContactInfo`
-// `https://localhost:3000/api/company/getAddress`
+// `https://localhost:3000/api/company/getCompanyInformation`
 // `https://localhost:3000/api/company/updateBusinessHours`
 // `https://localhost:3000/api/company/updateContactInfo`
 // `https://localhost:3000/api/company/updateAddress`
@@ -14,19 +12,11 @@ import { NextResponse } from "next/server";
 
 const getBusinessHours = async (req, res) => {
   try {
-    const result = await BusinessHours.findAll();
+    const result = await BusinessHours.findOne();
 
-    return NextResponse.json({
-      status: 200,
-      message: "Business hours fetched successfully",
-      data: result,
-    });
+    return result
   } catch (error) {
-    return NextResponse.json({
-      status: 500,
-      message: "An error occured while fetching business hours",
-      error: error,
-    });
+    console.log(error)
   }
 };
 
@@ -62,19 +52,11 @@ const updateBusinessHours = async (req) => {
 //getting contact information
 const getContactInformation = async (req, res) => {
   try {
-    const result = await ContactInformation.findAll();
+    const result = await ContactInformation.findOne();
 
-    return NextResponse.json({
-      status: 200,
-      message: "Contact Information fetched successfully",
-      data: result,
-    });
+    return result
   } catch (error) {
-    return NextResponse.json({
-      status: 500,
-      message: "An error occured while fetching contact information",
-      error: error,
-    });
+    console.log(error)
   }
 };
 
@@ -115,19 +97,11 @@ const updateContactInformation = async (req, res) => {
 //getting address whatsapp and document address
 const getAddress = async (req, res) => {
   try {
-    const result = await Company.findAll();
+    const result = await Company.findOne();
 
-    return NextResponse.json({
-      status: 200,
-      message: "Address fetched successfully",
-      data: result,
-    });
+    return result
   } catch (error) {
-    return NextResponse.json({
-      status: 500,
-      message: "An error occured while fetching address",
-      error: error,
-    });
+    console.log(error)
   }
 };
 
@@ -173,11 +147,28 @@ const updateAddress = async (req) => {
     );
   }
 };
+
+const getCompanyInformation = async (req, res) => {
+  try {
+    const businessHours = await getBusinessHours();
+    const contactInformation = await getContactInformation();
+    const address = await getAddress();
+    
+    return {businessHours, contactInformation, address}
+  } catch (error) {
+    return NextResponse.json({
+      status: 500,
+      message: "An error occurred while fetching company information",
+      error: error.message,
+    });
+  }
+}
+
+
+
 export {
-  getBusinessHours,
-  getContactInformation,
-  getAddress,
   updateBusinessHours,
   updateContactInformation,
   updateAddress,
+  getCompanyInformation
 };
