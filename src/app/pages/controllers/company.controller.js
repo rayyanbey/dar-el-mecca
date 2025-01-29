@@ -12,7 +12,7 @@ import { NextResponse } from "next/server";
 
 const getBusinessHours = async (req, res) => {
   try {
-    const result = await BusinessHours.findAll();
+    const result = await BusinessHours.findOne();
 
     return result
   } catch (error) {
@@ -52,7 +52,7 @@ const updateBusinessHours = async (req) => {
 //getting contact information
 const getContactInformation = async (req, res) => {
   try {
-    const result = await ContactInformation.findAll();
+    const result = await ContactInformation.findOne();
 
     return result
   } catch (error) {
@@ -97,7 +97,7 @@ const updateContactInformation = async (req, res) => {
 //getting address whatsapp and document address
 const getAddress = async (req, res) => {
   try {
-    const result = await Company.findAll();
+    const result = await Company.findOne();
 
     return result
   } catch (error) {
@@ -150,17 +150,11 @@ const updateAddress = async (req) => {
 
 const getCompanyInformation = async (req, res) => {
   try {
-    const businessHours = getBusinessHours();
-    const contactInformation = getContactInformation();
-    const address = getAddress();
-
-    const result = {
-      businessHours,
-      contactInformation,
-      address,
-    };
-
-    return result
+    const businessHours = await getBusinessHours();
+    const contactInformation = await getContactInformation();
+    const address = await getAddress();
+    
+    return {businessHours, contactInformation, address}
   } catch (error) {
     return NextResponse.json({
       status: 500,
