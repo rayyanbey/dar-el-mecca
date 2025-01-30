@@ -13,6 +13,9 @@ import { title } from "process";
 // http://localhost:3000/pages/apis/events/updateHotelDetails
 // http://localhost:3000/pages/apis/events/updateFlightDetails
 // http://localhost:3000/pages/apis/events/allEventsTitles
+// http://localhost:3000/pages/apis/events/getHotels
+// http://localhost:3000/pages/apis/events/getFlights
+// http://localhost:3000/pages/apis/events/getDetails
 //create event
 const createEvent = async (request) => {
     try {
@@ -500,6 +503,85 @@ const getAllEventsOfSpecificMonth = async (month) => {
         });
     }
 };
+
+
+const getAllHotels = async (req,snug) => {
+    try {
+        const event = await Event.findByPk(snug, {
+            include: [
+                {
+                    model: EventDetails,
+                    as: 'eventDetails',
+                    include: [
+                        {
+                            model: Hotel,
+                            as: 'hotels'
+                        }
+                    ]
+                }
+            ]
+        });
+
+        return NextResponse.json({
+            status: 200,
+            message: "Hotels Fetched Successfully",
+            data: event.eventDetails.hotels
+        })
+    } catch (error) {
+        return NextResponse.json({
+            status: "error",
+            message: "Error fetching data",
+            data: [],
+        });
+    }
+}
+
+const getAllFlights = async (req,snug) => {
+    try {
+        const flights = await Flight.findAll({
+            where: {
+                eventId: snug
+            }
+        })
+
+        return NextResponse.json({
+            status: 200,
+            message: "Flights Fetched Successfully",
+            data: flights
+        })
+    } catch (error) {
+        return NextResponse.json({
+            status: "error",
+            message: "Error fetching data",
+            data: [],
+        })
+    }
+}
+
+const getAllDetails = async (req,snug) => {
+    try {
+        const event = await Event.findByPk(snug, {
+            include: [
+                {
+                    model: EventDetails,
+                    as: 'eventDetails'
+                }
+            ]
+        });
+
+        return NextResponse.json({
+            status: 200,
+            message: "Details Fetched Successfully",
+            data: event.eventDetails
+        })
+    } catch (error) {
+        return NextResponse.json({
+            status: "error",
+            message: "Error fetching data",
+            data: [],
+        });
+    }
+}
 export {
     getSpecificEvent,
     getAllTitles,
@@ -509,5 +591,8 @@ export {
     updateHotelDetails,
     updateFlightDetails,
     getAllEventsOfSpecificMonth,
-    getAllEvents
+    getAllEvents,
+    getAllHotels,
+    getAllFlights,
+    getAllDetails
 }
