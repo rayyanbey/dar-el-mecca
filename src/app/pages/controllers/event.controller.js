@@ -330,7 +330,7 @@ const updateHotelDetails = async (req, snug) => {
 
 }
 
-const updateFlightDetails = async (req, snug,flightid) => {
+const updateFlightDetails = async (req, snug) => {
     try {
         const formData = await req.formData();
     
@@ -349,7 +349,6 @@ const updateFlightDetails = async (req, snug,flightid) => {
             const flight = await Flight.findOne({
                 where: {
                     eventId: snug,
-                    id: flightid
                 },
                 transaction
             })
