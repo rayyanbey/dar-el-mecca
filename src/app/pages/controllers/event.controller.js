@@ -111,7 +111,6 @@ const createEvent = async (request) => {
                 ...eventDetails,
                 eventId: event.id
             }, { transaction });
-
             
              await Flight.bulkCreate(flightDetails.map(flight => ({
                     ...flight,
@@ -332,46 +331,50 @@ const updateHotelDetails = async (req, snug) => {
 }
 
 const updateFlightDetails = async (req, snug) => {
-    const formData = await req.formData();
-
-    const flightDetails = JSON.parse(formData.get('flightDetails'));
-
-    if (!flightDetails) {
-        return NextResponse.json({
-            status: 400,
-            message: "Flight Details Missing",
-            data: flightDetails
-        })
-    }
-
-    const result = await sequelize.transaction(async (transaction) => {
-        const flight = await Flight.findOne({
-            where: {
-                eventId: snug
-            },
-            transaction
-        })
-
-        if (!flight) {
+    try {
+        const formData = await req.formData();
+    
+        console.log(formData)
+        const flightDetails = JSON.parse(formData.get('flightDetails'))
+    
+        if (!flightDetails) {
             return NextResponse.json({
-                status: 404,
-                message: "Flight Details Not Found",
-                data: flight
+                status: 400,
+                message: "Flight Details Missing",
+                data: flightDetails
             })
         }
-        await flight.update(flightDetails, { transaction })
+    
+        return await sequelize.transaction(async (transaction) => {
+            const flight = await Flight.findOne({
+                where: {
+                    eventId: snug
+                },
+                transaction
+            })
 
-        return NextResponse.json({
-            status: 200,
-            message: "Flight Details Updated Successfully"
+            console.log(flight)
+    
+            if (!flight) {
+                return NextResponse.json({
+                    status: 404,
+                    message: "Flight Details Not Found",
+                    data: flight
+                })
+            }
+            
+            await flight.update(flightDetails, { transaction });
+            return NextResponse.json({
+                status: 200,
+                message: "Flight Details Updated Successfully"
+            })
         })
-    })
-
-    return NextResponse.json({
-        status: 200,
-        message: "Flight Details Updated Successfully",
-        data: result
-    })
+    } catch (error) {
+        return NextResponse.json({
+            status: 400,
+            message: error.message
+        })
+    }
 }
 //get event titles
 const getAllTitles = async (req, res) => {
