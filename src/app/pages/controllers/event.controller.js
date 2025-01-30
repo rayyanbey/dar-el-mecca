@@ -4,6 +4,7 @@ import sequelize from "../config/dbConfig";
 import Categories from "../../_enums/packagesCategories";
 import { uploadToCloudinary } from "../utils/cloudinary";
 import { Sequelize } from "sequelize";
+import { title } from "process";
 
 
 // http://localhost:3000/pages/apis/events/createEvent
@@ -192,96 +193,84 @@ const deleteEvent = async (snug) => {
         });
     }
 };
-const updateEvent = async (req, id) => {
+const updateEventAndDetails = async (req, snug) => {
     try {
-        // Extract event from the request body
-        const { event } = req.body;
+        const formData = await req.formData();
 
-        if (!event) {
-            return {
-                status: 400,
-                message: "Event is required.",
-            };
+        const eventUpdate = {
+            title: formData.get('title'),
+            description: formData.get('description'),
+            type: formData.get('type'),
+            duration: parseInt(formData.get('duration')),
+            pricing: JSON.parse(formData.get('pricing')),
+            visa: formData.get('visa'),
+            descriptionTitle: formData.get('descriptionTitle'),
+            countryName: formData.get('countryName'),
+            importantNote: formData.get('importantNote'),
+            month: formData.get('month')
         }
 
-        // Start a transaction
-        const result = await sequelize.transaction(async (transaction) => {
-            // Find the existing Event by eventId
-            const existingEvent = await Event.findOne({
-                where: { eventId: id },
-                transaction,
-            });
+        const eventDetails = JSON.parse(formData.get('eventDetails'))
+        const posterFile = formData.get('poster')
+        let posterUrl = " ";
+        let images = " ";
 
-            if (!existingEvent) {
-                throw new Error(`Event for Event with ID ${id} not found.`);
+        return await sequelize.transaction(async(transaction)=>{
+            //1. Updating main event
+            const event = await Event.findByPk(snug, {transaction})
+
+            if(!event){
+                throw new Error(`Event with ID ${snug} not found`)
             }
 
-            // Update the Event
-            await existingEvent.update(event, { transaction });
+            if(posterFile){
+                posterUrl = await uploadToCloudinary(posterFile)
+                eventUpdate.poster = posterUrl
+            }
 
-            return existingEvent;
-        });
+            if(formData.get('images').length > 0){
+                images = await Promise.all(formData.getAll('images').map(uploadToCloudinary))
+                eventUpdate.images = [...event.images,...images]
+            }
 
-        return NextResponse.json({
-            status: 200,
-            message: "Event is updated successfully.",
-            data: result,
-        });
+            await event.update(eventUpdate, {transaction})
+
+            //2. Updating event details
+
+            const event_details = await EventDetails.findOne({
+                where:{ eventId: snug},
+                transaction
+            })
+
+            if(!event_details){
+                throw new Error(`Event Details for Event with ID ${snug} not found`)
+            }
+            await event_details.update(eventDetails, {transaction})
+
+            return NextResponse.json({
+                status: 200,
+                message: "Event and Details updated successfully"
+            })
+        })
     } catch (error) {
-        return NextResponse.json({ 
-            
+        return NextResponse.json({
             status: 400,
-            message: error.message,
-        });
+            message: error.message
+        })
     }
 }
-const updateEventDetails = async (req, id) => {
+const updateHotelDetails = async (req, snug) => {
     try {
-        // Extract eventDetails from the request body
-        const { eventDetails } = req.body;
 
-        if (!eventDetails) {
-            return {
-                status: 400,
-                message: "EventDetails are required.",
-            };
+        const formData = await req.formData();
+        // Extract eventDetails from the request body
+        const hotelDetails = {
+            name: formData.get("name"),
+            locationDescription: formData.get("locationDescription"),
+            description: formData.get("description"),
+            accomodationDescription: formData.get("accomodationDescription"),
+            city: formData.get("city")
         }
-
-        // Start a transaction
-        const result = await sequelize.transaction(async (transaction) => {
-            // Find the existing EventDetails by eventId
-            const existingEventDetails = await EventDetails.findOne({
-                where: { eventId: id },
-                transaction,
-            });
-
-            if (!existingEventDetails) {
-                throw new Error(`EventDetails for Event with ID ${id} not found.`);
-            }
-
-            // Update the EventDetails
-            await existingEventDetails.update(eventDetails, { transaction });
-
-            return existingEventDetails;
-        });
-
-        return NextResponse.json({
-            status: 200,
-            message: "EventDetails updated successfully.",
-            data: result,
-        });
-    } catch (error) {
-        return NextResponse.json({
-            status: 400,
-            message: error.message,
-        });
-    }
-};
-
-const updateHotelDetails = async (req, id) => {
-    try {
-        // Extract eventDetails from the request body
-        const { hotelDetails } = req.body;
 
         if (!hotelDetails) {
             return {
@@ -291,8 +280,17 @@ const updateHotelDetails = async (req, id) => {
         }
 
         // Start a transaction
-        const result = await sequelize.transaction(async (transaction) => {
+        return await sequelize.transaction(async (transaction) => {
             // Find the existing EventDetails by eventId
+
+            const eventDetails = await EventDetails.findOne({
+                where: { eventId: snug },
+                transaction,
+            })
+
+            const id = eventDetails.id;
+
+
             const existingHotelDetails = await Hotel.findOne({
                 where: { eventDetailsid: id },
                 transaction,
@@ -302,17 +300,19 @@ const updateHotelDetails = async (req, id) => {
                 throw new Error(`Hotel Details for Event with ID ${id} not found.`);
             }
 
+            if(formData.get('images').length > 0){
+                const images = await Promise.all(formData.getAll('images').map(uploadToCloudinary))
+                hotelDetails.images = [...existingHotelDetails.images,...images]
+            }
+
             // Update the EventDetails
             await existingHotelDetails.update(hotelDetails, { transaction });
 
-            return existingHotelDetails;
-        });
-
-        return NextResponse.json({
-            status: 200,
-            message: "Hotel Details updated successfully.",
-            data: result,
-        });
+            return NextResponse.json({
+                status: 200,
+                message: "Hotel Details updated successfully.",
+            });
+        });        
     } catch (error) {
         return NextResponse.json({
             status: 400,
@@ -322,8 +322,10 @@ const updateHotelDetails = async (req, id) => {
 
 }
 
-const updateFlightDetails = async (req, id) => {
-    const { flightDetails } = req.body;
+const updateFlightDetails = async (req, snug) => {
+    const formData = await req.formData();
+
+    const flightDetails = JSON.parse(formData.get('flightDetails'));
 
     if (!flightDetails) {
         return NextResponse.json({
@@ -336,7 +338,7 @@ const updateFlightDetails = async (req, id) => {
     const result = await sequelize.transaction(async (transaction) => {
         const flight = await Flight.findOne({
             where: {
-                eventId: id
+                eventId: snug
             },
             transaction
         })
@@ -348,10 +350,12 @@ const updateFlightDetails = async (req, id) => {
                 data: flight
             })
         }
-
         await flight.update(flightDetails, { transaction })
 
-        return flight
+        return NextResponse.json({
+            status: 200,
+            message: "Flight Details Updated Successfully"
+        })
     })
 
     return NextResponse.json({
@@ -487,8 +491,7 @@ export {
     getAllTitles,
     createEvent,
     deleteEvent,
-    updateEvent,
-    updateEventDetails,
+    updateEventAndDetails,
     updateHotelDetails,
     updateFlightDetails,
     getAllEventsOfSpecificMonth,
