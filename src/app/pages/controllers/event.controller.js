@@ -9,10 +9,9 @@ import { title } from "process";
 
 // http://localhost:3000/pages/apis/events/createEvent
 // http://localhost:3000/pages/apis/events/deleteEventById
-// http://localhost:3000/pages/apis/events/updateEventDetails
+// http://localhost:3000/pages/apis/events/updateEvent
 // http://localhost:3000/pages/apis/events/updateHotelDetails
 // http://localhost:3000/pages/apis/events/updateFlightDetails
-// http://localhost:3000/pages/apis/events/updateEvent
 // http://localhost:3000/pages/apis/events/allEventsTitles
 //create event
 const createEvent = async (request) => {
@@ -205,64 +204,73 @@ const updateEventAndDetails = async (req, snug) => {
             pricing: JSON.parse(formData.get('pricing')),
             visa: formData.get('visa'),
             descriptionTitle: formData.get('descriptionTitle'),
-            countryName: formData.get('countryName'),
             importantNote: formData.get('importantNote'),
-            month: formData.get('month')
+            month: formData.get('month'),
+            countryName: formData.get('countryName'),
+        };
+
+        if (formData.get('type') !== 'T') {
+            eventUpdate.countryName = null;
         }
 
-        const eventDetails = JSON.parse(formData.get('eventDetails'))
-        const posterFile = formData.get('poster')
-        let posterUrl = " ";
-        let images = " ";
+        const eventDetails = JSON.parse(formData.get('eventDetails'));
+        const posterFile = formData.get('poster');
 
-        return await sequelize.transaction(async(transaction)=>{
-            //1. Updating main event
-            const event = await Event.findByPk(snug, {transaction})
+        // Handle poster upload
+        if (posterFile) {
+            const posterUrl = await uploadToCloudinary(posterFile);
+            eventUpdate.poster = posterUrl;
+        }
 
-            if(!event){
-                throw new Error(`Event with ID ${snug} not found`)
+        // Handle images upload
+        const eventImages = formData.getAll('images');
+        if (eventImages.length > 0) {
+            const images = await Promise.all(eventImages.map(uploadToCloudinary));
+            eventUpdate.images = images;
+        }
+
+        return await sequelize.transaction(async (transaction) => {
+            // 1. Updating main event
+            const event = await Event.findByPk(snug, { transaction });
+
+            if (!event) {
+                throw new Error(`Event with ID ${snug} not found`);
             }
 
-            if(posterFile){
-                posterUrl = await uploadToCloudinary(posterFile)
-                eventUpdate.poster = posterUrl
-            }
+            await event.update(eventUpdate, { transaction });
 
-            if(formData.get('images').length > 0){
-                images = await Promise.all(formData.getAll('images').map(uploadToCloudinary))
-                eventUpdate.images = [...event.images,...images]
-            }
-
-            await event.update(eventUpdate, {transaction})
-
-            //2. Updating event details
-
+            // 2. Updating event details
             const event_details = await EventDetails.findOne({
-                where:{ eventId: snug},
+                where: { eventId: snug },
                 transaction
-            })
+            });
 
-            if(!event_details){
-                throw new Error(`Event Details for Event with ID ${snug} not found`)
+            if (!event_details) {
+                return NextResponse.json({
+                    status: 404,
+                    message: "Event Details Not Found"
+                });
             }
-            await event_details.update(eventDetails, {transaction})
+            await event_details.update(eventDetails, { transaction });
 
             return NextResponse.json({
                 status: 200,
                 message: "Event and Details updated successfully"
-            })
-        })
+            });
+        });
     } catch (error) {
         return NextResponse.json({
             status: 400,
             message: error.message
-        })
+        });
     }
-}
+};
 const updateHotelDetails = async (req, snug) => {
     try {
 
         const formData = await req.formData();
+
+        console.log(formData)
         // Extract eventDetails from the request body
         const hotelDetails = {
             name: formData.get("name"),
