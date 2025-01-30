@@ -279,6 +279,8 @@ const updateHotelDetails = async (req, snug) => {
             city: formData.get("city")
         }
 
+        const hotelId = formData.get("hotelId");
+
         if (!hotelDetails) {
             return {
                 status: 400,
@@ -299,7 +301,7 @@ const updateHotelDetails = async (req, snug) => {
 
 
             const existingHotelDetails = await Hotel.findOne({
-                where: { eventDetailsid: id },
+                where: { eventDetailsid: id, id: hotelId },
                 transaction,
             });
 
@@ -329,14 +331,14 @@ const updateHotelDetails = async (req, snug) => {
     }
 
 }
-
 const updateFlightDetails = async (req, snug) => {
     try {
         const formData = await req.formData();
     
         console.log(formData)
         const flightDetails = JSON.parse(formData.get('flightDetails'))
-    
+
+        const flightId = formData.get('flightId')
         if (!flightDetails) {
             return NextResponse.json({
                 status: 400,
@@ -349,6 +351,7 @@ const updateFlightDetails = async (req, snug) => {
             const flight = await Flight.findOne({
                 where: {
                     eventId: snug,
+                    id: flightId
                 },
                 transaction
             })
@@ -401,7 +404,6 @@ const getAllTitles = async (req, res) => {
         return NextResponse.json({ status: "error", message: error, data: [] })
     }
 }
-
 const getSpecificEvent = async (snug) => {
     try {
         const result = await Event.findOne({
