@@ -330,7 +330,7 @@ const updateHotelDetails = async (req, snug) => {
 
 }
 
-const updateFlightDetails = async (req, snug) => {
+const updateFlightDetails = async (req, snug,flightid) => {
     try {
         const formData = await req.formData();
     
@@ -348,7 +348,8 @@ const updateFlightDetails = async (req, snug) => {
         return await sequelize.transaction(async (transaction) => {
             const flight = await Flight.findOne({
                 where: {
-                    eventId: snug
+                    eventId: snug,
+                    id: flightid
                 },
                 transaction
             })
