@@ -10,16 +10,6 @@ import { NextResponse } from "next/server";
 
 //getting business hours
 
-const getBusinessHours = async (req, res) => {
-  try {
-    const result = await BusinessHours.findOne();
-
-    return result
-  } catch (error) {
-    console.log(error)
-  }
-};
-
 const updateBusinessHours = async (req) => {
 
   try {
@@ -49,17 +39,6 @@ const updateBusinessHours = async (req) => {
     });
   }
 };
-//getting contact information
-const getContactInformation = async (req, res) => {
-  try {
-    const result = await ContactInformation.findOne();
-
-    return result
-  } catch (error) {
-    console.log(error)
-  }
-};
-
 const updateContactInformation = async (req, res) => {
   try {
     const existingData = await ContactInformation.findOne();
@@ -94,16 +73,6 @@ const updateContactInformation = async (req, res) => {
   }
 };
 
-//getting address whatsapp and document address
-const getAddress = async (req, res) => {
-  try {
-    const result = await Company.findOne();
-
-    return result
-  } catch (error) {
-    console.log(error)
-  }
-};
 
 const updateAddress = async (req) => {
   try {
@@ -148,13 +117,32 @@ const updateAddress = async (req) => {
   }
 };
 
-const getCompanyInformation = async (req, res) => {
+const getBusinessHoursController = async () => {
   try {
-    const businessHours = await getBusinessHours();
-    const contactInformation = await getContactInformation();
-    const address = await getAddress();
-    
-    return {businessHours, contactInformation, address}
+    const businessHours = await BusinessHours.findOne();;
+    return NextResponse.json({
+      status: "success",
+      message: "All Events Successfully Fetched",
+      data: businessHours,
+  });
+  } catch (error) {
+    return NextResponse.json({
+      status: 'error',
+      message: "An error occurred while fetching company information",
+      error: error.message,
+    });
+  }
+}
+
+const getCompanyInformation = async () => {
+  try {
+    const contactInformation = await ContactInformation.findOne();
+    const address = await Company.findOne();
+    return NextResponse.json({
+      status: "success",
+      message: "All Events Successfully Fetched",
+      data: {address,contactInformation},
+  });
   } catch (error) {
     return NextResponse.json({
       status: 500,
@@ -165,10 +153,10 @@ const getCompanyInformation = async (req, res) => {
 }
 
 
-
 export {
   updateBusinessHours,
   updateContactInformation,
   updateAddress,
-  getCompanyInformation
+  getCompanyInformation,
+  getBusinessHoursController
 };
