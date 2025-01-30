@@ -308,9 +308,10 @@ const updateHotelDetails = async (req, snug) => {
                 throw new Error(`Hotel Details for Event with ID ${id} not found.`);
             }
 
-            if(formData.get('images').length > 0){
+            const hotelImages = formData.getAll('images');
+            if(hotelImages.length > 0){
                 const images = await Promise.all(formData.getAll('images').map(uploadToCloudinary))
-                hotelDetails.images = [...existingHotelDetails.images,...images]
+                hotelDetails.images = images
             }
 
             // Update the EventDetails
