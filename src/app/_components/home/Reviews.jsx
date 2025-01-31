@@ -133,9 +133,9 @@ function ReviewCard({ name, role, image, content, backgroundColor,stars }) {
                     backgroundColor === "#A8854E1A" && "bg-[#A8854E1A]"
                 } gap-2 lg:gap-8 p-4 m-4 lg:px-6 lg:py-8 border-2 border-[#00000014]`}
             >
-                <div className="w-[28%] flex flex-col gap-4 items-center p-4 bg-secondary rounded-t-full">
-                    <img src={image} className="object-cover rounded-full w-32 h-32"/>
-                    <div className="flex bg-[#FFFFFF33] rounded-full p-1 lg:p-2 m-2">
+                <div className="w-[35%] flex flex-col gap-4 items-center p-2 lg:p-4 bg-secondary rounded-t-full">
+                    <img src={image} className="object-cover rounded-full w-14 h-14 md:w-24 md:h-24 lg:w-32 lg:h-32"/>
+                    <div className="flex bg-[#FFFFFF33] rounded-full px-2 lg:p-2 m-2">
                         {Array.from({ length: stars }).map((i) => (
                             <Star color="#fff" width={isLargeScreen ? 21 : 10} height={21} key={i} />
                         ))}

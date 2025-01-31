@@ -48,7 +48,7 @@ const createEvent = async (request) => {
 
         console.log(formData)
 
-        
+
 
         // Validate required fields
         if (!title || !description || !type || !duration || !pricing || !visa || !descriptionTitle || !month) {
@@ -91,7 +91,7 @@ const createEvent = async (request) => {
                 images: uploadedUrls
             };
         }));
-        
+
 
         // Create records in transaction
         const result = await sequelize.transaction(async (transaction) => {
@@ -114,13 +114,13 @@ const createEvent = async (request) => {
                 ...eventDetails,
                 eventId: event.id
             }, { transaction });
-            
-             await Flight.bulkCreate(flightDetails.map(flight => ({
-                    ...flight,
-                    eventId: event.id
-             })), { transaction });
 
-            await Promise.all(processedHotels.map(hotel => 
+            await Flight.bulkCreate(flightDetails.map(flight => ({
+                ...flight,
+                eventId: event.id
+            })), { transaction });
+
+            await Promise.all(processedHotels.map(hotel =>
                 Hotel.create({
                     ...hotel,
                     eventDetailsId: eventPackageDetail.id
@@ -313,7 +313,7 @@ const updateHotelDetails = async (req, snug) => {
             }
 
             const hotelImages = formData.getAll('images');
-            if(hotelImages.length > 0){
+            if (hotelImages.length > 0) {
                 const images = await Promise.all(formData.getAll('images').map(uploadToCloudinary))
                 hotelDetails.images = images
             }
@@ -325,7 +325,7 @@ const updateHotelDetails = async (req, snug) => {
                 status: 200,
                 message: "Hotel Details updated successfully.",
             });
-        });        
+        });
     } catch (error) {
         return NextResponse.json({
             status: 400,
@@ -337,7 +337,7 @@ const updateHotelDetails = async (req, snug) => {
 const updateFlightDetails = async (req, snug) => {
     try {
         const formData = await req.formData();
-    
+
         console.log(formData)
         const flightDetails = JSON.parse(formData.get('flightDetails'))
 
@@ -349,7 +349,7 @@ const updateFlightDetails = async (req, snug) => {
                 data: flightDetails
             })
         }
-    
+
         return await sequelize.transaction(async (transaction) => {
             const flight = await Flight.findOne({
                 where: {
@@ -360,7 +360,7 @@ const updateFlightDetails = async (req, snug) => {
             })
 
             console.log(flight)
-    
+
             if (!flight) {
                 return NextResponse.json({
                     status: 404,
@@ -368,7 +368,7 @@ const updateFlightDetails = async (req, snug) => {
                     data: flight
                 })
             }
-            
+
             await flight.update(flightDetails, { transaction });
             return NextResponse.json({
                 status: 200,
@@ -385,14 +385,14 @@ const updateFlightDetails = async (req, snug) => {
 //get event titles
 const getAllTitles = async (req, res) => {
     try {
-        const events = await Event.findAll({ attributes: ["id", "title", "type",'month'] });
+        const events = await Event.findAll({ attributes: ["id", "title", "type", 'month'] });
 
         const groupedEvents = events.reduce((acc, event) => {
-            const { id, title, type ,month} = event;
+            const { id, title, type, month } = event;
             if (!acc[type]) {
                 acc[type] = { type, events: [] };
             }
-            acc[type].events.push({ id, title,month });
+            acc[type].events.push({ id, title, month });
             return acc;
         }, {});
 
@@ -411,7 +411,7 @@ const getSpecificEvent = async (snug) => {
     try {
         const result = await Event.findOne({
             where: {
-                id:snug
+                id: snug
             },
             include: [
                 {
@@ -488,7 +488,25 @@ const getAllEvents = async (category) => {
 };
 const getAllEventsOfSpecificMonth = async (month) => {
     try {
-        const events = await Event.findAll({ where: { month: month } });
+        const events = await Event.findAll({
+            where: { month: month }, include: [
+                {
+                    model: EventDetails,
+                    as: "eventDetails", // Correct alias
+                    include: [
+                        {
+                            model: Hotel,
+                            as: "hotels", // Correct alias
+                        },
+                    ],
+                },
+                {
+                    model: Flight,
+                    as: "flightDetails", // Correct alias
+                },
+            ],
+        });
+        console.log(events);
         const categorizedEvents = { [month]: events };
         return NextResponse.json({
             status: "success",
@@ -505,7 +523,7 @@ const getAllEventsOfSpecificMonth = async (month) => {
 };
 
 
-const getAllHotels = async (req,snug) => {
+const getAllHotels = async (req, snug) => {
     try {
         const event = await Event.findByPk(snug, {
             include: [
@@ -536,7 +554,7 @@ const getAllHotels = async (req,snug) => {
     }
 }
 
-const getAllFlights = async (req,snug) => {
+const getAllFlights = async (req, snug) => {
     try {
         const flights = await Flight.findAll({
             where: {
@@ -558,7 +576,7 @@ const getAllFlights = async (req,snug) => {
     }
 }
 
-const getAllDetails = async (req,snug) => {
+const getAllDetails = async (req, snug) => {
     try {
         const event = await Event.findByPk(snug, {
             include: [
