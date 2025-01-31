@@ -16,6 +16,7 @@ import { title } from "process";
 // http://localhost:3000/pages/apis/events/getHotels
 // http://localhost:3000/pages/apis/events/getFlights
 // http://localhost:3000/pages/apis/events/getDetails
+// http://localhost:3000/pages/apis/events/allEventsTitles
 //create event
 const createEvent = async (request) => {
     try {
@@ -590,7 +591,7 @@ const getAllDetails = async (req, snug) => {
         return NextResponse.json({
             status: 200,
             message: "Details Fetched Successfully",
-            data: event.eventDetails
+            data: event
         })
     } catch (error) {
         return NextResponse.json({
