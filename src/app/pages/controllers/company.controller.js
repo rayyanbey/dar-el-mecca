@@ -116,14 +116,44 @@ const updateAddress = async (req) => {
     );
   }
 };
+const summarizeBusinessHours = (data) => {
+  const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  let openDays = [];
+  let closedDays = [];
 
+  days.forEach(day => {
+      if (data[day].open) {
+          openDays.push({
+              day,
+              openingTime: data[day].openingTime,
+              closingTime: data[day].closingTime
+          });
+      } else {
+          closedDays.push(day);
+      }
+  });
+
+  let summary = "";
+  if (openDays.length > 0) {
+      const firstDay = openDays[0].day.charAt(0).toUpperCase() + openDays[0].day.slice(1);
+      const lastDay = openDays[openDays.length - 1].day.charAt(0).toUpperCase() + openDays[openDays.length - 1].day.slice(1);
+
+      summary += `${firstDay}-${lastDay}:\n ${openDays[0].openingTime} - ${openDays[0].closingTime} EST\n`;
+  }
+
+  if (closedDays.length > 0) {
+      summary += `${closedDays.map(day => day.charAt(0).toUpperCase() + day.slice(1)).join(", ")}: CLOSED`;
+  }
+
+  return summary;
+};
 const getBusinessHoursController = async () => {
   try {
-    const businessHours = await BusinessHours.findOne();;
+    const businessHours = await BusinessHours.findOne();
     return NextResponse.json({
       status: "success",
       message: "All Events Successfully Fetched",
-      data: businessHours,
+      data: summarizeBusinessHours(businessHours),
   });
   } catch (error) {
     return NextResponse.json({

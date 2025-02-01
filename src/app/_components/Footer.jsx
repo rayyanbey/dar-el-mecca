@@ -7,7 +7,13 @@ import Facebook from "../_icons/Facebook";
 import Instagram from "../_icons/Instagram";
 import Globe from "../_icons/Globe";
 
-export function Footer() {
+export async function Footer() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/pages/apis/company/getBusinessHours`);
+    const resData = await res.json();
+    if (resData.status === "error") {
+        redirect("/error");
+    }
+    const data = resData.data;
     return (
         <footer className="bg-secondary pt-20  text-[16px] font-[400] text-[#FFFFFFCC]">
             <div className="flex flex-col gap-10 lg:flex-row">
@@ -81,9 +87,9 @@ export function Footer() {
                     <div className="flex flex-col items-center lg:items-start gap-2">
                         <h3 className="font-[700] text-[18px] mb-4 text-white">BUSINESS HOURS</h3>
                         <ul className="flex flex-col items-center lg:items-start gap-4">
-                            <li>MONDAY-SATURDAY:</li>
-                            <li>10:00 AM - 07:00 PM EST</li>
-                            <li>SUNDAY: CLOSED</li>
+                            {data.split("\n").map((line, index) => (
+                                <li key={index} >{line}</li>
+                            ))}
                         </ul>
                     </div>
                     <div className="flex flex-col items-center lg:items-start gap-2">

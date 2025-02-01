@@ -3,7 +3,8 @@ const hajjSteps = [
         title: '1. Preparation and Intention',
         description: [
             "Before you arrive at Makkah to begin Hajj, it’s important to make your intention (niyyah) within your heart. The intention must be to perform the Hajj for the sake of Allah alone, with a desire for good in the hereafter. It should not be done with the intention of being seen by others or for worldly gain."
-        ]
+        ],
+        pic:null
     },
     {
         title: '2. Entering The State Of Ihram',
@@ -13,7 +14,8 @@ const hajjSteps = [
             "Throughout these holy days and whilst in the state of Ihram , we should also be particularly mindful of our behaviour and words. We should avoid smoking, engaging in sexual relations, swearing, shaving our hair, and cutting our nails. We must also not use perfume or scented soaps.",
             , "Once you arrive at the holy Masjid al-Haram in Makkah, with these preparations in mind, you’re ready to start the biggest spiritual journey of your life!",
             "Tip: Carry spare Ihram clothing if you can.As for sandals, we recommend investing in a decent pair of trekking sandals.They tend to be the most comfortable and practical, given that you will be walking long distances on tarmac as well as gravel.Try and wear-in your sandals before you depart for Saudi so that you don’t break out in blisters or face discomfort once you’re there.Upon arrival in Makkah, you must first perform your Umrah, which means you will do your Tawaf and Sa’i as outlined in the next steps."
-        ]
+        ],
+        pic:'./images/umrah-steps/pic1.png'
     },
     {
         title: '3. Tawaf x 7',
@@ -22,8 +24,9 @@ const hajjSteps = [
             ,
             "One Tawaf is made up of seven complete circuits, with each one starting and ending at the black stone, which is situated within the Kaa’bah."
             ,
-            "In addition to your Tawaf, you can also offer voluntary prayers to thank Allah (SWT) for arriving safely and to mark the start of this incredibly special spiritual journey."]
-    },
+            "In addition to your Tawaf, you can also offer voluntary prayers to thank Allah (SWT) for arriving safely and to mark the start of this incredibly special spiritual journey."],
+            pic:'./images/umrah-steps/pic2.png'
+        },
     {
         title: '4. Safa and Marwa',
         description: [
@@ -31,7 +34,8 @@ const hajjSteps = [
             , "You’ll begin the Sa’i on the hill of Safa and walk towards the hill of Marwa. You will eventually see the green marker, at which point you will run until the next green marker and continue walking until you reach Marwa. This completes one lap. You will then return to Safa to complete your second lap. Your Sa’i is complete once you have performed a total of seven laps between the hills of Safa and Marwa."
             ,
             "This is an important ritual in memory of Prophet Ibrahim’s (AS) wife Hajar, and her struggle in the desert in search of water for her son Prophet Isma’il (AS). Sa’i symbolises the ongoing struggle that we encounter throughout our lives, as Hajar experienced herself."
-        ]
+        ],
+        pic:'./images/umrah-steps/pic3.png'
     },
     {
         title: '5. Clip/Shave Hair (Umrah Ends)',
@@ -39,12 +43,14 @@ const hajjSteps = [
             "           Once Sa’i is complete, men will have their hair clipped or shaved, whilst a woman clips her hair to the length of her fingertip. This marks the completion of your umrah, allowing you to leave Ihram, until the 8th of Dhul Hijjah.",
             "Tip: Be very patient here. You’ll be tired from tawaf, and you might notice fellow pilgrims in a hurry to complete the Sa’i. Feel free to take your time. Take regular breaks, and drink Zam Zam water which is available between Safa and Marwa."
         ]
+        ,pic:'./images/umrah-steps/pic4.png'
     },
     {
         title: '6. Resting and praying',
         description: [
             "Now that you’ve performed your Umrah, for the rest of this blessed month, you’ll stay in Makkah to complete your spiritual journey of Hajj, surrounded by your fellow Muslim sisters and brothers, SubhanAllah! Make sure to get plenty of rest and make the best use of your time by performing sincere acts of worship. Your Hajj will begin on the 8th Dhul Hijjah."
         ]
+        ,pic:null
     },
     {
         title: '7. Re-entering State of Ihram (Day 1/8th Dhul Hijjah)',
@@ -67,6 +73,7 @@ const hajjSteps = [
             "You will then proceed with your Hajj group to the neighbourhood of Mina in Makkah, which is located roughly eight kilometres from the centre of Makkah."
             , "Tip: We would highly recommend carrying some essentials such as unscented sun cream, moisturiser, Vaseline and soap. Sun cream is particularly handy, especially if you have no hair as it is not permissible for men to cover their head or face whilst in ihram. Vaseline is also particularly valuable for both women and men to protect against painful rashes that may occur as a result of constant walking. All of these are readily available in Saudi Arabia."
         ]
+        ,pic:'./images/umrah-steps/pic5.png'
     },
     {
         title: '8. Arrive At Mina',
@@ -77,6 +84,7 @@ const hajjSteps = [
             ,
             "Tip: Be patient here, as space inside the tents can be very tight, and you might find yourself very close to fellow pilgrims. The weather is likely to be very hot, so remember to keep yourself hydrated. The Saudi authorities have installed cold water stations in close proximity to all tents, so familiarise yourself with your surroundings. You may also notice that Hajj authority workers regularly stock up complementary cold drinks in cooler boxes next to your tent. They’re there for you to consume, so enjoy them to quench your thirst, but don’t forget the spiritual purpose of being there."
         ]
+        ,pic:null
     },
     {
         title: '9. Day of ‘Arafah (Day 2/9th Dhul Hijjah)',
@@ -99,6 +107,7 @@ const hajjSteps = [
             ,
             "Tip: Don’t be tempted to exhaust your energy and trek up Mount ‘Arafah, also known as Jabal al-Rahmah, on this day. Jabal al-Rahmah is the hill from where the Prophet Muhammad (peace and blessings be upon him) delivered his sermon. There is no authentic source to suggest any benefit in trekking the hill itself or to undertake this climb as a religious ritual. The level area surrounding the hill is called the Plains of ‘Arafah and this is where you should be spending your time in contemplation and prayer."
         ]
+        ,pic:null
     },
     {
         title: '10. Arrive in Muzdalifah',
@@ -121,6 +130,7 @@ const hajjSteps = [
             ,
             "Tip: At Muzdalifah, you will stay under the night sky. There are no tents or other accommodation facilities here. Although there are plenty of lights, it is still fairly dark. Try to stay near your group, as it is very easy to get lost among the thousands of pilgrims. Toilets and Wudhu facilities are available in Muzdalifah, but they will likely be crowded so patience must be exercised here.We would highly recommend you use the toilets and freshen up before you leave ‘Arafah."
         ]
+        ,pic:null
     },
     {
         title: '11. Rami and Hady (Day 3/10th Dhul Hijjah & start of Eid al-Adha)',
@@ -162,12 +172,14 @@ const hajjSteps = [
 
             , "Tip: Don’t rush to perform the Rami. The Hajj authority will most likely allocate a set time for your group to go and perform Rami. They do this to minimise overcrowding and the risk to pilgrims.\nTry not to get angry and throw your sandals or other valuable possessions at the pillars. Iblis is not contained within the pillar, so you’ll only lose your valuables and there is no benefit in doing so!"
         ]
+        ,pic:null
     },
     {
         title: '12. Qurbani and Eid al-Adha',
         description: [
             "The festival of Eid al-Adha, or the Feast of Sacrifice, is also celebrated by Muslims around the world on this day who are not on pilgrimage on the 10th Dhul Hijjah. By offering Qurbani (sacrifice), Muslims mark Prophet Ibrahim’s (AS) willingness to sacrifice his son Isma’il (AS) upon the commandment of Allah (SWT)."
         ]
+        ,pic:null
     },
     {
         title: '13. Shaving The Head (Day 4/11th Dhul Hijjah)',
@@ -178,6 +190,7 @@ const hajjSteps = [
             ,
             "Tip: Use disposable blades to shave each other’s head within your group. If that’s not possible, you’ll notice a number of barbers in Mina ready to shave your head for a price. Ensure that the barbers use new blades to avoid infection."
         ]
+        ,pic:'./images/umrah-steps/pic4.png'
     },
     {
         title: '14 & 15. Tawaf al-Ifadha and Saai’ (Day 5/12th Dhul Hijjah)',
@@ -192,6 +205,7 @@ const hajjSteps = [
 
             "Tip: The Tawaf area will be extremely crowded during this time. Try to use the upper levels of the Haram or the roof. You might want to do this around midnight when it tends to be quieter."
         ]
+        ,pic:null
     },
     {
         title: '16. The Second Day of Rami',
@@ -200,18 +214,21 @@ const hajjSteps = [
             ,
             "On this occasion you pelt each of the three pillars in order. You will begin with Jamarah al-Ula (the small pillar), then Jamarah al-Wusta (the second/middle pillar) and finally, Jamarah al-Aqaba (the third/large pillar).  You stop after the first and second Jamarat to make Du’a facing the qibla. Each one should be stoned with seven consecutive pebbles accompanied by the Takbir. Remember to take your spare pebbles with you in case you lose some!"
         ]
+        ,pic:null
     },
     {
         title: '17. Spend the night in Mina',
         description: [
             "Once your second Rami is completed, you will return to your camp in Mina and spend the rest of the day and night in worship, making the most of the remaining time you have."
         ]
+        ,pic:null
     },
     {
         title: '18. The Third Day of Rami',
         description: [
             "On the afternoon of the 12th Dhul Hijjah, you’ll have your final batch of pebbles (21 pebbles) ready to repeat the same steps as the previous day."
         ]
+        ,pic:null
     },
     {
         title: '19. Tawaf al-Wida (The Farewell Tawaf)',
@@ -225,6 +242,7 @@ const hajjSteps = [
             ,
             "You will complete seven laps of Tawaf for this Tawaf. Then perform two Rakat of Salah and drink Zam Zam water. There is no Sa’i or shaving/trimming of the head after this Tawaf."
         ]
+        ,pic:null
     },
 
 ]
