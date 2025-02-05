@@ -44,22 +44,22 @@ export async function Footer() {
                         <h3 className="font-[700] text-[18px] mb-4 text-white">OUR BEST PACKAGES</h3>
                         <ul className="flex flex-col items-center lg:items-start gap-4">
                             <li>
-                                <Link href="/umrah-packages-2024" className="hover:underline">
-                                    Umrah Packages 2024
+                                <Link href="/U-packages/all" className="hover:underline">
+                                    Umrah Packages {new Date(Date.now()).getFullYear()}
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/hajj-packages-2024" className="hover:underline">
-                                    Hajj Packages 2024
+                                <Link href="/H-packages/all" className="hover:underline">
+                                    Hajj Packages {new Date(Date.now()).getFullYear()}
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/tours-packages" className="hover:underline">
+                                <Link href="/T-packages/all" className="hover:underline">
                                     Tours & Packages
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/reserve" className="hover:underline">
+                                <Link href="/U-packages/all" className="hover:underline">
                                     Reserve Your Spot Here
                                 </Link>
                             </li>

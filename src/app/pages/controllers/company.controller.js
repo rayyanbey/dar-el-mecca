@@ -17,9 +17,9 @@ const updateBusinessHours = async (req) => {
     const { days } = await req.json();
 
     // Merge incoming changes with existing data
-    const mergedData = { 
+    const mergedData = {
       ...existingData.dataValues,
-      ...days 
+      ...days
     };
 
     const [affectedCount] = await BusinessHours.update(
@@ -63,7 +63,7 @@ const updateContactInformation = async (req, res) => {
       JSON.stringify({
         status: 200,
         message: "Contact info updated",
-        data: { phoneNumbers, email, faxNumbers,whatsapp },
+        data: { phoneNumbers, email, faxNumbers, whatsapp },
       })
     );
   } catch (error) {
@@ -78,13 +78,13 @@ const updateContactInformation = async (req, res) => {
 
 const updateAddress = async (req) => {
   try {
-    const { address, documentAddress} = await req.json();
+    const { address, documentAddress } = await req.json();
 
     const existingData = await Company.findOne();
     // Update first company entry (or add where clause for specific company)
-   await Company.update(
-      { address, documentAddress},
-      { where: { id: existingData.id} } // Add proper where condition for your use case
+    await Company.update(
+      { address, documentAddress },
+      { where: { id: existingData.id } } // Add proper where condition for your use case
     );
 
     // if (affectedCount === 0) {
@@ -118,63 +118,19 @@ const updateAddress = async (req) => {
     );
   }
 };
-// const summarizeBusinessHours = (data) => {
-//   const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-//   let openDays = [];
-//   let closedDays = [];
-
-//   days.forEach(day => {
-//       if (data[day].open) {
-//           openDays.push({
-//               day,
-//               openingTime: data[day].openingTime,
-//               closingTime: data[day].closingTime
-//           });
-//       } else {
-//           closedDays.push(day);
-//       }
-//   });
-
-//   let summary = "";
-//   if (openDays.length > 0) {
-//       const firstDay = openDays[0].day.charAt(0).toUpperCase() + openDays[0].day.slice(1);
-//       const lastDay = openDays[openDays.length - 1].day.charAt(0).toUpperCase() + openDays[openDays.length - 1].day.slice(1);
-
-//       summary += `${firstDay}-${lastDay}:\n ${openDays[0].openingTime} - ${openDays[0].closingTime} EST\n`;
-//   }
-
-//   if (closedDays.length > 0) {
-//       summary += `${closedDays.map(day => day.charAt(0).toUpperCase() + day.slice(1)).join(", ")}: CLOSED`;
-//   }
-
-//   return summary;
-// };
-// const getBusinessHoursController = async () => {
-//   try {
-//     const businessHours = await BusinessHours.findOne();
-//     return NextResponse.json({
-//       status: "success",
-//       message: "All Events Successfully Fetched",
-//       data: summarizeBusinessHours(businessHours),
-//   });
-//   } catch (error) {
-//     return NextResponse.json({
-//       status: 'error',
-//       message: "An error occurred while fetching company information",
-//       error: error.message,
-//     });
-//   }
-// }
 
 const getCompanyInformation = async () => {
   try {
     const contactInformation = await ContactInformation.findOne();
     const address = await Company.findOne();
+    const operationalHoursAll = await getBusinessHoursSummary();
+    const operationalHoursJson = await operationalHoursAll.json();
+    const operationalHours = operationalHoursJson.data;
     return NextResponse.json({
       status: "success",
       message: "All Events Successfully Fetched",
-      data: {address,contactInformation},
-  });
+      data: { address, contactInformation, operationalHours },
+    });
   } catch (error) {
     return NextResponse.json({
       status: 500,
@@ -184,14 +140,14 @@ const getCompanyInformation = async () => {
   }
 }
 
-const getBusinessHours = async(req)=>{
+const getBusinessHours = async (req) => {
   try {
     const businessHours = await BusinessHours.findOne();
     return NextResponse.json({
       status: "success",
       message: "All Hours Successfully Fetched",
       data: businessHours,
-  });
+    });
   } catch (error) {
     return NextResponse.json({
       status: 'error',
