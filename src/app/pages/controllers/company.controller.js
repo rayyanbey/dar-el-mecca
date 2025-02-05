@@ -46,6 +46,7 @@ const updateContactInformation = async (req, res) => {
       phoneNumbers = existingData.phoneNumbers,
       email = existingData.email,
       faxNumbers = existingData.faxNumbers,
+      whatsapp = existingData.whatsapp,
     } = await req.json();
 
     await ContactInformation.update(
@@ -53,6 +54,7 @@ const updateContactInformation = async (req, res) => {
         phoneNumbers,
         email,
         faxNumbers,
+        whatsapp
       },
       { where: { id: existingData.id } }
     );
@@ -61,7 +63,7 @@ const updateContactInformation = async (req, res) => {
       JSON.stringify({
         status: 200,
         message: "Contact info updated",
-        data: { phoneNumbers, email, faxNumbers },
+        data: { phoneNumbers, email, faxNumbers,whatsapp },
       })
     );
   } catch (error) {
@@ -76,12 +78,12 @@ const updateContactInformation = async (req, res) => {
 
 const updateAddress = async (req) => {
   try {
-    const { address, documentAddress, whatsapp } = await req.json();
+    const { address, documentAddress} = await req.json();
 
     const existingData = await Company.findOne();
     // Update first company entry (or add where clause for specific company)
    await Company.update(
-      { address, documentAddress, whatsapp },
+      { address, documentAddress},
       { where: { id: existingData.id} } // Add proper where condition for your use case
     );
 

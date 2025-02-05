@@ -13,6 +13,11 @@ const ContactInformation = sequelize.define('ContactInformation', {
     faxNumbers: {
         type: DataTypes.JSON,
         allowNull: false
+    },
+    
+    whatsapp: {
+        type: DataTypes.JSON,
+        allowNull: false
     }
 }, {
     timestamps: true,
