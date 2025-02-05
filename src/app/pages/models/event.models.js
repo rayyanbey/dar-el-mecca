@@ -42,9 +42,6 @@ const Flight = sequelize.define('Flight', {
     locationDescription: {
         type: DataTypes.STRING,
         allowNull: true,
-        validate: {
-            len: [3, 100]
-        }
     },
     description: {
         type: DataTypes.STRING,
