@@ -178,9 +178,6 @@ const Event = sequelize.define('Event', {
     importantNote:{  //important notes for customers
         type: DataTypes.STRING,
         allowNull:true,
-        validate:{
-            len:[5,1000]
-        }
     },
     month:{
         type: DataTypes.STRING,
