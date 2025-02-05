@@ -107,7 +107,7 @@ const createEvent = async (request) => {
                 descriptionTitle,
                 countryName: type === 'T' ? countryName : null,
                 poster: posterUrl,
-                importantNote,
+                importantNote: importantNote || " ",
                 month
             }, { transaction });
 
