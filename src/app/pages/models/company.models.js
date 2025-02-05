@@ -12,10 +12,6 @@ const Company = sequelize.define('Company', {
     documentAddress: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    whatsapp: {
-        type: DataTypes.STRING,
-        allowNull: false
     }
 }, {
     timestamps: true,
