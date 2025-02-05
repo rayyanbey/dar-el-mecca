@@ -439,6 +439,7 @@ const getSpecificEvent = async (snug) => {
                 data: [],
             });
         }
+        console.log(result);
 
         return NextResponse.json({
             status: "success",
@@ -456,7 +457,24 @@ const getSpecificEvent = async (snug) => {
 
 const getAllEvents = async (category) => {
     try {
-        const events = await Event.findAll({ where: { type: category } });
+        const events = await Event.findAll({
+            where: { type: category }, include: [
+                {
+                    model: EventDetails,
+                    as: "eventDetails",
+                    include: [
+                        {
+                            model: Hotel,
+                            as: "hotels",
+                        },
+                    ],
+                },
+                {
+                    model: Flight,
+                    as: "flightDetails",
+                },
+            ],
+        });
         if (category == 'U') {
             const categorizedEvents = events.reduce((acc, event) => {
                 const month = event.month;

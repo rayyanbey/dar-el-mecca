@@ -12,8 +12,8 @@ function Description({ title, descriptionTitle, description, duration, image, pr
     }
 
     return (
-        <section className="flex flex-col lg:flex-row gap-20 lg:justify-between  lg:gap-0  lg:p-20 ">
-            <div className="w-full lg:w-[60%] flex flex-col gap-10 leading-snug p-3 lg:p-0">
+        <section className="flex flex-col lg:flex-row gap-20 lg:justify-between items-start  lg:gap-0  lg:p-20 ">
+            <div className="w-full h-[100vh] lg:w-[60%] flex flex-col gap-10 leading-snug p-3 lg:p-0">
                 <div className="flex flex-col gap-2">
                     <h3 className="font-[300] text-[18px]">{title} Details</h3>
                     <h5 className="font-[700] cinzel-title text-[32px]">{descriptionTitle}</h5>

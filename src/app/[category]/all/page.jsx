@@ -4,7 +4,6 @@ import AllPackages from "../[snug]/AllPackages";
 import Hero from "../[snug]/Hero";
 import Categories from "../../_enums/packagesCategories";
 async function page({params}) {
-    
     await params;
     const category = String(params.category);
     const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/pages/apis/events/${category}/all`);
