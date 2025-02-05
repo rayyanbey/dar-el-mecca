@@ -1,4 +1,4 @@
-import { getBusinessHoursController } from "../../../controllers/company.controller"
+import { getBusinessHoursController, getBusinessHoursSummary } from "../../../controllers/company.controller"
 export const GET = async () => {
-    return await getBusinessHoursController();
+    return await getBusinessHoursSummary();
 }
