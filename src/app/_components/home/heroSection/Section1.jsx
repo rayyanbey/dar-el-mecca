@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import AllTourDetailButton from "./AllTourDetailButton";
 import { Plane } from "../../../_icons/Plane";
 import "../../../_styles/plane-animation.css";
 import ScrollButton from "../../ScrollButton";
@@ -66,8 +65,8 @@ export default function Section1() {
               src={"/images/hero-main.jpeg"}
               alt="Hero Main"
             />
-            <div className="bg-red- w-full h-1/2 relative animate-box top-12">
-              <div className="absolute bottom-0 animate-plane">
+            <div className="bg-red- w-full h-1/2 relative animate-box  top-12">
+              <div className="absolute  bottom-0 animate-plane">
                 <Plane />
               </div>
             </div>

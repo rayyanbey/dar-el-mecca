@@ -1,13 +1,12 @@
 .animate-box {
-   
-    animation: moveBox 6s linear infinite;
+    animation: moveBox 8s linear infinite;
 }
 @keyframes moveBox{
     0%{
         transform: rotate(30deg) scale(0.9);
     }
     20%{
-        transform:rotate(60deg) scale(1.1);
+        transform:rotate(80deg) scale(1.1);
     }
     100%{
         transform: rotate(200deg)scale(1);
@@ -15,7 +14,7 @@
 }
 
 .animate-plane{
-    animation: movePlane 6s linear infinite;
+    animation: movePlane 12s linear infinite;
 }
 @keyframes movePlane {
     0%{
