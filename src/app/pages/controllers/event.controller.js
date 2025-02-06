@@ -322,10 +322,7 @@ const updateHotelDetails = async (req, snug) => {
             // Update the EventDetails
             await existingHotelDetails.update(hotelDetails, { transaction });
 
-            return NextResponse.json({
-                status: 200,
-                message: "Hotel Details updated successfully.",
-            });
+            return true
         });
     } catch (error) {
         return NextResponse.json({
