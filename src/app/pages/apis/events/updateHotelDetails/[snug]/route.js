@@ -5,7 +5,11 @@ import { updateHotelDetails } from "../../../../controllers/event.controller";
 export const PUT = async (req, {params}) => {
     const {snug} = await params;
     try {
-        return await updateHotelDetails(req,snug);
+        await updateHotelDetails(req,snug);
+        return NextResponse.json({
+            status: 200,
+            message: "Hotel details updated successfully"
+        });
     } catch (error) {
         return NextResponse.json({
             status: 500,
