@@ -25,7 +25,7 @@ async function page({ params }) {
         middleTitle={' Umrah Packages '}
         tagline={"لَبَّيْكَ اللَّهُمَّ لَبَّيْك"}
         miniDescription={"Umrah Packages"}
-        scrollId={"123"}
+        scrollId={"all-packages"}
       />
       <AllPackages category={category[0]} data={data} />
       <BookSeat image={data[firstKey]?.[0]?.images?.[0]} />
