@@ -59,6 +59,8 @@ const updateContactInformation = async (req, res) => {
       { where: { id: existingData.id } }
     );
 
+    
+
     return new NextResponse(
       JSON.stringify({
         status: 200,
