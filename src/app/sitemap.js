@@ -28,6 +28,7 @@ export async function generateStaticParams() {
                     type,
                     id: subItem.id,
                     updatedAt: subItem.updatedAt
+                    
                 });
             }
         }
