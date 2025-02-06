@@ -4,7 +4,7 @@ import umrahGuideInfo from '../_data/umrah-guide-info';
 
 function Info() {
     return (
-        <section className='flex flex-col gap-20 lg:gap-28 w-full justify-between p-6 lg:p-16'>
+        <section id='guide' className='flex flex-col gap-20 lg:gap-28 w-full justify-between p-6 lg:p-16'>
             {umrahGuideInfo.map((item, index) => (
                 <Card
                     key={index}

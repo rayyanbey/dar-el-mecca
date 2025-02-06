@@ -10,7 +10,7 @@ function page() {
     return (
         <section>
             <Hero />
-            <section className="w-full flex flex-col justify-center items-center py-6 lg:py-16">
+            <section id="guides-section" className="w-full flex flex-col justify-center items-center py-6 lg:py-16">
                 <h2 className="text-[32px] text-center cinzel-title font-[700] ">All Resources</h2>
                 <p className="text-[18px] text-center font-[300] py-3">
                     Read below about all our detailed guides about Umrah and Hajj.

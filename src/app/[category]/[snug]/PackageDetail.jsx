@@ -1,14 +1,15 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import TransparentButton from "../../_components/TransparentButton";
 import BrownButton from "../../_components/BrownButton";
 
-function PackageDetail({eventDetails}) {
+function PackageDetail({ eventDetails }) {
     const [active, setActive] = useState("Inclusions");
     const [buttons, setButtons] = useState([]);
-    useEffect(()=>{
+    console.log(eventDetails)
+    useEffect(() => {
         const newButtons = [];
-    
+
         if (eventDetails.inclusion && eventDetails.inclusion.length > 0) {
             newButtons.push("Inclusions");
         }
@@ -22,27 +23,23 @@ function PackageDetail({eventDetails}) {
             newButtons.push("Hotels");
         }
         setButtons(newButtons);
-    },[])
-    
+    }, [eventDetails]);
+
     const content = {
-        Inclusions: [
-            "04 Nights Accommodation in Medina",
-            "04 Nights Accommodation in Makkah",
-            "Buffet Breakfast Included",
-            "Complete Luxury Ground Transportation",
-            "Medina to Makkah Haramain Train",
-            "Visit Holy Sites In Madina & Makkah (Mazarat)",
-            "Roundtrip Airfare Included",
-        ],
-        Exclusions: [
-            "Saudi Tourist Visa Fee Included",
-            "Lead by Imam",
-            "No Extra Activities",
-            "Airport Lounge Access Excluded",
-            "Tips Not Included",
-        ],
-        Hotel: ["5-Star Hotels", "Room Service Available", "Free Wi-Fi"],
-        Transportation: ["Luxury Buses", "Airport Pick and Drop", "Local Guided Transport"],
+        Inclusions: eventDetails.inclusion,
+        Exclusions: eventDetails.exclusion,
+        hotels: eventDetails.hotels
+            ? eventDetails.hotels.map((hotel) => ({
+                id: hotel.id,
+                name: hotel.name,
+                city: hotel.city,
+                accomodationDescription: hotel.accomodationDescription,
+                description: hotel.description,
+                locationDescription: hotel.locationDescription,
+                images: hotel.images || [],
+            }))
+            : [],
+        Transportation: eventDetails.transportation,
     };
 
     return (
@@ -53,8 +50,8 @@ function PackageDetail({eventDetails}) {
                     Detailed package guide about all the things included in the package.
                 </p>
             </div>
-            <div className="flex flex-col w-[86%] rounded-lg bg-tertiary gap-8 p-2 lg:p-10">
-                <div className="flex  gap-4 lg:flex-row mx-auto lg:space-x-10 flex-wrap ">
+            <div className="flex flex-col w-[86%] rounded-lg bg-tertiary gap-8 p-4 lg:p-10">
+                <div className="flex gap-4 lg:flex-row mx-auto lg:space-x-10 flex-wrap">
                     {buttons.map((item, index) => (
                         <React.Fragment key={item}>
                             {active === item ? (
@@ -69,21 +66,71 @@ function PackageDetail({eventDetails}) {
                     ))}
                 </div>
 
-                <div className="bg-white rounded-lg p-10">
-                    <ul
-                        className={`grid ${
-                            ["Inclusions", "Exclusions"].includes(active) ? "grid-cols-1 lg:grid-cols-2" : "grid-cols-1"
-                        } `}
-                    >
-                        {content[active].map((item, index) => (
-                            <li key={index} className=" list-disc text-[18px] font-[300]">
-                                {item}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                {/* Inclusions & Exclusions */}
+                {(active === "Inclusions" || active === "Exclusions") && (
+                    <div className="bg-white rounded-lg p-10">
+                        <ul className="grid grid-cols-1 lg:grid-cols-2">
+                            {content[active].map((item, index) => (
+                                <li key={index} className="list-disc text-[18px] font-[300]">
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
 
-                
+                {/* Hotels */}
+                {active === "Hotels" && (
+                    <div className="bg-white rounded-lg p-4 lg:p-10 h-fit flex flex-col gap-2">
+                        {content.hotels.length > 0 ? (
+                            content.hotels.map((hotel) => (
+                                <div key={hotel.id} className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                    <div className="flex flex-col gap-4">
+                                        <h5 className="text-[20px] font-[600]">{hotel.city} Hotel : {hotel.name}</h5>
+                                        <p className="text-[18px] font-[300]">{hotel.description}</p>
+                                        <p className="text-[18px] font-[300]">
+                                            <span className="text-[20px] font-[600]">Location : </span>
+                                            {hotel.locationDescription}
+                                        </p>
+                                        <p className="text-[18px] font-[300]">
+                                            <span className="text-[20px] font-[600]">Accomodation : </span>
+                                            {hotel.accomodationDescription}
+                                        </p>
+                                    </div>
+                                    <div className="grid grid-cols-2 h-full gap-2">
+                                        {hotel.images.map((img, i) => (
+                                            <img
+                                                key={i}
+                                                src={img}
+                                                alt={`Hotel ${hotel.name} ${i + 1}`}
+                                                className=" rounded-lg h-full  object-cover w-[100%]"
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-[18px] font-[300]">No hotel information available.</p>
+                        )}
+                    </div>
+                )}
+
+                {/* Transportation */}
+                {active === "Transportation" && (
+                    <div className="bg-white rounded-lg p-4 lg:p-10 h-fit flex flex-col gap-2">
+                        {content.Transportation.map((item, index) => (
+                            <div key={index} className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                                <p className="text-[18px] font-[300]">{item}</p>
+                                <div className="grid grid-cols-2 h-full gap-2">
+                                    <img src="https://res.cloudinary.com/duuallxxr/image/upload/v1738739207/reviews/alpnj3zsl32vbm1kbg39.jpg" className=" rounded-lg  object-cover w-[100%]" alt="" />
+                                    <img src="https://res.cloudinary.com/duuallxxr/image/upload/v1738739207/reviews/alpnj3zsl32vbm1kbg39.jpg" className=" rounded-lg  object-cover w-[100%]" alt="" />
+                                    <img src="https://res.cloudinary.com/duuallxxr/image/upload/v1738739207/reviews/alpnj3zsl32vbm1kbg39.jpg" className=" rounded-lg  object-cover w-[100%]" alt="" />
+                                    <img src="https://res.cloudinary.com/duuallxxr/image/upload/v1738739207/reviews/alpnj3zsl32vbm1kbg39.jpg" className=" rounded-lg  object-cover w-[100%]" alt="" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     );

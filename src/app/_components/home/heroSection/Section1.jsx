@@ -3,6 +3,7 @@ import Image from "next/image";
 import AllTourDetailButton from "./AllTourDetailButton";
 import { Plane } from "../../../_icons/Plane";
 import "../../../_styles/plane-animation.css";
+import ScrollButton from "../../ScrollButton";
 
 export default function Section1() {
   return (
@@ -49,7 +50,9 @@ export default function Section1() {
             <p className="text-secondary font-[600]">3425 Pilgrims</p>
           </div>
         </div>
-        <AllTourDetailButton />
+        <div>
+          <ScrollButton text="All Tour details" id={"home-services"} />
+        </div>
       </div>
 
       <div className="w-full lg:w-[40%] h-[105vh] flex flex-col items-center lg:justify-center">

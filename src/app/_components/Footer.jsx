@@ -89,10 +89,10 @@ export async function Footer() {
                         <h3 className="font-[700] text-[18px] mb-4 text-white">BUSINESS HOURS</h3>
                         <ul className="flex flex-col items-center lg:items-start gap-4">
                             {data.map((day, index) => (
-                                <>
-                                    <li key={index} >{day.days}</li>
-                                    <li key={index} >{day.schedule}</li>
-                                </>
+                                <div key={index}>
+                                    <li  >{day.days}</li>
+                                    <li  >{day.schedule}</li>
+                                </div>
                             ))}
                         </ul>
                     </div>

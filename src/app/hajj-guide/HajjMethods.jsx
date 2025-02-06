@@ -2,7 +2,7 @@ import React from 'react'
 
 function HajjMethods() {
   return (
-    <section className='flex flex-col  lg:flex-row gap-4 w-full  justify-between p-10 lg:px-20'>
+    <section id='guide' className='flex flex-col  lg:flex-row gap-4 w-full  justify-between p-10 lg:px-20'>
       <div className='flex flex-col items-center lg:items-start w-full lg:w-[65%] gap-4'>
         <h4 className='cinzel-title text-[24px] font-[700]'>Method of Performing Hajj</h4>
         <div className='text-[18px] font-light flex  flex-col justify-center lg:justify-start gap-6'>

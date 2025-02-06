@@ -14,7 +14,7 @@ function PackageCard({ data}) {
         ? Math.min(...Object.values(pricing)) 
         : 0; 
     return (
-        <div className="flex flex-col gap-4 w-full  lg:w-[24rem] 2xl:w-[20vw]  rounded-t-full border-[1px] border-[#00000014] p-6 bg-transparent transition-colors duration-500 hover:bg-[#f6f2ed]">
+        <div  className="flex flex-col gap-4 w-full  lg:w-[24rem] 2xl:w-[20vw]  rounded-t-full border-[1px] border-[#00000014] p-6 bg-transparent transition-colors duration-500 hover:bg-[#f6f2ed]">
             <img src={images[0]} className="w-full h-[70vh] lg:h-[50vh] object-cover  rounded-t-full" alt="" />
             <div className="flex justify-between">
                 <h3 className="font-[700] cinzel-title text-[20px]">{title?.split(" ").slice(0, 2).join(" ")}</h3>
@@ -24,7 +24,7 @@ function PackageCard({ data}) {
                     {
                         flights?.map((item, index) => {
                             return (
-                                <div className="flex items-center gap-2">
+                                <div key={index} className="flex items-center gap-2">
                                     {item.type == 'Departure' ? <DepartPlane /> : <ReturnPlane />}
                                     <p className="font-[400] opacity-80  text-[16px]">Depart from {item.departureCity} - {item.destinationCity} : {DateSetter(item.date)}</p>
                                 </div>
@@ -32,7 +32,7 @@ function PackageCard({ data}) {
                         })
                     }
                     {hotels?.map((hotel) => (
-                        <div className="flex items-center gap-2">
+                        <div key={hotel.id} className="flex items-center gap-2">
                             <BrownHotel />
                             <p className="font-[400] opacity-80  text-[16px]">{hotel.name}</p>
                         </div>

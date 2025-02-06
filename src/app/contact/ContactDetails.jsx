@@ -4,6 +4,12 @@ import ContactCard from "./ContactCard";
 import CallUs from "../_icons/CallUs";
 import Whatsapp from "../_icons/Whatsapp";
 import Message from "../_icons/Message";
+import OperationalHours from "../_icons/OperationalHours";
+import Location from "../_icons/Location";
+import Fax from "../_icons/Fax";
+import BgMessage from "../_icons/BgMessage";
+import BgPhone from "../_icons/BgPhone";
+import BgWhatsapp from "../_icons/BgWhatsapp";
 function ContactDetails() {
   const [cards, setCards] = useState([]);
   useEffect(() => {
@@ -17,39 +23,39 @@ function ContactDetails() {
 
           const mappedCards = [
             {
-              icon: <Message width="35" height="35" />,
+              icon: <BgMessage/>,
               title: "Have any Questions?",
               content: contactInformation.email,
             },
             {
-              icon: <CallUs width="35" height="35" />,
+              icon: <BgPhone/>,
               title: "Call Us",
               content: contactInformation.phoneNumbers,
             },
             {
-              icon: <Whatsapp width="35" height="35" />,
+              icon: <BgWhatsapp/>,
               title: "Whatsapp",
               content: contactInformation.whatsapp,
             },
             {
-              icon: <Message width="35" height="35" />,
+              icon: <OperationalHours />,
               title: "Operational Hours",
               content: operationalHours
                 .filter((hour) => hour.schedule !== "Closed")
                 .map((hour) => `${hour.days}: ${hour.schedule}`),
             },
             {
-              icon: <Message width="35" height="35" />,
+              icon: <Location />,
               title: "Address",
               content: [address.address],
             },
             {
-              icon: <Message width="35" height="35" />,
+              icon: <Location />,
               title: "Document Mailing",
               content: [address.documentAddress],
             },
             {
-              icon: <Message width="35" height="35" />,
+              icon: <Fax />,
               title: "Fax Number",
               content: contactInformation.faxNumbers,
             }

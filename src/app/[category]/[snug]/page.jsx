@@ -12,7 +12,7 @@ export async function generateStaticParams({ params }) {
         );
         if (!res.ok) {
             console.error(`Failed to fetch data: ${res.statusText}`);
-            return []; 
+            return [];
         }
         const contentType = res.headers.get("Content-Type");
         if (!contentType || !contentType.includes("application/json")) {
@@ -72,6 +72,7 @@ async function page({ params }) {
     return (
         <div>
             <Hero
+                scrollId={'description'}
                 image={data.images?.[0]}
                 category={category[0]}
                 preTitle={`${category[0] == Categories.TOUR

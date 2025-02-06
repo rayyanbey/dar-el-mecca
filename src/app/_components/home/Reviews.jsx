@@ -2,14 +2,14 @@
 import Star from "../../_icons/Star";
 import Arrow from "../../_icons/Arrow";
 import BrownStars5 from "../../_icons/BrownStars5";
-import {Swiper, SwiperSlide} from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import { getReviewsAPI } from "../../_apis/reviews.api";
 import { redirect } from "next/dist/server/api-utils";
 export function Reviews() {
-    const [reviews,setReviews]=useState([]); 
+    const [reviews, setReviews] = useState([]);
     const swiperRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const nextReview = () => {
@@ -23,17 +23,17 @@ export function Reviews() {
         setActiveIndex(swiper.activeIndex);
     };
 
-    const getReviews=async()=>{
-        const res=await getReviewsAPI();
-        if(res.message=="error"){
+    const getReviews = async () => {
+        const res = await getReviewsAPI();
+        if (res.message == "error") {
             redirect('/error');
         }
         setReviews(res);
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getReviews();
-    },[]);
+    }, []);
 
     return (
         <section className="w-full flex flex-col gap-8 py-16 bg-white">
@@ -69,14 +69,15 @@ export function Reviews() {
                     onSlideChange={handleSlideChange} // Track slide change event
                     ref={swiperRef}
                 >
-                    { reviews.map((review, i) => (
+                    {reviews.map((review, i) => (
                         <SwiperSlide
-                            key={i}
+                            key={review.id}
                             style={{
                                 scale: activeIndex === i ? 1 : 0.8, // Set background color for active slide
                             }}
                         >
                             <ReviewCard
+                                key={review.id} 
                                 backgroundColor={activeIndex === i ? "#A8854E1A" : "transparent"}
                                 name={review.name}
                                 role={review.profession}
@@ -107,50 +108,49 @@ export function Reviews() {
     );
 }
 
-function ReviewCard({ name, role, image, content, backgroundColor,stars }) {
-        const [isLargeScreen, setIsLargeScreen] = useState(false); // Initialize with a default value
-    
-        useEffect(() => {
-            if (typeof window !== "undefined") {
-                const updateScreenSize = () => {
-                    setIsLargeScreen(window.innerWidth >= 640);
-                };
-    
-                // Set initial value
-                updateScreenSize();
-    
-                // Add resize event listener
-                window.addEventListener("resize", updateScreenSize);
-    
-                // Cleanup event listener on unmount
-                return () => window.removeEventListener("resize", updateScreenSize);
-            }
-        }, []);
-    
-        return (
-            <div
-                className={`cursor-grab flex w-[300px] md:w-[50vw] ${
-                    backgroundColor === "#A8854E1A" && "bg-[#A8854E1A]"
+function ReviewCard({ name, role, image, content, backgroundColor, stars }) {
+    const [isLargeScreen, setIsLargeScreen] = useState(false); // Initialize with a default value
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const updateScreenSize = () => {
+                setIsLargeScreen(window.innerWidth >= 640);
+            };
+
+            // Set initial value
+            updateScreenSize();
+
+            // Add resize event listener
+            window.addEventListener("resize", updateScreenSize);
+
+            // Cleanup event listener on unmount
+            return () => window.removeEventListener("resize", updateScreenSize);
+        }
+    }, []);
+
+    return (
+        <div
+            className={`cursor-grab flex w-[300px] md:w-[50vw] ${backgroundColor === "#A8854E1A" && "bg-[#A8854E1A]"
                 } gap-2 lg:gap-8 p-4 m-4 lg:px-6 lg:py-8 border-2 border-[#00000014]`}
-            >
-                <div className="w-[35%] flex flex-col gap-4 items-center p-2 lg:p-4 bg-secondary rounded-t-full">
-                    <img src={image} className="object-cover rounded-full w-14 h-14 md:w-24 md:h-24 lg:w-32 lg:h-32"/>
-                    <div className="flex bg-[#FFFFFF33] rounded-full px-2 lg:p-2 m-2">
-                        {Array.from({ length: stars }).map((i) => (
-                            <Star color="#fff" width={isLargeScreen ? 21 : 10} height={21} key={i} />
-                        ))}
-                    </div>
-                </div>
-                <div className="w-3/4 flex flex-col justify-center gap-6">
-                    <div className="flex flex-col gap-2">
-                        <h6 className="text-[14px] lg:text-[20px] cinzel-title font-[700]">{name}</h6>
-                        <p className="text-[10px] lg:text-[14px] font-[400]">{role}</p>
-                    </div>
-                    <p className="text-[10px] lg:text-[18px] font-[400] opacity-80 text-wrap">{content}</p>
+        >
+            <div className="w-[35%] flex flex-col gap-4 items-center p-2 lg:p-4 bg-secondary rounded-t-full">
+                <img src={image} className="object-cover rounded-full w-14 h-14 md:w-24 md:h-24 lg:w-32 lg:h-32" />
+                <div className="flex bg-[#FFFFFF33] rounded-full px-2 lg:p-2 m-2">
+                    {Array.from({ length: stars }).map((i) => (
+                        <Star key={i} color="#fff" width={isLargeScreen ? 21 : 10} height={21} />
+                    ))}
                 </div>
             </div>
-        );
+            <div className="w-3/4 flex flex-col justify-center gap-6">
+                <div className="flex flex-col gap-2">
+                    <h6 className="text-[14px] lg:text-[20px] cinzel-title font-[700]">{name}</h6>
+                    <p className="text-[10px] lg:text-[14px] font-[400]">{role}</p>
+                </div>
+                <p className="text-[10px] lg:text-[18px] font-[400] opacity-80 text-wrap">{content}</p>
+            </div>
+        </div>
+    );
 }
-    
+
 
 export default Reviews;

@@ -1,5 +1,6 @@
 import React from "react";
 import TransparentButton from "../_components/TransparentButton";
+import ScrollButton from "./ScrollButton";
 
 function HeroOfGuides({ image, preTitle, middleTitle, postTitle, miniDescription }) {
     return (
@@ -21,7 +22,7 @@ function HeroOfGuides({ image, preTitle, middleTitle, postTitle, miniDescription
                     {miniDescription}
                 </p>
                 <div className="w-full flex justify-center">
-                    <TransparentButton text="Read Guidlines" />
+                    <ScrollButton text="Read Guidlines" id={"guide"} />
                 </div>
             </div>
         </div>

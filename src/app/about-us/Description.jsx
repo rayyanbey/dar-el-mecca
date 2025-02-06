@@ -1,5 +1,6 @@
 import React from "react";
 import BrownButton from "../_components/BrownButton";
+import ScrollButton from "../_components/ScrollButton";
 
 function Description() {
     return (
@@ -33,7 +34,9 @@ function Description() {
                     <img src="./images/Carolina.jpeg" className="rounded-3xl w-full lg:w-[100%] h-[50vh]  object-cover" alt="" />
                 </div>
             </div>
-            <BrownButton text="View our Packages"  />
+            <div>
+                <ScrollButton text="View our Packages" id={"home-services"} brown={true}/>
+            </div>
         </div>
     );
 }

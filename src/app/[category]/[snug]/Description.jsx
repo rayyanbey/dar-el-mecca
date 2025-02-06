@@ -12,7 +12,7 @@ function Description({ title, descriptionTitle, description, duration, image, pr
     }
 
     return (
-        <section className="flex flex-col lg:flex-row gap-20 lg:justify-between items-start  lg:gap-0  lg:p-20 ">
+        <section id="description" className="flex flex-col lg:flex-row gap-20 lg:justify-between items-start  lg:gap-0  lg:p-20 ">
             <div className="w-full h-[100vh] lg:w-[60%] flex flex-col gap-10 leading-snug p-3 lg:p-0">
                 <div className="flex flex-col gap-2">
                     <h3 className="font-[300] text-[18px]">{title} Details</h3>
@@ -35,7 +35,7 @@ function Description({ title, descriptionTitle, description, duration, image, pr
                     {
                         flights.map((item, index) => {
                             return (
-                                <div className="flex items-center gap-2">
+                                <div key={index} className="flex items-center gap-2">
                                     {item.type == 'Departure' ? <DepartPlane /> : <ReturnPlane />}
                                     <p className="font-[400] opacity-80  text-[16px]">Depart from {item.departureCity} - {item.destinationCity} : {DateSetter(item.date)}</p>
                                 </div>
@@ -43,7 +43,7 @@ function Description({ title, descriptionTitle, description, duration, image, pr
                         })
                     }
                     {hotels.map((hotel) => (
-                        <div className="flex items-center gap-2">
+                        <div key={hotel.id} className="flex items-center gap-2">
                             <BrownHotel />
                             <p className="font-[400] opacity-80  text-[16px]">{hotel.name}</p>
                         </div>
@@ -51,7 +51,7 @@ function Description({ title, descriptionTitle, description, duration, image, pr
                     <div className="flex items-center gap-2">
                         <Visa />
                         <p className="font-[400] opacity-80 text-[16px]">
-                            {visa == "Y" ? "Visa Included" :visa == "Fee" ? "Visa Fee Included":"Visa Not Included"}
+                            {visa == "Y" ? "Visa Included" : visa == "Fee" ? "Visa Fee Included" : "Visa Not Included"}
                         </p>
                     </div>
                     <div className="w-full h-[1px] bg-[#00000014]"></div>

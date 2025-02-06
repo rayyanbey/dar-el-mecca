@@ -4,7 +4,7 @@ import EssentialCard from './EssentialCard'
 
 function EssentialsList() {
     return (
-        <section className="w-full flex flex-col gap-10 lg:gap-0 lg:flex-row bg-[#F6F3ED] p-6 lg:p-20">
+        <section id='guide' className="w-full flex flex-col gap-10 lg:gap-0 lg:flex-row bg-[#F6F3ED] p-6 lg:p-20">
             <div className="flex flex-col w-full lg:w-[65%]  items-start  justify-center gap-8 ">
                 <h3 className="font-[700]  text-[32px] cinzel-title">
                     Hajj and Umrah Essentials
