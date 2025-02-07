@@ -1,4 +1,3 @@
-
 export async function generateStaticParams() {
     const endpoints = [
         { type: 'U', path: '/pages/apis/events/U-packages/all' },
@@ -8,31 +7,29 @@ export async function generateStaticParams() {
 
     const dataPromises = endpoints.map(async (endpoint) => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}${endpoint.path}`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}${endpoint.path}`, {
+                next: { revalidate: 60 }, // Ensures periodic data fetching in ISR
+            });
+            if (!res.ok) throw new Error("Failed to fetch data");
+            
             const resData = await res.json();
-            return { type: endpoint.type, data: resData.data || {} }; // Ensure data exists
+            return { type: endpoint.type, data: resData.data || {} };
         } catch (error) {
             console.error(`Error fetching data from ${endpoint.path}:`, error);
-            return { type: endpoint.type, data: {} }; // Return empty object on error
+            return { type: endpoint.type, data: {} };
         }
     });
 
     const allData = await Promise.all(dataPromises);
 
-    const staticParams = [];
-    for (const { type, data } of allData) {
-        for (const month of Object.keys(data)) {
-            const packages = data[month];
-            for (const subItem of packages) {
-                staticParams.push({
-                    type,
-                    id: subItem.id,
-                    updatedAt: subItem.updatedAt
-                    
-                });
-            }
-        }
-    }
+    const staticParams = allData.flatMap(({ type, data }) =>
+        Object.entries(data).flatMap(([month, packages]) =>
+            packages.map(({ id }) => ({
+                type,
+                id,
+            }))
+        )
+    );
 
     return staticParams;
 }
@@ -40,14 +37,12 @@ export async function generateStaticParams() {
 export default async function generateSitemap() {
     const params = await generateStaticParams();
 
-    const packageEntries = params.map(({ type, id, updatedAt }) => ({
-        url: `${process.env.NEXT_PUBLIC_HOST_NAME}/${type}-packages/${id}`,
-    }));
-
-    return [
-        {
-            url: `${process.env.NEXT_PUBLIC_HOST_NAME}/`,
-        },
-        ...packageEntries,
+    const sitemap = [
+        { url: `${process.env.NEXT_PUBLIC_HOST_NAME}/` }, // Homepage
+        ...params.map(({ type, id }) => ({
+            url: `${process.env.NEXT_PUBLIC_HOST_NAME}/${type}-packages/${id}`,
+        })),
     ];
+
+    return sitemap;
 }
